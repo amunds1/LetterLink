@@ -1,40 +1,81 @@
-import type { NextPage } from "next";
-import { Button, Grid, Container } from "@mantine/core";
-import { createStyles } from "@mantine/core";
+import { Container, Grid } from '@mantine/core'
+import { createStyles } from '@mantine/core'
+import { GetServerSideProps } from 'next'
+
+interface DatabaseTypes {
+  grid: {
+    size: number
+    values: string[]
+  }
+}
+
+const database: DatabaseTypes = {
+  grid: {
+    size: 5,
+    values: [
+      'A',
+      'B',
+      'C',
+      'D',
+      'E',
+      'F',
+      'G',
+      'H',
+      'I',
+      'J',
+      'K',
+      'L',
+      'M',
+      'N',
+      'O',
+      'P',
+      'Q',
+      'R',
+      'S',
+      'T',
+      'U',
+      'V',
+      'W',
+      'X',
+      'Y',
+    ],
+  },
+}
 
 const useStyles = createStyles(() => ({
-  button: {
-    backgroundColor: "teal",
-  },
+  container: { height: '100vh' },
+  center: { height: '100vh' },
   cell: {
-    backgroundColor: "blue",
+    backgroundColor: 'lightgreen',
+    border: '0.5px solid grey',
   },
-}));
+  grid: {
+    border: '1px solid black',
+    justify: 'center',
+    align: 'center',
+  },
+}))
 
-const Demo: NextPage = () => {
-  const { classes } = useStyles();
+export const getServerSideProps: GetServerSideProps = async () => {
+  const grid = database.grid
+
+  return {
+    props: { grid },
+  }
+}
+
+const Demo = ({ grid }: DatabaseTypes) => {
+  const { classes } = useStyles()
 
   return (
-    <div>
-      <Button className={classes.button}>Click me</Button>
+    <Grid className={classes.grid} columns={grid.size}>
+      {grid.values.map((cellValue) => (
+        <Grid.Col className={classes.cell} key={cellValue} span={1}>
+          {cellValue}
+        </Grid.Col>
+      ))}
+    </Grid>
+  )
+}
 
-      <Container size="sm" px="xs">
-        <Grid>
-          <Grid.Col className={classes.cell} span={4}>
-            A
-          </Grid.Col>
-          <Grid.Col span={4}>B</Grid.Col>
-          <Grid.Col span={4}>C</Grid.Col>
-          <Grid.Col span={4}>D</Grid.Col>
-          <Grid.Col span={4}>E</Grid.Col>
-          <Grid.Col span={4}>F</Grid.Col>
-          <Grid.Col span={4}>G</Grid.Col>
-          <Grid.Col span={4}>H</Grid.Col>
-          <Grid.Col span={4}>I</Grid.Col>
-        </Grid>
-      </Container>
-    </div>
-  );
-};
-
-export default Demo;
+export default Demo
