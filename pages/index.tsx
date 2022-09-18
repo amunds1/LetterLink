@@ -2,8 +2,8 @@ import firebase from '../firebase/clientApp'
 import { useAuthState } from 'react-firebase-hooks/auth'
 import { getAuth } from 'firebase/auth'
 import { Center, Container, createStyles, Space, Text } from '@mantine/core'
-import SignIn from '../components/signin'
 import SignOut from '../components/SignOut'
+import SignIn from '../components/SignIn'
 
 const useStyles = createStyles(() => ({
   center: { height: '100vh' },
