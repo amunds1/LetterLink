@@ -9,6 +9,8 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "firebase": "^9.10.0",
+    "firebaseui": "^6.0.1",
     "@emotion/react": "^11.10.4",
     "@emotion/server": "^11.10.0",
     "@mantine/core": "^5.3.3",
@@ -16,7 +18,8 @@
     "@mantine/next": "^5.3.3",
     "next": "12.3.0",
     "react": "18.2.0",
-    "react-dom": "18.2.0"
+    "react-dom": "18.2.0",
+    "react-firebase-hooks": "^5.0.3"
   },
   "devDependencies": {
     "@types/node": "18.7.18",
