@@ -21,6 +21,7 @@ Optimizations:
 
 1. Only check for valid words in the affected row and column.
 2. Only check for valid words after the letter change. For instance, if the player changes WATER to WATAR on the board, do not check WA, because this is not changed.
+3. Hashmap (stored either in localStorage or Firebase) of previously checked words, which can be queried first
 
 ```
 boardPrev = [
