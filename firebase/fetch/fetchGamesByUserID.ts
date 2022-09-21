@@ -7,7 +7,7 @@ export interface Game {
 }
 
 /* 
-  Fetch ongoing games for a given user by user ID
+  Fetch 'games' array for a given user and return it as Game[]
 */
 const fetchGamesByUserID = async (firebaseUserID: string): Promise<Game[]> => {
   const docRef = doc(db, 'users', firebaseUserID).withConverter(gameConverter)
