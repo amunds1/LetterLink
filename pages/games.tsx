@@ -1,7 +1,6 @@
-import React from 'react'
 import { GetServerSideProps } from 'next'
 import fetchGamesByUserID, { Game } from '../firebase/fetch/fetchGamesByUserID'
-import { Card, Image, Text, Badge, Button, Group } from '@mantine/core'
+import { Card, Text, Button, Group } from '@mantine/core'
 
 export const getServerSideProps: GetServerSideProps = async () => {
   const games = await fetchGamesByUserID('fCRVeYrTPFWyn1UF6QvQ')
