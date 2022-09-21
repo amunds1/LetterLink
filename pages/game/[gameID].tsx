@@ -1,7 +1,15 @@
-import { doc, getFirestore } from 'firebase/firestore'
+import { collection, doc, getFirestore } from 'firebase/firestore'
 import { useRouter } from 'next/router'
 import firebase from '../../firebase/clientApp'
-import { useDocument } from 'react-firebase-hooks/firestore'
+import { useCollectionData, useDocument } from 'react-firebase-hooks/firestore'
+
+export type GameStandalone = {
+  boardSize: number
+  player1: {
+    board: string
+    user: string
+  }
+}
 
 const GameID = () => {
   const router = useRouter()
@@ -16,15 +24,12 @@ const GameID = () => {
     }
   )
 
-  console.log(value?.data())
+  const data = value?.data()
 
   return (
     <div>
-      <p>
-        {error && <strong>Error: {JSON.stringify(error)}</strong>}
-        {loading && <span>Document: Loading...</span>}
-        {value && <span>Document: {JSON.stringify(value.data())}</span>}
-      </p>
+      <p>Gameboard {data?.boardSize}</p>
+      <p>Gameboard {data?.player1.board}</p>
     </div>
   )
 }
