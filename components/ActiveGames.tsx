@@ -1,7 +1,7 @@
 import Link from 'next/link'
 import { Card, Group, Button, Text } from '@mantine/core'
 import { QuerySnapshot } from 'firebase/firestore'
-import { Game } from '../firebase/fetch/fetchGamesByUserID'
+import Game from '../types/Game'
 
 const ActiveGames = ({ games }: { games: QuerySnapshot<Game> | undefined }) => {
   return (
@@ -20,7 +20,7 @@ const ActiveGames = ({ games }: { games: QuerySnapshot<Game> | undefined }) => {
                 Boardsize {gameData.boardSize}
               </Text>
 
-              <Link href={`/game/${2}`}>
+              <Link href={`/game/${gameData.id}`}>
                 <Button
                   variant="light"
                   color="blue"

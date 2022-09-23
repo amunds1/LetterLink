@@ -16,7 +16,9 @@ const gamesConverter: FirestoreDataConverter<Game> = {
     options: SnapshotOptions
   ): Game {
     const data = snapshot.data(options)
+
     return {
+      id: snapshot.id,
       boardSize: data.boardSize,
       player1: {
         board: data.player1.board,

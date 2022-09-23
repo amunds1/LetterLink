@@ -1,4 +1,5 @@
 interface Game {
+  id: string
   boardSize: number
   player1: {
     board: string[]
