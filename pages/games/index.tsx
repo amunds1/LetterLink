@@ -1,48 +1,27 @@
-import { GetServerSideProps } from 'next'
-import fetchGamesByUserID, {
-  Game,
-} from '../../firebase/fetch/fetchGamesByUserID'
-import { Card, Text, Button, Group } from '@mantine/core'
-import Link from 'next/link'
+import {
+  collection,
+  documentId,
+  getFirestore,
+  query,
+  where,
+} from 'firebase/firestore'
+import { useCollection } from 'react-firebase-hooks/firestore'
+import ActiveGames from '../../components/ActiveGames'
+import firebase from '../../firebase/clientApp'
+import gamesConverter from '../../utils/gamesConverter'
 
-export const getServerSideProps: GetServerSideProps = async () => {
-  const games = await fetchGamesByUserID('5B7aHn9nPMbGj0RvapSacncvdDl1')
-
-  return {
-    props: { games },
-  }
-}
-
-const Games = (games: { games: Game[] }) => {
-  return (
-    <>
-      {games.games.map((game) => {
-        return (
-          <Card key={'abc'} shadow="sm" p="lg" radius="md" withBorder>
-            <Group position="apart" mt="md" mb="xs">
-              <Text weight={500}>Game against {game.oponent}</Text>
-            </Group>
-
-            <Text size="sm" color="dimmed">
-              Boardsize {game.boardSize}
-            </Text>
-
-            <Link href={`/game/${2}`}>
-              <Button
-                variant="light"
-                color="blue"
-                fullWidth
-                mt="md"
-                radius="md"
-              >
-                Continue
-              </Button>
-            </Link>
-          </Card>
-        )
-      })}
-    </>
+const Games = () => {
+  /* 
+    Retrieves games belonging to a user from the 'games' collection, by gamesByID refrences, stored on the 'users' collection for a given user
+  */
+  const [value, loading, error] = useCollection(
+    query(
+      collection(getFirestore(firebase), 'games'),
+      where(documentId(), 'in', ['RaLiOvotbc1eKvnwdqVJ'])
+    ).withConverter(gamesConverter)
   )
+
+  return <ActiveGames games={value} />
 }
 
 export default Games

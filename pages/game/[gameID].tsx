@@ -1,7 +1,8 @@
-import { collection, doc, getFirestore } from 'firebase/firestore'
+import { doc, getFirestore } from 'firebase/firestore'
 import { useRouter } from 'next/router'
 import firebase from '../../firebase/clientApp'
-import { useCollectionData, useDocument } from 'react-firebase-hooks/firestore'
+import { useDocument } from 'react-firebase-hooks/firestore'
+import gamesConverter from '../../utils/gamesConverter'
 
 export type GameStandalone = {
   boardSize: number
@@ -18,7 +19,9 @@ const GameID = () => {
   // FIXME Replace hard coded ID with gameID. gameID does not seem
   // to load before useDocument is called
   const [value, loading, error] = useDocument(
-    doc(getFirestore(firebase), 'games', 'RaLiOvotbc1eKvnwdqVJ'),
+    doc(getFirestore(firebase), 'games', 'RaLiOvotbc1eKvnwdqVJ').withConverter(
+      gamesConverter
+    ),
     {
       snapshotListenOptions: { includeMetadataChanges: true },
     }
@@ -28,7 +31,7 @@ const GameID = () => {
 
   return (
     <div>
-      <p>Gameboard {data?.boardSize}</p>
+      <p>Gameboard {data?.player1.board}</p>
       <p>Gameboard {data?.player1.board}</p>
     </div>
   )
