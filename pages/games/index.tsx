@@ -1,27 +1,44 @@
 import {
   collection,
+  doc,
   documentId,
   getFirestore,
   query,
   where,
 } from 'firebase/firestore'
-import { useCollection } from 'react-firebase-hooks/firestore'
+import { useCollection, useDocument } from 'react-firebase-hooks/firestore'
 import ActiveGames from '../../components/ActiveGames'
 import firebase from '../../firebase/clientApp'
 import gamesConverter from '../../utils/gamesConverter'
+import usersConverter from '../../utils/userConverter'
 
 const Games = () => {
   /* 
-    Retrieves games belonging to a user from the 'games' collection, by gamesByID refrences, stored on the 'users' collection for a given user
+    1. Fetch 'games' array from the document of the logged in user, from the 'users' collection
   */
-  const [value, loading, error] = useCollection(
-    query(
-      collection(getFirestore(firebase), 'games'),
-      where(documentId(), 'in', ['RaLiOvotbc1eKvnwdqVJ'])
-    ).withConverter(gamesConverter)
+  const [user, userLoading, userError] = useDocument(
+    doc(
+      getFirestore(firebase),
+      'users',
+      '5B7aHn9nPMbGj0RvapSacncvdDl1'
+    ).withConverter(usersConverter),
+    {
+      snapshotListenOptions: { includeMetadataChanges: true },
+    }
   )
 
-  return <ActiveGames games={value} />
+  /* 
+    2. Retrieves games belonging to a user from the useDocument() hook above
+  */
+  const [games, gamesLoading, gamesError] = useCollection(
+    user &&
+      query(
+        collection(getFirestore(firebase), 'games'),
+        where(documentId(), 'in', user.data()?.games)
+      ).withConverter(gamesConverter)
+  )
+
+  return <ActiveGames games={games} />
 }
 
 export default Games
