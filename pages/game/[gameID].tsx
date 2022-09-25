@@ -3,9 +3,9 @@ import { useRouter } from 'next/router'
 import firebase from '../../firebase/clientApp'
 import { useDocument } from 'react-firebase-hooks/firestore'
 import gamesConverter from '../../utils/gamesConverter'
-
 import { Button } from '@mantine/core'
 import Link from 'next/link'
+import { useEffect, useState } from 'react'
 
 export type GameStandalone = {
   boardSize: number
@@ -15,9 +15,23 @@ export type GameStandalone = {
   }
 }
 
+// FIXME Figure out why this causes a prerender error
+export function getServerSideProps(context: any) {
+  return {
+    props: { params: context.params },
+  }
+}
+
 const GameID = () => {
   const router = useRouter()
-  const { gameID } = router.query
+  const [gameID, setgameID] = useState<string>('')
+
+  useEffect(() => {
+    if (!router.isReady) return
+
+    const { gameID } = router.query
+    setgameID(gameID as string)
+  }, [router.isReady, router.query])
 
   const [value, loading, error] = useDocument(
     doc(getFirestore(firebase), 'games', gameID as string).withConverter(
