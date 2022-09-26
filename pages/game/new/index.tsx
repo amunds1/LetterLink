@@ -1,57 +1,21 @@
 import { Button, Select, SelectItem } from '@mantine/core'
-import {
-  addDoc,
-  arrayUnion,
-  collection,
-  doc,
-  getDocs,
-  query,
-  updateDoc,
-  where,
-} from 'firebase/firestore'
+import { collection, getDocs, query, where } from 'firebase/firestore'
 import { GetServerSideProps } from 'next'
 import React, { useState } from 'react'
 import { db } from '../../../firebase/clientApp'
-import gamesConverter from '../../../utils/gamesConverter'
+import addGameToCollection from '../../../firebase/fetch/addToGameCollection'
 import usersConverter from '../../../utils/userConverter'
 
-const addGameToCollection = async (userDocID: string, oponentDocID: string) => {
-  // Generate document refrences to document in users collection, of player and oponent
-  const userDocRef = doc(db, `users/${userDocID}`)
-  const oponentDocRef = doc(db, `users/${oponentDocID}`)
-
-  const docRef = await addDoc(
-    collection(db, 'games').withConverter(gamesConverter),
-    {
-      boardSize: 6,
-      player1: {
-        board: ['', '', '', '', '', '', '', '', ''],
-        user: userDocRef,
-      },
-      player2: {
-        board: ['', '', '', '', '', '', '', '', ''],
-        user: oponentDocRef,
-      },
-    }
-  )
-
-  updateUserGamesList(docRef.id, userDocID)
-  updateUserGamesList(docRef.id, oponentDocID)
-}
-
-const updateUserGamesList = async (gameID: string, userDocID: string) => {
-  const usersRef = doc(db, `users/${userDocID}`)
-
-  await updateDoc(usersRef, {
-    games: arrayUnion(gameID),
-  })
-}
-
 export const getServerSideProps: GetServerSideProps = async () => {
+  /*
+   Generate array of name and id to be used as Select options
+   Authenticated users is filtered out
+  */
   const options: (string | SelectItem)[] = []
 
   const q = query(
     collection(db, 'users'),
+    // FIXME Replace hardcoded name. Might use id instead
     where('name', '!=', 'Andreas')
   ).withConverter(usersConverter)
 
@@ -88,6 +52,7 @@ const NewGame = ({
         disabled={!oponent}
         onClick={() => {
           oponent &&
+            // FIXME Replace hardcoded user UID
             addGameToCollection('5B7aHn9nPMbGj0RvapSacncvdDl1', oponent)
         }}
       >
