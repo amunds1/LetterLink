@@ -20,13 +20,13 @@ const addGameToCollection = async (userDocID: string, oponentDocID: string) => {
   const docRef = await addDoc(
     collection(db, 'games').withConverter(gamesConverter),
     {
-      boardSize: 5,
+      boardSize: 6,
       player1: {
-        board: ['A', 'B', 'C'],
+        board: ['', '', '', '', '', '', '', '', ''],
         user: userDocRef,
       },
       player2: {
-        board: ['A', 'B', 'C'],
+        board: ['', '', '', '', '', '', '', '', ''],
         user: oponentDocRef,
       },
     }
