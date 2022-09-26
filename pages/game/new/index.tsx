@@ -1,11 +1,9 @@
-import { Button } from '@mantine/core'
+import { Button, Select } from '@mantine/core'
 import {
   addDoc,
   arrayUnion,
   collection,
   doc,
-  DocumentData,
-  DocumentReference,
   updateDoc,
 } from 'firebase/firestore'
 import React from 'react'
@@ -32,16 +30,12 @@ const addGameToCollection = async (userDocID: string, oponentDocID: string) => {
     }
   )
 
-  console.log('Created new game with id:', docRef.id)
-
   updateUserGamesList(docRef.id, userDocID)
   updateUserGamesList(docRef.id, oponentDocID)
 }
 
 const updateUserGamesList = async (gameID: string, userDocID: string) => {
   const usersRef = doc(db, `users/${userDocID}`)
-
-  console.log(usersRef.id)
 
   await updateDoc(usersRef, {
     games: arrayUnion(gameID),
@@ -50,16 +44,28 @@ const updateUserGamesList = async (gameID: string, userDocID: string) => {
 
 const NewGame = () => {
   return (
-    <Button
-      onClick={() => {
-        addGameToCollection(
-          '5B7aHn9nPMbGj0RvapSacncvdDl1',
-          'sGIx9y9A59NsDw726vKd0HXEDaJ3'
-        )
-      }}
-    >
-      Add new game
-    </Button>
+    <>
+      <Select
+        label="Select oponent"
+        placeholder="Pick one"
+        data={[
+          { value: 'react', label: 'React' },
+          { value: 'ng', label: 'Angular' },
+          { value: 'svelte', label: 'Svelte' },
+          { value: 'vue', label: 'Vue' },
+        ]}
+      />
+      <Button
+        onClick={() => {
+          addGameToCollection(
+            '5B7aHn9nPMbGj0RvapSacncvdDl1',
+            'sGIx9y9A59NsDw726vKd0HXEDaJ3'
+          )
+        }}
+      >
+        Add new game
+      </Button>
+    </>
   )
 }
 
