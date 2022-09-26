@@ -1,11 +1,16 @@
-import { doc, getFirestore } from 'firebase/firestore'
 import { useRouter } from 'next/router'
-import firebase from '../../firebase/clientApp'
-import { useDocument } from 'react-firebase-hooks/firestore'
-import gamesConverter from '../../utils/gamesConverter'
 import { Button } from '@mantine/core'
 import Link from 'next/link'
+import {
+  doc,
+  DocumentData,
+  DocumentReference,
+  getFirestore,
+} from 'firebase/firestore'
 import { useEffect, useState } from 'react'
+import { useDocument } from 'react-firebase-hooks/firestore'
+import firebase from '../../firebase/clientApp'
+import gamesConverter from '../../utils/gamesConverter'
 
 export type GameStandalone = {
   boardSize: number
@@ -15,28 +20,19 @@ export type GameStandalone = {
   }
 }
 
-// FIXME Figure out why this causes a prerender error
-export function getServerSideProps(context: any) {
-  return {
-    props: { params: context.params },
-  }
-}
-
 const GameID = () => {
   const router = useRouter()
-  const [gameID, setgameID] = useState<string>('')
+  const [gameID, setgameID] = useState<string | undefined>()
 
   useEffect(() => {
     if (!router.isReady) return
 
     const { gameID } = router.query
     setgameID(gameID as string)
-  }, [router.isReady, router.query])
+  }, [gameID, router.isReady, router.query])
 
   const [value, loading, error] = useDocument(
-    doc(getFirestore(firebase), 'games', gameID as string).withConverter(
-      gamesConverter
-    ),
+    doc(getFirestore(firebase), `games/${gameID}`),
     {
       snapshotListenOptions: { includeMetadataChanges: true },
     }
@@ -47,7 +43,7 @@ const GameID = () => {
   return (
     <div>
       <p>Gameboard {data?.player1.board}</p>
-      <p>Gameboard {data?.player1.board}</p>
+      <p>Gameboard {JSON.stringify(router.query)}</p>
       <Link href="/games">
         <Button>Back to games</Button>
       </Link>
