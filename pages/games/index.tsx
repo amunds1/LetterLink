@@ -1,4 +1,4 @@
-import { Button, Center, Stack } from '@mantine/core'
+import { Button, Stack } from '@mantine/core'
 import {
   collection,
   doc,

@@ -8,6 +8,7 @@ import {
   where,
 } from 'firebase/firestore'
 import { GetServerSideProps } from 'next'
+import Link from 'next/link'
 import React, { useState } from 'react'
 import { db } from '../../../firebase/clientApp'
 import addGameToCollection from '../../../firebase/fetch/addToGameCollection'
@@ -65,6 +66,9 @@ const NewGame = ({ oponentOptions }: INewGame) => {
       >
         Add new game
       </Button>
+      <Link href="/games">
+        <Button>Back to games list</Button>
+      </Link>
     </>
   )
 }
