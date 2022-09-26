@@ -14,7 +14,7 @@ const ActiveGames = ({ games }: { games: QuerySnapshot<Game> | undefined }) => {
           // console.log('ActiveGames', gameData)
 
           return (
-            <Card key={'abc'} shadow="sm" p="lg" radius="md" withBorder>
+            <Card key={game.id} shadow="sm" p="lg" radius="md" withBorder>
               <Group position="apart" mt="md" mb="xs">
                 <Oponent game={gameData} />
               </Group>
