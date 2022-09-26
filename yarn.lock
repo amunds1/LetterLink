@@ -763,10 +763,10 @@
     "protobufjs" "^7.0.0"
     "yargs" "^16.2.0"
 
-"@humanwhocodes/config-array@^0.10.4":
-  "integrity" "sha512-mXAIHxZT3Vcpg83opl1wGlVZ9xydbfZO3r5YfRSH6Gpp2J/PfdBP0wbDa2sO6/qRbcalpoevVyW6A/fI6LfeMw=="
-  "resolved" "https://registry.npmjs.org/@humanwhocodes/config-array/-/config-array-0.10.4.tgz"
-  "version" "0.10.4"
+"@humanwhocodes/config-array@^0.10.5":
+  "integrity" "sha512-XVVDtp+dVvRxMoxSiSfasYaG02VEe1qH5cKgMQJWhol6HwzbcqoCMJi8dAGoYAO57jhUyhI6cWuRiTcRaDaYug=="
+  "resolved" "https://registry.npmjs.org/@humanwhocodes/config-array/-/config-array-0.10.5.tgz"
+  "version" "0.10.5"
   dependencies:
     "@humanwhocodes/object-schema" "^1.2.1"
     "debug" "^4.1.1"
@@ -843,20 +843,20 @@
   "resolved" "https://registry.npmjs.org/@mantine/hooks/-/hooks-5.3.3.tgz"
   "version" "5.3.3"
 
-"@mantine/next@^5.4.0":
-  "integrity" "sha512-DN5ShE/F0meDokI8ANYPZjRh7S0DPgmPnppDXhbPf2FYj7+BCE/xOJdgMJ66qbkt66UqASyA9hk8WSSiEJ7bqw=="
-  "resolved" "https://registry.npmjs.org/@mantine/next/-/next-5.4.0.tgz"
-  "version" "5.4.0"
+"@mantine/next@^5.4.1":
+  "integrity" "sha512-4PGzhqPS4GCBV5mccPel04Bw+VGLK9SvPmWzi50lT0n/dslGcoJlJtUFTDn9uDv4uCTP839hOoBklv33I7pIDw=="
+  "resolved" "https://registry.npmjs.org/@mantine/next/-/next-5.4.1.tgz"
+  "version" "5.4.1"
   dependencies:
-    "@mantine/ssr" "5.4.0"
-    "@mantine/styles" "5.4.0"
+    "@mantine/ssr" "5.4.1"
+    "@mantine/styles" "5.4.1"
 
-"@mantine/ssr@5.4.0":
-  "integrity" "sha512-MvQbgxbwZ1UA1axV+zvrsypT70TxB+7w3MsQCarFMcb8rVbgM1Zae2SNfSsyoJL8r4jyA3FDuI12RD1bTgGF2g=="
-  "resolved" "https://registry.npmjs.org/@mantine/ssr/-/ssr-5.4.0.tgz"
-  "version" "5.4.0"
+"@mantine/ssr@5.4.1":
+  "integrity" "sha512-UGWJty8/us5RRCZypGfDIRPAVtjYyOFRuFJYw0Yijss0UH3vDeYKDRVfUnyXzASt1b6QWqEd6o6fxiWpZSPqIg=="
+  "resolved" "https://registry.npmjs.org/@mantine/ssr/-/ssr-5.4.1.tgz"
+  "version" "5.4.1"
   dependencies:
-    "@mantine/styles" "5.4.0"
+    "@mantine/styles" "5.4.1"
     "html-react-parser" "1.4.12"
 
 "@mantine/styles@5.3.3":
@@ -867,10 +867,10 @@
     "clsx" "1.1.1"
     "csstype" "3.0.9"
 
-"@mantine/styles@5.4.0":
-  "integrity" "sha512-WnCRaqX8D1l4Y7QQD4e/tBKkLgTHbl0BeAOe/U4UDBM916mEboOmR8sa81zCUj4eJQoMlloe0WR1+erYX4JHLQ=="
-  "resolved" "https://registry.npmjs.org/@mantine/styles/-/styles-5.4.0.tgz"
-  "version" "5.4.0"
+"@mantine/styles@5.4.1":
+  "integrity" "sha512-rhLivlSHHJqGlxwaFhAs34TPMcLpvYczhIxBxApj/ngP8LZD8+DPSk+yGN1pAL2Q2JBGKMnhqz5H9ow8zzOYcA=="
+  "resolved" "https://registry.npmjs.org/@mantine/styles/-/styles-5.4.1.tgz"
+  "version" "5.4.1"
   dependencies:
     "clsx" "1.1.1"
     "csstype" "3.0.9"
@@ -1083,10 +1083,10 @@
   "resolved" "https://registry.npmjs.org/@types/long/-/long-4.0.2.tgz"
   "version" "4.0.2"
 
-"@types/node@>=12.12.47", "@types/node@>=13.7.0", "@types/node@18.7.18":
-  "integrity" "sha512-m+6nTEOadJZuTPkKR/SYK3A2d7FZrgElol9UP1Kae90VVU4a6mxnPuLiIW1m4Cq4gZ/nWb9GrdVXJCoCazDAbg=="
-  "resolved" "https://registry.npmjs.org/@types/node/-/node-18.7.18.tgz"
-  "version" "18.7.18"
+"@types/node@>=12.12.47", "@types/node@>=13.7.0", "@types/node@18.7.21":
+  "integrity" "sha512-rLFzK5bhM0YPyCoTC8bolBjMk7bwnZ8qeZUBslBfjZQou2ssJdWslx9CZ8DGM+Dx7QXQiiTVZ/6QO6kwtHkZCA=="
+  "resolved" "https://registry.npmjs.org/@types/node/-/node-18.7.21.tgz"
+  "version" "18.7.21"
 
 "@types/parse-json@^4.0.0":
   "integrity" "sha512-//oorEZjL6sbPcKUaCdIGlIUeH26mgzimjBB77G6XRgnDl/L5wOnpyBGRe/Mmf5CVW3PwEBE1NjiMZ/ssFh4wA=="
@@ -1770,13 +1770,13 @@
   "resolved" "https://registry.npmjs.org/eslint-visitor-keys/-/eslint-visitor-keys-3.3.0.tgz"
   "version" "3.3.0"
 
-"eslint@*", "eslint@^2 || ^3 || ^4 || ^5 || ^6 || ^7.2.0 || ^8", "eslint@^3 || ^4 || ^5 || ^6 || ^7 || ^8", "eslint@^3.0.0 || ^4.0.0 || ^5.0.0 || ^6.0.0 || ^7.0.0 || ^8.0.0-0", "eslint@^6.0.0 || ^7.0.0 || ^8.0.0", "eslint@^7.23.0 || ^8.0.0", "eslint@>=5", "eslint@>=7.0.0", "eslint@8.23.1":
-  "integrity" "sha512-w7C1IXCc6fNqjpuYd0yPlcTKKmHlHHktRkzmBPZ+7cvNBQuiNjx0xaMTjAJGCafJhQkrFJooREv0CtrVzmHwqg=="
-  "resolved" "https://registry.npmjs.org/eslint/-/eslint-8.23.1.tgz"
-  "version" "8.23.1"
+"eslint@*", "eslint@^2 || ^3 || ^4 || ^5 || ^6 || ^7.2.0 || ^8", "eslint@^3 || ^4 || ^5 || ^6 || ^7 || ^8", "eslint@^3.0.0 || ^4.0.0 || ^5.0.0 || ^6.0.0 || ^7.0.0 || ^8.0.0-0", "eslint@^6.0.0 || ^7.0.0 || ^8.0.0", "eslint@^7.23.0 || ^8.0.0", "eslint@>=5", "eslint@>=7.0.0", "eslint@8.24.0":
+  "integrity" "sha512-dWFaPhGhTAiPcCgm3f6LI2MBWbogMnTJzFBbhXVRQDJPkr9pGZvVjlVfXd+vyDcWPA2Ic9L2AXPIQM0+vk/cSQ=="
+  "resolved" "https://registry.npmjs.org/eslint/-/eslint-8.24.0.tgz"
+  "version" "8.24.0"
   dependencies:
     "@eslint/eslintrc" "^1.3.2"
-    "@humanwhocodes/config-array" "^0.10.4"
+    "@humanwhocodes/config-array" "^0.10.5"
     "@humanwhocodes/gitignore-to-minimatch" "^1.0.2"
     "@humanwhocodes/module-importer" "^1.0.1"
     "ajv" "^6.10.0"
