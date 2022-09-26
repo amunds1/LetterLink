@@ -30,11 +30,11 @@ export const getServerSideProps: GetServerSideProps = async () => {
   }
 }
 
-const NewGame = ({
-  oponentOptions,
-}: {
+interface INewGame {
   oponentOptions: (string | SelectItem)[]
-}) => {
+}
+
+const NewGame = ({ oponentOptions }: INewGame) => {
   const [oponent, setOponent] = useState<string | null>(null)
 
   return (
