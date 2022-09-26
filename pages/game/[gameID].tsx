@@ -1,16 +1,10 @@
 import { useRouter } from 'next/router'
 import { Button } from '@mantine/core'
 import Link from 'next/link'
-import {
-  doc,
-  DocumentData,
-  DocumentReference,
-  getFirestore,
-} from 'firebase/firestore'
+import { doc, getFirestore } from 'firebase/firestore'
 import { useEffect, useState } from 'react'
 import { useDocument } from 'react-firebase-hooks/firestore'
 import firebase from '../../firebase/clientApp'
-import gamesConverter from '../../utils/gamesConverter'
 
 export type GameStandalone = {
   boardSize: number
