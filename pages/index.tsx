@@ -14,7 +14,7 @@ export default function Home() {
 
   const [user, loading, error] = useAuthState(getAuth(firebase))
 
-  console.log('Loading:', loading, '|', 'Current user:', user)
+  console.log('Loading:', loading, '|', 'Current user:', user?.uid)
 
   return (
     <Center className={classes.center}>
