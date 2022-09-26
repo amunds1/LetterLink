@@ -1,3 +1,4 @@
+import { Button, Stack } from '@mantine/core'
 import {
   collection,
   doc,
@@ -6,6 +7,7 @@ import {
   query,
   where,
 } from 'firebase/firestore'
+import Link from 'next/link'
 import { useCollection, useDocument } from 'react-firebase-hooks/firestore'
 import ActiveGames from '../../components/ActiveGames'
 import firebase from '../../firebase/clientApp'
@@ -38,7 +40,14 @@ const Games = () => {
       ).withConverter(gamesConverter)
   )
 
-  return <ActiveGames games={games} />
+  return (
+    <Stack>
+      <ActiveGames games={games} />
+      <Link href="/game/new">
+        <Button>Start a new game</Button>
+      </Link>
+    </Stack>
+  )
 }
 
 export default Games

@@ -9,7 +9,9 @@ import Game from '../types/Game'
 
 const gamesConverter: FirestoreDataConverter<Game> = {
   toFirestore(game: WithFieldValue<Game>): DocumentData {
-    return { boardSize: game.boardSize }
+    return {
+      ...game,
+    }
   },
   fromFirestore(
     snapshot: QueryDocumentSnapshot,
