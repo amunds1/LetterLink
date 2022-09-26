@@ -1,7 +1,7 @@
 import { DocumentReference } from 'firebase/firestore'
 
 interface Game {
-  id: string
+  id?: string
   boardSize: number
   player1: {
     board: string[]
