@@ -32,14 +32,17 @@ const Games = () => {
     }
   )
 
+  // Return null if games array belonging to a user is empty, true otherwise
+  const hasGames = user?.data()?.games.length! ? true : null
+
   /* 
     2. Retrieves games belonging to a user from the useDocument() hook above
   */
   const [games, gamesLoading, gamesError] = useCollection(
-    user?.data()?.games &&
+    hasGames &&
       query(
         collection(getFirestore(firebase), 'games'),
-        where(documentId(), 'in', user.data()?.games)
+        where(documentId(), 'in', user?.data()?.games)
       ).withConverter(gamesConverter)
   )
 
