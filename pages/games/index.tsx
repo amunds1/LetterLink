@@ -1,4 +1,5 @@
 import { Button, Stack } from '@mantine/core'
+import { getAuth } from 'firebase/auth'
 import {
   collection,
   doc,
@@ -8,6 +9,7 @@ import {
   where,
 } from 'firebase/firestore'
 import Link from 'next/link'
+import { useAuthState } from 'react-firebase-hooks/auth'
 import { useCollection, useDocument } from 'react-firebase-hooks/firestore'
 import ActiveGames from '../../components/ActiveGames'
 import firebase from '../../firebase/clientApp'
@@ -15,15 +17,16 @@ import gamesConverter from '../../utils/gamesConverter'
 import usersConverter from '../../utils/userConverter'
 
 const Games = () => {
+  const [userAuthData, loading, error] = useAuthState(getAuth(firebase))
+
   /* 
     1. Fetch 'games' array from the document of the logged in user, from the 'users' collection
   */
   const [user, userLoading, userError] = useDocument(
-    doc(
-      getFirestore(firebase),
-      'users',
-      '5B7aHn9nPMbGj0RvapSacncvdDl1'
-    ).withConverter(usersConverter),
+    userAuthData &&
+      doc(getFirestore(firebase), 'users', userAuthData.uid).withConverter(
+        usersConverter
+      ),
     {
       snapshotListenOptions: { includeMetadataChanges: true },
     }
