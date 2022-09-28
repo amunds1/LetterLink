@@ -33,7 +33,7 @@ const Games = () => {
     2. Retrieves games belonging to a user from the useDocument() hook above
   */
   const [games, gamesLoading, gamesError] = useCollection(
-    user &&
+    user?.data()?.games &&
       query(
         collection(getFirestore(firebase), 'games'),
         where(documentId(), 'in', user.data()?.games)
