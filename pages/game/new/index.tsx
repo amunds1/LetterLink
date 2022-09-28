@@ -10,7 +10,8 @@ import {
 import { GetServerSideProps } from 'next'
 import Link from 'next/link'
 import React, { useState } from 'react'
-import { db } from '../../../firebase/clientApp'
+import { useAuthState } from 'react-firebase-hooks/auth'
+import firebase, { db } from '../../../firebase/clientApp'
 import addGameToCollection from '../../../firebase/fetch/addToGameCollection'
 import usersConverter from '../../../utils/userConverter'
 
@@ -45,6 +46,8 @@ interface INewGame {
 const NewGame = ({ oponentOptions }: INewGame) => {
   const [oponent, setOponent] = useState<string | null>(null)
 
+  const [userAuthData, loading, error] = useAuthState(getAuth(firebase))
+
   return (
     <>
       <Select
@@ -60,8 +63,8 @@ const NewGame = ({ oponentOptions }: INewGame) => {
         disabled={!oponent}
         onClick={() => {
           oponent &&
-            // FIXME Replace hardcoded user UID
-            addGameToCollection('5B7aHn9nPMbGj0RvapSacncvdDl1', oponent)
+            userAuthData &&
+            addGameToCollection(userAuthData.uid, oponent)
         }}
       >
         Add new game
