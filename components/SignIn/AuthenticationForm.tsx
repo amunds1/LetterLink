@@ -51,6 +51,7 @@ export function AuthenticationForm(props: PaperProps) {
           {type === 'register' && (
             <TextInput
               label="Name"
+              disabled
               placeholder="Your name"
               value={form.values.name}
               onChange={(event) =>
