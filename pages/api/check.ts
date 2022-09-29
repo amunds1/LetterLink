@@ -52,6 +52,7 @@ export default async function handler(
     boardData.row.differentIndex
   )
 
+  // Populate row object if valid word was found
   if (validWordInRow) {
     response.row = {
       positionIndex: boardData.row.positionIndex,
@@ -67,6 +68,7 @@ export default async function handler(
     boardData.column.differentIndex
   )
 
+  // Populate column object if valid word was found
   if (validWordInColumn) {
     response.column = {
       positionIndex: boardData.column.positionIndex,
@@ -76,8 +78,9 @@ export default async function handler(
     }
   }
 
-  console.log('Row valid word:', validWordInRow)
-  console.log('Row valid word:', validWordInColumn)
+  // TODO Update board in Firebase
+
+  // TODO Update rowPoints and columnPoints in Firebase
 
   res.status(200).json(response)
 }
