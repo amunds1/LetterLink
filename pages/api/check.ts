@@ -1,10 +1,9 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import type { NextApiRequest, NextApiResponse } from 'next'
-import { doc, updateDoc } from 'firebase/firestore'
 import checkRowOrColumn from './utils/checkRowOrColumn'
-import { db } from '../../firebase/clientApp'
 import ResponseData from './types/ResponseData'
 import RequestData from './types/RequestData'
+import { updateRowPoints, updateColumnPoints } from './utils/updatePoints'
 
 export default async function handler(
   req: NextApiRequest,
@@ -36,21 +35,7 @@ export default async function handler(
       word: validWordInRow.word,
     }
 
-    // Update rowPoints in Firebase
-    const gameRef = doc(
-      db,
-      // Collection
-      'games',
-      // Document (GameID)
-      boardData.gameID,
-      // Subcollection (Player ID)
-      boardData.userID,
-      // Document inside subcollection
-      'boardData'
-    )
-    await updateDoc(gameRef, {
-      [`rowPoints.${boardData.row.positionIndex}`]: validWordInRow.word.length,
-    })
+    updateRowPoints(boardData, validWordInRow)
   }
 
   // Check column
@@ -68,22 +53,7 @@ export default async function handler(
       word: validWordInColumn.word,
     }
 
-    // Update columnPoints in Firebase
-    const gameRef = doc(
-      db,
-      // Collection
-      'games',
-      // Document (GameID)
-      boardData.gameID,
-      // Subcollection (Player ID)
-      boardData.userID,
-      // Document inside subcollection
-      'boardData'
-    )
-    await updateDoc(gameRef, {
-      [`colPoints.${boardData.column.positionIndex}`]:
-        validWordInColumn.word.length,
-    })
+    updateColumnPoints(boardData, validWordInColumn)
   }
 
   res.status(200).json(response)
