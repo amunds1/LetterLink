@@ -17,11 +17,7 @@ const Oponent = ({ game }: { game: Game }) => {
       doc(
         getFirestore(firebase),
         'users',
-        selectUserID(
-          userAuthData.uid,
-          game.player1.user.id,
-          game.player2.user.id
-        )
+        selectUserID(userAuthData.uid, game.playerOne.id, game.playerTwo.id)
       ).withConverter(usersConverter),
     {
       snapshotListenOptions: { includeMetadataChanges: true },
