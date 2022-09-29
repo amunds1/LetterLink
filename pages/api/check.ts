@@ -1,53 +1,83 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import type { NextApiRequest, NextApiResponse } from 'next'
+import checkRowOrColumn from './utils/checkRowOrColumn'
 
-type Data = {
-  name: string
+type ResponseData = {
+  message?: string
+  row?: {
+    wordPosition: number[]
+    word: string
+    positionIndex: number
+    points: number
+  }
+  column?: {
+    wordPosition: number[]
+    word: string
+    positionIndex: number
+    points: number
+  }
 }
 
-const wordExists = (word: string[]) => {
-  if (JSON.stringify(word) == JSON.stringify(['A', 'B', 'E'])) return true
-
-  return false
+type RequestData = {
+  row: {
+    data: string[]
+    positionIndex: number
+    differentIndex: number
+  }
+  column: {
+    data: string[]
+    positionIndex: number
+    differentIndex: number
+  }
 }
 
-const checkRow = (prevBoardRow: string[], nextBoardRow: string[]): number => {
-  // Find from which index arrays are different
-  for (let i = 0; i < prevBoardRow.length; i++) {
-    if (prevBoardRow[i] != nextBoardRow[i]) {
-      const differentIndex = i
-      console.log('Different from index', differentIndex)
+export default async function handler(
+  req: NextApiRequest,
+  res: NextApiResponse<ResponseData>
+) {
+  let response: ResponseData = {}
 
-      // In reverse, check words against Ordbok-API
-      // Only checks words up to the differentIndex
-      for (let k = nextBoardRow.length; k > differentIndex; k--) {
-        const word = nextBoardRow.slice(0, k)
+  // Return error message if HTTP method was not POST
+  if (req.method !== 'POST') {
+    res.status(405).send({ message: 'Only POST requests allowed' })
+    return
+  }
 
-        if (wordExists(word)) {
-          console.log('Found valid word:', word)
+  // Cast request body to RequestData type
+  const boardData: RequestData = { ...req.body }
 
-          return word.length
-        }
-      }
+  // Check row
+  const validWordInRow = await checkRowOrColumn(
+    boardData.row.data,
+    boardData.row.differentIndex
+  )
+
+  if (validWordInRow) {
+    response.row = {
+      positionIndex: boardData.row.positionIndex,
+      points: validWordInRow.word.length,
+      wordPosition: validWordInRow.position,
+      word: validWordInRow.word,
     }
   }
 
-  return 0
-}
+  // Check column
+  const validWordInColumn = await checkRowOrColumn(
+    boardData.column.data,
+    boardData.column.differentIndex
+  )
 
-export default function handler(
-  req: NextApiRequest,
-  res: NextApiResponse<Data>
-) {
-  const rowPoints = [0, 0]
-  const colPoints = [0, 0]
+  if (validWordInColumn) {
+    response.column = {
+      positionIndex: boardData.column.positionIndex,
+      points: validWordInColumn.word.length,
+      wordPosition: validWordInColumn.position,
+      word: validWordInColumn.word,
+    }
+  }
 
-  // Board prior to move
-  const prevBoardRow = ['A', 'B', 'C', 'D']
-  // Board after move
-  const nextBoardRow = ['A', 'B', 'E', 'D']
+  console.log('Row valid word:', validWordInRow)
+  console.log('Row valid word:', validWordInColumn)
 
-  console.log('Points for row', checkRow(prevBoardRow, nextBoardRow))
-
-  res.status(200).json({ name: 'John Doe' })
+  res.status(200).json(response)
 }
