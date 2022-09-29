@@ -3,7 +3,7 @@ import { db } from '../../../firebase/clientApp'
 import RequestData from '../types/RequestData'
 
 // Generate ref to boardData stored in the subcollection of a game document
-const generateGameRef = (boardData: RequestData) =>
+export const generateGameRef = (boardData: RequestData) =>
   doc(db, 'games', boardData.gameID, boardData.userID, 'boardData')
 
 // Update rowPoints object inside boardData document

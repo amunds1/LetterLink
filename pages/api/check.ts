@@ -4,6 +4,7 @@ import checkRowOrColumn from './utils/checkRowOrColumn'
 import ResponseData from './types/ResponseData'
 import RequestData from './types/RequestData'
 import { updateRowPoints, updateColumnPoints } from './utils/updatePoints'
+import { updateBoard } from './utils/updateBoard'
 
 export default async function handler(
   req: NextApiRequest,
@@ -36,6 +37,7 @@ export default async function handler(
     }
 
     updateRowPoints(boardData, validWordInRow)
+    updateBoard(boardData)
   }
 
   // Check column
@@ -54,6 +56,7 @@ export default async function handler(
     }
 
     updateColumnPoints(boardData, validWordInColumn)
+    updateBoard(boardData)
   }
 
   res.status(200).json(response)
