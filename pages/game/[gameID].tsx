@@ -5,6 +5,8 @@ import { doc, getFirestore } from 'firebase/firestore'
 import { useEffect, useState } from 'react'
 import { useDocument } from 'react-firebase-hooks/firestore'
 import firebase, { db } from '../../firebase/clientApp'
+import { useAuthState } from 'react-firebase-hooks/auth'
+import { getAuth } from 'firebase/auth'
 
 export type GameStandalone = {
   boardSize: number
@@ -18,7 +20,9 @@ const GameID = () => {
   const router = useRouter()
   const [gameID, setgameID] = useState<string | undefined>()
 
-  const userID = 'l7QwyHv2CWWPb2LZPxcnQFtiNLs1'
+  const [userAuthData, loadingUserAuthData, userAuthDataError] = useAuthState(
+    getAuth(firebase)
+  )
 
   useEffect(() => {
     if (!router.isReady) return
@@ -28,7 +32,10 @@ const GameID = () => {
   }, [gameID, router.isReady, router.query])
 
   const [value, loading, error] = useDocument(
-    doc(getFirestore(firebase), `games/${gameID}/${userID}/boardData`),
+    doc(
+      getFirestore(firebase),
+      `games/${gameID}/${userAuthData?.uid}/boardData`
+    ),
     {
       snapshotListenOptions: { includeMetadataChanges: true },
     }
