@@ -1,5 +1,6 @@
 type RequestData = {
   gameID: string
+  userID: string
   row: {
     data: string[]
     positionIndex: number

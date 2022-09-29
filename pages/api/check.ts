@@ -12,8 +12,6 @@ export default async function handler(
 ) {
   let response: ResponseData = {}
 
-  const player = 'player1'
-
   // Return error message if HTTP method was not POST
   if (req.method !== 'POST') {
     res.status(405).send({ message: 'Only POST requests allowed' })
@@ -39,10 +37,19 @@ export default async function handler(
     }
 
     // Update rowPoints in Firebase
-    const gameRef = doc(db, 'games', boardData.gameID)
+    const gameRef = doc(
+      db,
+      // Collection
+      'games',
+      // Document (GameID)
+      boardData.gameID,
+      // Subcollection (Player ID)
+      boardData.userID,
+      // Document inside subcollection
+      'boardData'
+    )
     await updateDoc(gameRef, {
-      [`${player}.rowPoints.${boardData.row.positionIndex}`]:
-        validWordInRow.word.length,
+      [`rowPoints.${boardData.row.positionIndex}`]: validWordInRow.word.length,
     })
   }
 
@@ -62,9 +69,19 @@ export default async function handler(
     }
 
     // Update columnPoints in Firebase
-    const gameRef = doc(db, 'games', boardData.gameID)
+    const gameRef = doc(
+      db,
+      // Collection
+      'games',
+      // Document (GameID)
+      boardData.gameID,
+      // Subcollection (Player ID)
+      boardData.userID,
+      // Document inside subcollection
+      'boardData'
+    )
     await updateDoc(gameRef, {
-      [`${player}.colPoints.${boardData.column.positionIndex}`]:
+      [`colPoints.${boardData.column.positionIndex}`]:
         validWordInColumn.word.length,
     })
   }
