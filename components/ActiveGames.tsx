@@ -11,8 +11,6 @@ const ActiveGames = ({ games }: { games: QuerySnapshot<Game> | undefined }) => {
         games.docs.map((game) => {
           const gameData = game.data()
 
-          // console.log('ActiveGames', gameData)
-
           return (
             <Card key={game.id} shadow="sm" p="lg" radius="md" withBorder>
               <Group position="apart" mt="md" mb="xs">
