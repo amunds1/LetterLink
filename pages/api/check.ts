@@ -1,41 +1,18 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import type { NextApiRequest, NextApiResponse } from 'next'
+import { doc, updateDoc } from 'firebase/firestore'
 import checkRowOrColumn from './utils/checkRowOrColumn'
-
-type ResponseData = {
-  message?: string
-  row?: {
-    wordPosition: number[]
-    word: string
-    positionIndex: number
-    points: number
-  }
-  column?: {
-    wordPosition: number[]
-    word: string
-    positionIndex: number
-    points: number
-  }
-}
-
-type RequestData = {
-  row: {
-    data: string[]
-    positionIndex: number
-    differentIndex: number
-  }
-  column: {
-    data: string[]
-    positionIndex: number
-    differentIndex: number
-  }
-}
+import { db } from '../../firebase/clientApp'
+import ResponseData from './types/ResponseData'
+import RequestData from './types/RequestData'
 
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse<ResponseData>
 ) {
   let response: ResponseData = {}
+
+  const player = 'player1'
 
   // Return error message if HTTP method was not POST
   if (req.method !== 'POST') {
@@ -60,6 +37,13 @@ export default async function handler(
       wordPosition: validWordInRow.position,
       word: validWordInRow.word,
     }
+
+    // Update rowPoints in Firebase
+    const gameRef = doc(db, 'games', boardData.gameID)
+    await updateDoc(gameRef, {
+      [`${player}.rowPoints.${boardData.row.positionIndex}`]:
+        validWordInRow.word.length,
+    })
   }
 
   // Check column
@@ -76,11 +60,14 @@ export default async function handler(
       wordPosition: validWordInColumn.position,
       word: validWordInColumn.word,
     }
+
+    // Update columnPoints in Firebase
+    const gameRef = doc(db, 'games', boardData.gameID)
+    await updateDoc(gameRef, {
+      [`${player}.colPoints.${boardData.column.positionIndex}`]:
+        validWordInColumn.word.length,
+    })
   }
-
-  // TODO Update board in Firebase
-
-  // TODO Update rowPoints and columnPoints in Firebase
 
   res.status(200).json(response)
 }
