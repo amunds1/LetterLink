@@ -4,6 +4,8 @@ import { getAuth } from 'firebase/auth'
 import { Center, Container, createStyles, Space, Text } from '@mantine/core'
 import SignOut from '../components/SignOut'
 import SignIn from '../components/SignIn'
+import { useEffect } from 'react'
+import validateBoard from '../utils/validateBoard'
 
 const useStyles = createStyles(() => ({
   center: { height: '100vh' },
