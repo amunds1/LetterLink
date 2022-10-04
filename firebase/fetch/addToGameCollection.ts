@@ -1,6 +1,5 @@
 import { doc, addDoc, collection, setDoc } from 'firebase/firestore'
-import boardDataConverter from '../../utils/boardDataConverter'
-import gamesConverter from '../../utils/gamesConverter'
+import gamesConverter from '../converters/gamesConverter'
 import { db } from '../clientApp'
 import updateUserGamesList from './updateUserGamesList'
 

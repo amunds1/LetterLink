@@ -5,7 +5,7 @@ import {
   QueryDocumentSnapshot,
   SnapshotOptions,
 } from 'firebase/firestore'
-import Game from '../types/Game'
+import Game from '../../types/Game'
 
 const gamesConverter: FirestoreDataConverter<Game> = {
   toFirestore(game: WithFieldValue<Game>): DocumentData {

@@ -5,7 +5,7 @@ import {
   QueryDocumentSnapshot,
   SnapshotOptions,
 } from 'firebase/firestore'
-import User from '../types/User'
+import User from '../../types/User'
 
 const usersConverter: FirestoreDataConverter<User> = {
   toFirestore(user: WithFieldValue<User>): DocumentData {

@@ -13,8 +13,8 @@ import { useAuthState } from 'react-firebase-hooks/auth'
 import { useCollection, useDocument } from 'react-firebase-hooks/firestore'
 import ActiveGames from '../../components/ActiveGames'
 import firebase from '../../firebase/clientApp'
-import gamesConverter from '../../utils/gamesConverter'
-import usersConverter from '../../utils/userConverter'
+import gamesConverter from '../../firebase/converters/gamesConverter'
+import usersConverter from '../../firebase/converters/userConverter'
 
 const Games = () => {
   const [userAuthData, loading, error] = useAuthState(getAuth(firebase))

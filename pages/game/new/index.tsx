@@ -13,7 +13,7 @@ import React, { useState } from 'react'
 import { useAuthState } from 'react-firebase-hooks/auth'
 import firebase, { db } from '../../../firebase/clientApp'
 import addGameToCollection from '../../../firebase/fetch/addToGameCollection'
-import usersConverter from '../../../utils/userConverter'
+import usersConverter from '../../../firebase/converters/userConverter'
 
 export const getServerSideProps: GetServerSideProps = async () => {
   /*
