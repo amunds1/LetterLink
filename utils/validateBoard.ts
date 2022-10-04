@@ -1,34 +1,10 @@
 /* 
   Validate board against /api/check endpoint
 */
+import RequestData from '../pages/api/types/RequestData'
+import ResponseData from '../pages/api/types/ResponseData'
 
-export interface IValidateBoardRequestData {
-  gameID: string
-  userID: string
-  board: string[]
-  row: RequestData
-  column: RequestData
-}
-
-interface RequestData {
-  data: string[]
-  positionIndex: number
-  differentIndex: number
-}
-
-export interface IValidateBoardResponseData {
-  row: ResponseData
-  column: ResponseData
-}
-
-interface ResponseData {
-  positionIndex: number
-  points: number
-  wordPosition: number[]
-  word: string
-}
-
-const validateBoard = async (validateBoardData: IValidateBoardRequestData) => {
+const validateBoard = async (validateBoardData: RequestData) => {
   const response = await fetch('http://localhost:3000/api/check', {
     method: 'POST',
     headers: {
@@ -39,7 +15,7 @@ const validateBoard = async (validateBoardData: IValidateBoardRequestData) => {
 
   const data = await response.json()
 
-  const dataParsed: IValidateBoardResponseData = { ...data }
+  const dataParsed: ResponseData = { ...data }
 
   return dataParsed
 }

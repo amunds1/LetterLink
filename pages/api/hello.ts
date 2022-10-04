@@ -1,8 +1,7 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import type { NextApiRequest, NextApiResponse } from 'next'
-import validateBoard, {
-  IValidateBoardRequestData,
-} from '../../utils/validateBoard'
+import validateBoard from '../../utils/validateBoard'
+import RequestData from './types/RequestData'
 
 type Data = {
   name: string
@@ -12,7 +11,7 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse<Data>
 ) {
-  const boardData: IValidateBoardRequestData = {
+  const boardData: RequestData = {
     gameID: 'gamK381QMVcb9SUVU1Nv',
     userID: 'l7QwyHv2CWWPb2LZPxcnQFtiNLs1',
     board: ['T', 'E', 'S', 'T'],
