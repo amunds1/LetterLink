@@ -1,4 +1,4 @@
-type RequestData = {
+type CheckBoardRequestData = {
   gameID: string
   userID: string
   board: string[]
@@ -14,4 +14,4 @@ type RequestData = {
   }
 }
 
-export default RequestData
+export default CheckBoardRequestData

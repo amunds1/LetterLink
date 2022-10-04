@@ -1,10 +1,10 @@
 /* 
   Validate board against /api/check endpoint
 */
-import RequestData from '../pages/api/types/RequestData'
-import ResponseData from '../pages/api/types/ResponseData'
+import CheckBoardRequestData from '../pages/api/types/CheckBoardRequestData'
+import CheckBoardResponseData from '../pages/api/types/CheckBoardResponseData'
 
-const validateBoard = async (validateBoardData: RequestData) => {
+const validateBoard = async (validateBoardData: CheckBoardRequestData) => {
   const response = await fetch('http://localhost:3000/api/check', {
     method: 'POST',
     headers: {
@@ -15,7 +15,7 @@ const validateBoard = async (validateBoardData: RequestData) => {
 
   const data = await response.json()
 
-  const dataParsed: ResponseData = { ...data }
+  const dataParsed: CheckBoardResponseData = { ...data }
 
   return dataParsed
 }
