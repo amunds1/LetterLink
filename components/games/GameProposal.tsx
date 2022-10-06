@@ -1,25 +1,37 @@
-import { Button, Card, Text, Group, Badge, Center, Avatar } from '@mantine/core'
+import { Button, Card, Group, Badge, Center, Avatar } from '@mantine/core'
+import Game from '../../types/Game'
+import Oponent from '../Oponent'
+import acceptProposedGame from './firebase/acceptProposedGame'
 
 interface IGameProposal {
-  oponent: { name: string; intials: string }
-  proposedDaysAgo: string
+  game: Game
+  userUID: string
 }
 
-const GameProposal = ({ oponent, proposedDaysAgo }: IGameProposal) => {
+const GameProposal = ({ game, userUID }: IGameProposal) => {
   return (
     <Card>
       <Group position="apart" mt="md" mb="xs">
-        <Text weight={500}>Game against {oponent.name}</Text>
+        <Oponent game={game} />
         <Badge color="orange" variant="light">
-          {proposedDaysAgo} days ago
+          2 days ago
         </Badge>
       </Group>
       <Center>
         <Avatar color="cyan" radius="xl" size={'lg'}>
-          {oponent.intials}
+          AB
         </Avatar>
       </Center>
-      <Button variant="light" color="green" fullWidth mt="md" radius="md">
+      <Button
+        onClick={async () =>
+          await acceptProposedGame({ gameID: game.id, userUID: userUID })
+        }
+        variant="light"
+        color="green"
+        fullWidth
+        mt="md"
+        radius="md"
+      >
         Accept
       </Button>
       <Center>
