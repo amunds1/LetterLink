@@ -60,8 +60,8 @@ const addGameToCollection = async (userDocID: string, oponentDocID: string) => {
     })
   }
 
-  updateUserGamesList(docRef.id, userDocID)
-  updateUserGamesList(docRef.id, oponentDocID)
+  updateUserGamesList(docRef, userDocID)
+  updateUserGamesList(docRef, oponentDocID)
 }
 
 export default addGameToCollection

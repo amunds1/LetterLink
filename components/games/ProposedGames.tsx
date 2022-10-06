@@ -23,9 +23,13 @@ const ProposedGames = ({ userUID }: { userUID: string }) => {
     }
   )
 
+  // Return null if games array belonging to a user is empty, true otherwise
+  const hasProposedGames = user?.data()?.proposedGames.length! ? true : null
+
   // Fetch games by proposedGames
   const [games, gamesLoading, gamesError] = useCollection(
-    user &&
+    hasProposedGames &&
+      user &&
       user.data() &&
       query(
         collection(getFirestore(firebase), 'games'),
@@ -37,7 +41,7 @@ const ProposedGames = ({ userUID }: { userUID: string }) => {
     <Group spacing={'sm'}>
       {games &&
         games.docs.map((game) => (
-          <GameProposal key={game.id} game={game.data()} userUID={userUID} />
+          <GameProposal key={game.id} game={game.data()} />
         ))}
     </Group>
   )

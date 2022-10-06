@@ -5,10 +5,9 @@ import acceptProposedGame from './firebase/acceptProposedGame'
 
 interface IGameProposal {
   game: Game
-  userUID: string
 }
 
-const GameProposal = ({ game, userUID }: IGameProposal) => {
+const GameProposal = ({ game }: IGameProposal) => {
   return (
     <Card>
       <Group position="apart" mt="md" mb="xs">
@@ -23,9 +22,16 @@ const GameProposal = ({ game, userUID }: IGameProposal) => {
         </Avatar>
       </Center>
       <Button
-        onClick={async () =>
-          await acceptProposedGame({ gameID: game.id, userUID: userUID })
-        }
+        onClick={async () => {
+          await acceptProposedGame({
+            gameID: game.id,
+            userRef: game.playerOne,
+          })
+          await acceptProposedGame({
+            gameID: game.id,
+            userRef: game.playerTwo,
+          })
+        }}
         variant="light"
         color="green"
         fullWidth

@@ -9,22 +9,21 @@ import {
 import { db } from '../../../firebase/clientApp'
 
 interface IAcceptProposedGame {
-  userUID: string
+  userRef: DocumentReference<DocumentData>
   gameID: string
 }
 
-const acceptProposedGame = async ({ userUID, gameID }: IAcceptProposedGame) => {
-  const userRef = doc(db, 'users', userUID)
+const acceptProposedGame = async ({ userRef, gameID }: IAcceptProposedGame) => {
   const gameRef = doc(db, 'games', gameID)
 
   // 1. Add game refrence to games (active games)
   await updateDoc(userRef, {
-    games: arrayUnion(gameID),
+    games: arrayUnion(gameRef),
   })
 
   // 2. Remove game refrence from proposedGames
   await updateDoc(userRef, {
-    proposedGames: arrayRemove(gameID),
+    proposedGames: arrayRemove(gameRef),
   })
 
   // 3. Mark game as active
