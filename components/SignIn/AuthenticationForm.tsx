@@ -14,9 +14,13 @@ import {
   Stack,
 } from '@mantine/core'
 import { GithubButton } from './SocialButtons'
+import { getAuth } from 'firebase/auth'
+import { useSignInWithGithub } from 'react-firebase-hooks/auth'
+import firebase from '../../firebase/clientApp'
 
 export function AuthenticationForm(props: PaperProps) {
   const [type, toggle] = useToggle(['login', 'register'])
+  const [signInWithGithub] = useSignInWithGithub(getAuth(firebase))
   const form = useForm({
     initialValues: {
       email: '',
@@ -40,7 +44,7 @@ export function AuthenticationForm(props: PaperProps) {
         Welcome to the 5x5 game, sign in with
       </Text>
 
-      <Group grow mb="md" mt="md">
+      <Group grow mb="md" mt="md" onClick={() => signInWithGithub()}>
         <GithubButton radius="xl">GitHub</GithubButton>
       </Group>
 
