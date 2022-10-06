@@ -1,4 +1,4 @@
-import { Button, Stack } from '@mantine/core'
+import { Button, Group, Stack } from '@mantine/core'
 import { getAuth } from 'firebase/auth'
 import {
   collection,
@@ -11,7 +11,8 @@ import {
 import Link from 'next/link'
 import { useAuthState } from 'react-firebase-hooks/auth'
 import { useCollection, useDocument } from 'react-firebase-hooks/firestore'
-import ActiveGames from '../../components/ActiveGames'
+import ActiveGames from '../../components/games/ActiveGames'
+import GameProposal from '../../components/games/GameProposal'
 import firebase from '../../firebase/clientApp'
 import gamesConverter from '../../firebase/converters/gamesConverter'
 import usersConverter from '../../firebase/converters/userConverter'
@@ -48,6 +49,22 @@ const Games = () => {
 
   return (
     <Stack>
+      <Group spacing={'sm'}>
+        <GameProposal
+          oponent={{
+            name: 'Ola Nordmann',
+            intials: 'ON',
+          }}
+          proposedDaysAgo={'2'}
+        />
+        <GameProposal
+          oponent={{
+            name: 'Kari Nordmann',
+            intials: 'KN',
+          }}
+          proposedDaysAgo={'1'}
+        />
+      </Group>
       <ActiveGames games={games} />
       <Link href="/game/new">
         <Button>Start a new game</Button>
