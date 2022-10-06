@@ -1,14 +1,14 @@
 import { doc, updateDoc } from 'firebase/firestore'
 import { db } from '../../../firebase/clientApp'
-import RequestData from '../types/RequestData'
+import CheckBoardRequestData from '../types/CheckBoardRequestData'
 
 // Generate ref to boardData stored in the subcollection of a game document
-export const generateGameRef = (boardData: RequestData) =>
+export const generateGameRef = (boardData: CheckBoardRequestData) =>
   doc(db, 'games', boardData.gameID, boardData.userID, 'boardData')
 
 // Update rowPoints object inside boardData document
 export const updateRowPoints = async (
-  boardData: RequestData,
+  boardData: CheckBoardRequestData,
   validWordInRow: { word: string; position: number[] }
 ) => {
   await updateDoc(generateGameRef(boardData), {
@@ -18,7 +18,7 @@ export const updateRowPoints = async (
 
 // Update columnPoints object inside boardData document
 export const updateColumnPoints = async (
-  boardData: RequestData,
+  boardData: CheckBoardRequestData,
   validWordInColumn: { word: string; position: number[] }
 ) => {
   await updateDoc(generateGameRef(boardData), {

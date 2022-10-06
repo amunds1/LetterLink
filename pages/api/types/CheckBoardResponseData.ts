@@ -1,4 +1,4 @@
-type ResponseData = {
+type CheckBoardResponseData = {
   message?: string
   row?: {
     wordPosition: number[]
@@ -14,4 +14,4 @@ type ResponseData = {
   }
 }
 
-export default ResponseData
+export default CheckBoardResponseData
