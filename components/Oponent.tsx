@@ -1,12 +1,11 @@
-import { doc, getFirestore, QueryDocumentSnapshot } from 'firebase/firestore'
-import React from 'react'
-import { useDocument } from 'react-firebase-hooks/firestore'
-import firebase from '../firebase/clientApp'
-import Game from '../types/Game'
-import usersConverter from '../firebase/converters/userConverter'
 import { Text } from '@mantine/core'
 import { getAuth } from 'firebase/auth'
+import { doc, getFirestore } from 'firebase/firestore'
 import { useAuthState } from 'react-firebase-hooks/auth'
+import { useDocument } from 'react-firebase-hooks/firestore'
+import firebase from '../firebase/clientApp'
+import usersConverter from '../firebase/converters/userConverter'
+import Game from '../types/Game'
 import selectUserID from '../utils/selectUserID'
 
 const Oponent = ({ game }: { game: Game }) => {
