@@ -24,11 +24,11 @@ const GameProposal = ({ game }: IGameProposal) => {
       <Button
         onClick={async () => {
           await acceptProposedGame({
-            gameID: game.id,
+            gameID: game.id!,
             userRef: game.playerOne,
           })
           await acceptProposedGame({
-            gameID: game.id,
+            gameID: game.id!,
             userRef: game.playerTwo,
           })
         }}
