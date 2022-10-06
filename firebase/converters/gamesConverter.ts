@@ -24,6 +24,7 @@ const gamesConverter: FirestoreDataConverter<Game> = {
       boardSize: data.boardSize,
       playerOne: data.playerOne,
       playerTwo: data.playerTwo,
+      isActive: data.isActive,
     }
   },
 }

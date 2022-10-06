@@ -20,6 +20,7 @@ const usersConverter: FirestoreDataConverter<User> = {
     return {
       id: snapshot.id,
       games: data.games,
+      proposedGames: data.proposedGames,
       name: data.name,
     }
   },
