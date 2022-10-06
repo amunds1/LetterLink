@@ -1,4 +1,4 @@
-import { doc, addDoc, collection, setDoc } from 'firebase/firestore'
+import { doc, addDoc, collection, setDoc, documentId } from 'firebase/firestore'
 import gamesConverter from '../converters/gamesConverter'
 import { db } from '../clientApp'
 import updateUserGamesList from './updateUserGamesList'
@@ -11,9 +11,11 @@ const addGameToCollection = async (userDocID: string, oponentDocID: string) => {
   const docRef = await addDoc(
     collection(db, 'games').withConverter(gamesConverter),
     {
+      id: documentId(),
       boardSize: 6,
       playerOne: userDocRef,
       playerTwo: oponentDocRef,
+      isActive: false,
     }
   )
 
