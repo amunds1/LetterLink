@@ -16,6 +16,7 @@ const useStyles = createStyles(() => ({
   },
   cell: {
     padding: '10px',
+    overflow: 'auto',
   },
   container: {
     padding: '50px',
@@ -57,18 +58,25 @@ const GameBoard = ({ grid }: DatabaseTypes) => {
                 <>
                   {cellValue.length === 0 && (
                     <Droppable droppableId={index.toString()}>
-                      {(provided) => (
+                      {(provided, snapshot) => (
                         <div
                           ref={provided.innerRef}
                           {...provided.droppableProps}
-                          style={{ backgroundColor: 'blue' }}
+                          style={{
+                            backgroundColor: snapshot.isDraggingOver
+                              ? 'MediumSeaGreen'
+                              : 'white',
+                            maxHeight: '40px',
+                          }}
                         >
                           {provided.placeholder}
                         </div>
                       )}
                     </Droppable>
                   )}
-                  <Box className={classes.cell}>{cellValue}</Box>
+                  {cellValue.length !== 0 && (
+                    <Box className={classes.cell}>{cellValue}</Box>
+                  )}
                 </>
               </Grid.Col>
             ))}

@@ -4,7 +4,6 @@ import { Draggable } from 'react-beautiful-dnd'
 
 const useStyles = createStyles(() => ({
   cell: {
-    border: '3px solid grey',
     textAlign: 'center',
     width: 'fit-content',
     padding: '10px 20px 10px 20px',
@@ -23,7 +22,8 @@ const LetterBox = (props: { letter: String; index: number }) => {
           {...provided.dragHandleProps}
           className={classes.cell}
           style={{
-            backgroundColor: snapshot.isDragging ? 'lightgreen' : 'white',
+            backgroundColor: 'white',
+            border: snapshot.isDragging ? '2px solid black' : '2px solid grey',
             ...provided.draggableProps.style,
           }}
         >
