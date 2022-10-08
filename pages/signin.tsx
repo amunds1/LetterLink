@@ -1,12 +1,33 @@
-import React from 'react'
+import { Center, createStyles, Text } from '@mantine/core'
+import { getAuth } from 'firebase/auth'
+import { useAuthState } from 'react-firebase-hooks/auth'
 import { AuthenticationForm } from '../components/SignIn/AuthenticationForm'
+import firebase from '../firebase/clientApp'
 
-const signin = () => {
+const useStyles = createStyles(() => ({
+  center: { height: '100%' },
+}))
+
+const SignIn = () => {
+  const { classes } = useStyles()
+
+  const [user, loading, error] = useAuthState(getAuth(firebase))
+
   return (
     <>
-      <AuthenticationForm />
+      {user && !loading && (
+        <Center className={classes.center}>
+          <Text size={'xl'}>Signed in as {user.displayName}</Text>
+        </Center>
+      )}
+
+      {!user && !loading && (
+        <Center className={classes.center}>
+          <AuthenticationForm />
+        </Center>
+      )}
     </>
   )
 }
 
-export default signin
+export default SignIn
