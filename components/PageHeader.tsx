@@ -92,6 +92,19 @@ export function PageHeader() {
               {PageLinks.GAMES.label}
             </a>
           </Link>
+          {/* PROFILE LINK */}
+          <Link href={PageLinks.PROFILE.link} key={PageLinks.PROFILE.label}>
+            <a
+              className={cx(classes.link, {
+                [classes.linkActive]: active === PageLinks.PROFILE.link,
+              })}
+              onClick={() => {
+                setActive(PageLinks.PROFILE.link)
+              }}
+            >
+              {PageLinks.PROFILE.label}
+            </a>
+          </Link>
           {/* SIGN IN LINK */}
           <Link href={PageLinks.SIGNIN.link} key={PageLinks.SIGNIN.label}>
             <a
