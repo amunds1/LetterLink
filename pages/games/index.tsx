@@ -66,13 +66,17 @@ const Games = () => {
       )}
 
       {userAuthData && !loading && games && (
-        <Stack>
-          {userAuthData && <ProposedGames userUID={userAuthData.uid} />}
-          <ActiveGames games={games} />
-          <Link href="/game/new">
-            <Button>Start a new game</Button>
-          </Link>
-        </Stack>
+        <Center style={{ width: '100%' }}>
+          <Stack className={classes.center} style={{ width: '80%' }}>
+            {userAuthData && <ProposedGames userUID={userAuthData.uid} />}
+            <ActiveGames games={games} />
+            <Center>
+              <Link href="/game/new">
+                <Button>Start a new game</Button>
+              </Link>
+            </Center>
+          </Stack>
+        </Center>
       )}
     </>
   )
