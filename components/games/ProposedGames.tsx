@@ -38,12 +38,12 @@ const ProposedGames = ({ userUID }: { userUID: string }) => {
   )
 
   return (
-    <Group spacing={'sm'}>
+    <>
       {games &&
         games.docs.map((game) => (
           <GameProposal key={game.id} game={game.data()} />
         ))}
-    </Group>
+    </>
   )
 }
 
