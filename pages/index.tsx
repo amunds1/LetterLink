@@ -8,7 +8,7 @@ import { useEffect } from 'react'
 import { useRouter } from 'next/router'
 
 const useStyles = createStyles(() => ({
-  center: { height: '100vh' },
+  center: { height: '100%' },
 }))
 
 export default function Home() {
