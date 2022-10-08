@@ -1,11 +1,13 @@
-import { AppProps } from 'next/app'
-import Head from 'next/head'
 import {
+  AppShell,
   ColorScheme,
   ColorSchemeProvider,
   MantineProvider,
 } from '@mantine/core'
+import { AppProps } from 'next/app'
+import Head from 'next/head'
 import { useState } from 'react'
+import { PageHeader } from '../components/PageHeader'
 
 export default function App(props: AppProps) {
   const { Component, pageProps } = props
@@ -13,6 +15,8 @@ export default function App(props: AppProps) {
   const [colorScheme, setColorScheme] = useState<ColorScheme>('light')
   const toggleColorScheme = (value?: ColorScheme) =>
     setColorScheme(value || (colorScheme === 'dark' ? 'light' : 'dark'))
+
+  const [opened, setOpened] = useState(false)
 
   return (
     <>
@@ -36,7 +40,28 @@ export default function App(props: AppProps) {
             colorScheme: colorScheme,
           }}
         >
-          <Component {...pageProps} />
+          <AppShell
+            padding="md"
+            header={
+              <PageHeader
+                links={[
+                  { link: '/games', label: 'Games' },
+                  { link: '/profile', label: 'Profile' },
+                  { link: '/signin', label: 'Sign in' },
+                ]}
+              />
+            }
+            styles={(theme) => ({
+              main: {
+                backgroundColor:
+                  theme.colorScheme === 'dark'
+                    ? theme.colors.dark[8]
+                    : theme.colors.gray[0],
+              },
+            })}
+          >
+            <Component {...pageProps} />
+          </AppShell>
         </MantineProvider>
       </ColorSchemeProvider>
     </>

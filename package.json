@@ -12,6 +12,7 @@
     "@emotion/react": "^11.10.4",
     "@emotion/server": "^11.10.0",
     "@mantine/core": "^5.3.3",
+    "@mantine/ds": "^5.5.4",
     "@mantine/hooks": "^5.3.3",
     "@mantine/next": "^5.5.4",
     "@tabler/icons": "^1.101.0",
