@@ -1,9 +1,9 @@
 import { updateDoc } from 'firebase/firestore'
-import RequestData from '../types/RequestData'
+import CheckBoardRequestData from '../types/CheckBoardRequestData'
 import { generateGameRef } from './updatePoints'
 
 // Update board array inside boardData document
-export const updateBoard = async (boardData: RequestData) => {
+export const updateBoard = async (boardData: CheckBoardRequestData) => {
   await updateDoc(generateGameRef(boardData), {
     [`board`]: boardData.board,
   })

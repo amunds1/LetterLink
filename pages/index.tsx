@@ -6,6 +6,7 @@ import SignOut from '../components/SignOut'
 import SignIn from '../components/SignIn'
 import { useEffect } from 'react'
 import { useRouter } from 'next/router'
+import validateBoard from '../utils/validateBoard'
 
 const useStyles = createStyles(() => ({
   center: { height: '100vh' },

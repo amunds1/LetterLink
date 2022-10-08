@@ -1,16 +1,16 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import type { NextApiRequest, NextApiResponse } from 'next'
 import checkRowOrColumn from './utils/checkRowOrColumn'
-import ResponseData from './types/ResponseData'
-import RequestData from './types/RequestData'
+import CheckBoardResponseData from './types/CheckBoardResponseData'
+import CheckBoardRequestData from './types/CheckBoardRequestData'
 import { updateRowPoints, updateColumnPoints } from './utils/updatePoints'
 import { updateBoard } from './utils/updateBoard'
 
 export default async function handler(
   req: NextApiRequest,
-  res: NextApiResponse<ResponseData>
+  res: NextApiResponse<CheckBoardResponseData>
 ) {
-  let response: ResponseData = {}
+  let response: CheckBoardResponseData = {}
 
   // Return error message if HTTP method was not POST
   if (req.method !== 'POST') {
@@ -19,7 +19,7 @@ export default async function handler(
   }
 
   // Cast request body to RequestData type
-  const boardData: RequestData = { ...req.body }
+  const boardData: CheckBoardRequestData = { ...req.body }
 
   // Check row
   const validWordInRow = await checkRowOrColumn(

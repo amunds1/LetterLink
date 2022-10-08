@@ -1,9 +1,22 @@
+import {
+  AppShell,
+  ColorScheme,
+  ColorSchemeProvider,
+  MantineProvider,
+} from '@mantine/core'
 import { AppProps } from 'next/app'
 import Head from 'next/head'
-import { MantineProvider } from '@mantine/core'
+import { useState } from 'react'
+import { PageHeader } from '../components/PageHeader'
 
 export default function App(props: AppProps) {
   const { Component, pageProps } = props
+
+  const [colorScheme, setColorScheme] = useState<ColorScheme>('light')
+  const toggleColorScheme = (value?: ColorScheme) =>
+    setColorScheme(value || (colorScheme === 'dark' ? 'light' : 'dark'))
+
+  const [opened, setOpened] = useState(false)
 
   return (
     <>
@@ -15,16 +28,42 @@ export default function App(props: AppProps) {
         />
       </Head>
 
-      <MantineProvider
-        withGlobalStyles
-        withNormalizeCSS
-        theme={{
-          /** Put your mantine theme override here */
-          colorScheme: 'light',
-        }}
+      <ColorSchemeProvider
+        colorScheme={colorScheme}
+        toggleColorScheme={toggleColorScheme}
       >
-        <Component {...pageProps} />
-      </MantineProvider>
+        <MantineProvider
+          withGlobalStyles
+          withNormalizeCSS
+          theme={{
+            /** Put your mantine theme override here */
+            colorScheme: colorScheme,
+          }}
+        >
+          <AppShell
+            padding="md"
+            header={
+              <PageHeader
+                links={[
+                  { link: '/games', label: 'Games' },
+                  { link: '/profile', label: 'Profile' },
+                  { link: '/signin', label: 'Sign in' },
+                ]}
+              />
+            }
+            styles={(theme) => ({
+              main: {
+                backgroundColor:
+                  theme.colorScheme === 'dark'
+                    ? theme.colors.dark[8]
+                    : theme.colors.gray[0],
+              },
+            })}
+          >
+            <Component {...pageProps} />
+          </AppShell>
+        </MantineProvider>
+      </ColorSchemeProvider>
     </>
   )
 }

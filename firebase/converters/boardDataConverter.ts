@@ -5,7 +5,7 @@ import {
   QueryDocumentSnapshot,
   SnapshotOptions,
 } from 'firebase/firestore'
-import BoardData from '../types/BoardData'
+import BoardData from '../../types/BoardData'
 
 const boardDataConverter: FirestoreDataConverter<BoardData> = {
   toFirestore(boardData: WithFieldValue<BoardData>): DocumentData {

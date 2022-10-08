@@ -1,8 +1,8 @@
-import { doc, addDoc, collection, setDoc } from 'firebase/firestore'
-import boardDataConverter from '../../utils/boardDataConverter'
-import gamesConverter from '../../utils/gamesConverter'
+import { doc, addDoc, collection, setDoc, documentId } from 'firebase/firestore'
+import gamesConverter from '../converters/gamesConverter'
 import { db } from '../clientApp'
 import updateUserGamesList from './updateUserGamesList'
+import BASE_GAME_CONFIG from '../constants/BaseGameConfig'
 
 const addGameToCollection = async (userDocID: string, oponentDocID: string) => {
   // Generate document refrences to document in users collection, of player and oponent
@@ -15,6 +15,7 @@ const addGameToCollection = async (userDocID: string, oponentDocID: string) => {
       boardSize: 6,
       playerOne: userDocRef,
       playerTwo: oponentDocRef,
+      isActive: false,
     }
   )
 
@@ -34,11 +35,7 @@ const addGameToCollection = async (userDocID: string, oponentDocID: string) => {
       'boardData'
     )
 
-    await setDoc(docRef, {
-      board: ['A', 'B', 'C'],
-      rowPoints: {},
-      colPoints: {},
-    })
+    await setDoc(docRef, BASE_GAME_CONFIG)
   }
 
   if (gameID && oponentDocID) {
@@ -54,15 +51,11 @@ const addGameToCollection = async (userDocID: string, oponentDocID: string) => {
       'boardData'
     )
 
-    await setDoc(docRef, {
-      board: ['A', 'B', 'C'],
-      rowPoints: {},
-      colPoints: {},
-    })
+    await setDoc(docRef, BASE_GAME_CONFIG)
   }
 
-  updateUserGamesList(docRef.id, userDocID)
-  updateUserGamesList(docRef.id, oponentDocID)
+  updateUserGamesList(docRef, userDocID)
+  updateUserGamesList(docRef, oponentDocID)
 }
 
 export default addGameToCollection
