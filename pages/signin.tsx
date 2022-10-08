@@ -1,7 +1,5 @@
 import { Center, createStyles, Text } from '@mantine/core'
 import { getAuth } from 'firebase/auth'
-import { useRouter } from 'next/router'
-import { useEffect } from 'react'
 import { useAuthState } from 'react-firebase-hooks/auth'
 import { AuthenticationForm } from '../components/SignIn/AuthenticationForm'
 import firebase from '../firebase/clientApp'
@@ -15,19 +13,11 @@ const SignIn = () => {
 
   const [user, loading, error] = useAuthState(getAuth(firebase))
 
-  const router = useRouter()
-
-  useEffect(() => {
-    if (user && !loading) {
-      router.push('/games')
-    }
-  }, [user, loading, router])
-
   return (
     <>
       {user && !loading && (
         <Center className={classes.center}>
-          <Text size={'xl'}>You are already signed in</Text>
+          <Text size={'xl'}>Signed in as {user.displayName}</Text>
         </Center>
       )}
 
