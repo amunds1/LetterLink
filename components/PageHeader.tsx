@@ -9,6 +9,7 @@ import {
 import { useDisclosure } from '@mantine/hooks'
 import Link from 'next/link'
 import { useState } from 'react'
+import PageLinks, { IPageLinks } from '../constants/PageLinks'
 import ColorSchemeToggle from './ColorSchemeToggle'
 
 const useStyles = createStyles((theme) => ({
@@ -64,29 +65,10 @@ const useStyles = createStyles((theme) => ({
   },
 }))
 
-interface PageHeaderProps {
-  links: { link: string; label: string }[]
-}
-
-export function PageHeader({ links }: PageHeaderProps) {
+export function PageHeader() {
   const [opened, { toggle }] = useDisclosure(false)
-  const [active, setActive] = useState(links[0].link)
+  const [active, setActive] = useState<string>()
   const { classes, cx } = useStyles()
-
-  const items = links.map((link) => (
-    <Link href={link.link} key={link.link}>
-      <a
-        className={cx(classes.link, {
-          [classes.linkActive]: active === link.link,
-        })}
-        onClick={() => {
-          setActive(link.link)
-        }}
-      >
-        {link.label}
-      </a>
-    </Link>
-  ))
 
   return (
     <Header height={60} mb={120}>
@@ -97,7 +79,45 @@ export function PageHeader({ links }: PageHeaderProps) {
           </a>
         </Link>
         <Group spacing={5} className={classes.links}>
-          {items}
+          {/* GAMES LINK */}
+          <Link href={PageLinks.GAMES.link} key={PageLinks.GAMES.label}>
+            <a
+              className={cx(classes.link, {
+                [classes.linkActive]: active === PageLinks.GAMES.link,
+              })}
+              onClick={() => {
+                setActive(PageLinks.GAMES.link)
+              }}
+            >
+              {PageLinks.GAMES.label}
+            </a>
+          </Link>
+          {/* SIGN IN LINK */}
+          <Link href={PageLinks.SIGNIN.link} key={PageLinks.SIGNIN.label}>
+            <a
+              className={cx(classes.link, {
+                [classes.linkActive]: active === PageLinks.SIGNIN.link,
+              })}
+              onClick={() => {
+                setActive(PageLinks.SIGNIN.link)
+              }}
+            >
+              {PageLinks.SIGNIN.label}
+            </a>
+          </Link>
+          {/* SIGN OUT LINK */}
+          <Link href={PageLinks.SIGNOUT.link} key={PageLinks.SIGNOUT.label}>
+            <a
+              className={cx(classes.link, {
+                [classes.linkActive]: active === PageLinks.SIGNOUT.link,
+              })}
+              onClick={() => {
+                setActive(PageLinks.SIGNOUT.link)
+              }}
+            >
+              {PageLinks.SIGNOUT.label}
+            </a>
+          </Link>
           <ColorSchemeToggle />
         </Group>
 

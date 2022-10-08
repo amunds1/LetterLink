@@ -42,15 +42,7 @@ export default function App(props: AppProps) {
         >
           <AppShell
             padding="md"
-            header={
-              <PageHeader
-                links={[
-                  { link: '/games', label: 'Games' },
-                  { link: '/profile', label: 'Profile' },
-                  { link: '/signin', label: 'Sign in' },
-                ]}
-              />
-            }
+            header={<PageHeader />}
             styles={(theme) => ({
               main: {
                 backgroundColor:
