@@ -1,13 +1,9 @@
-import {
-  Avatar,
-  Center,
-  createStyles,
-  Grid,
-  Group,
-  RingProgress,
-  Stack,
-  Text,
-} from '@mantine/core'
+import { Center, createStyles, Text } from '@mantine/core'
+import { getAuth } from 'firebase/auth'
+import Link from 'next/link'
+import { useAuthState } from 'react-firebase-hooks/auth'
+import Statistics from '../components/profile/Statistics'
+import firebase from '../firebase/clientApp'
 
 const useStyles = createStyles(() => ({
   center: { height: '100%' },
@@ -15,62 +11,23 @@ const useStyles = createStyles(() => ({
 
 const Profile = () => {
   const { classes } = useStyles()
-
-  const ringSize = 100
-  const ringThickness = 5
+  const [user, loading, error] = useAuthState(getAuth(firebase))
 
   return (
-    <Center className={classes.center}>
-      <Grid>
-        <Grid.Col span={6}>
-          <Stack align="center">
-            <RingProgress
-              size={ringSize}
-              thickness={ringThickness}
-              sections={[{ value: 100, color: 'teal' }]}
-              label={
-                <Center>
-                  <Text color="green" weight={700} align="center" size="md">
-                    7
-                  </Text>
-                </Center>
-              }
-            />
-            <Text size={'md'}>Games played</Text>
-          </Stack>
-        </Grid.Col>
+    <>
+      {!user && !loading && (
+        <Center className={classes.center}>
+          <Text size={'xl'}>
+            To view your profile you need to{' '}
+            <Link href={'/signin'}>
+              <a>Sign In</a>
+            </Link>
+          </Text>
+        </Center>
+      )}
 
-        <Grid.Col span={6}>
-          <Stack align="center">
-            <RingProgress
-              size={ringSize}
-              thickness={ringThickness}
-              sections={[{ value: 42, color: 'blue' }]}
-              label={
-                <Text color="blue" weight={700} align="center" size="md">
-                  42%
-                </Text>
-              }
-            />
-            <Text size={'md'}>Win rate</Text>
-          </Stack>
-        </Grid.Col>
-
-        <Grid.Col span={6}>
-          <Stack align="center">
-            <Avatar size={ringSize} />
-            <Text size={'md'}>Most wins against</Text>
-          </Stack>
-        </Grid.Col>
-
-        <Grid.Col span={6}>
-          <Stack align="center">
-            <Avatar size={ringSize} />
-            <Text size={'md'}>Most defeats against</Text>
-          </Stack>
-        </Grid.Col>
-      </Grid>
-    </Center>
+      {user && !loading && <Statistics />}
+    </>
   )
 }
 
