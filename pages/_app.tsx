@@ -48,6 +48,7 @@ export default function App(props: AppProps) {
                   { link: '/games', label: 'Games' },
                   { link: '/profile', label: 'Profile' },
                   { link: '/signin', label: 'Sign in' },
+                  { link: '/signout', label: 'Sign out' },
                 ]}
               />
             }

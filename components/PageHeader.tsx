@@ -73,21 +73,6 @@ export function PageHeader({ links }: PageHeaderProps) {
   const [active, setActive] = useState(links[0].link)
   const { classes, cx } = useStyles()
 
-  const items = links.map((link) => (
-    <Link href={link.link} key={link.link}>
-      <a
-        className={cx(classes.link, {
-          [classes.linkActive]: active === link.link,
-        })}
-        onClick={() => {
-          setActive(link.link)
-        }}
-      >
-        {link.label}
-      </a>
-    </Link>
-  ))
-
   return (
     <Header height={60} mb={120}>
       <Container className={classes.header}>
@@ -97,7 +82,57 @@ export function PageHeader({ links }: PageHeaderProps) {
           </a>
         </Link>
         <Group spacing={5} className={classes.links}>
-          {items}
+          {/* GAMES LINK */}
+          <Link href={'/games'} key={'games'}>
+            <a
+              className={cx(classes.link, {
+                [classes.linkActive]: active === '/games',
+              })}
+              onClick={() => {
+                setActive('/games')
+              }}
+            >
+              {'Games'}
+            </a>
+          </Link>
+          <Link href={'/profile'} key={'profile'}>
+            <a
+              className={cx(classes.link, {
+                [classes.linkActive]: active === '/profile',
+              })}
+              onClick={() => {
+                setActive('/profile')
+              }}
+            >
+              {'Profile'}
+            </a>
+          </Link>
+          {/* SIGN IN LINK */}
+          <Link href={'/signin'} key={'signin'}>
+            <a
+              className={cx(classes.link, {
+                [classes.linkActive]: active === '/siginin',
+              })}
+              onClick={() => {
+                setActive('/siginin')
+              }}
+            >
+              {'Sign in'}
+            </a>
+          </Link>
+          {/* SIGN OUT LINK */}
+          <Link href={'/signout'} key={'signout'}>
+            <a
+              className={cx(classes.link, {
+                [classes.linkActive]: active === '/signout',
+              })}
+              onClick={() => {
+                setActive('/signout')
+              }}
+            >
+              {'Sign out'}
+            </a>
+          </Link>
           <ColorSchemeToggle />
         </Group>
 
