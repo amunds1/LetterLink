@@ -1,4 +1,4 @@
-import { Button, Group, Stack } from '@mantine/core'
+import { Button, Center, createStyles, Stack, Text } from '@mantine/core'
 import { getAuth } from 'firebase/auth'
 import {
   collection,
@@ -12,13 +12,17 @@ import Link from 'next/link'
 import { useAuthState } from 'react-firebase-hooks/auth'
 import { useCollection, useDocument } from 'react-firebase-hooks/firestore'
 import ActiveGames from '../../components/games/ActiveGames'
-import GameProposal from '../../components/games/GameProposal'
 import ProposedGames from '../../components/games/ProposedGames'
 import firebase from '../../firebase/clientApp'
 import gamesConverter from '../../firebase/converters/gamesConverter'
 import usersConverter from '../../firebase/converters/userConverter'
 
+const useStyles = createStyles(() => ({
+  center: { height: '100%' },
+}))
+
 const Games = () => {
+  const { classes } = useStyles()
   const [userAuthData, loading, error] = useAuthState(getAuth(firebase))
 
   /* 
@@ -49,13 +53,28 @@ const Games = () => {
   )
 
   return (
-    <Stack>
-      {userAuthData && <ProposedGames userUID={userAuthData.uid} />}
-      <ActiveGames games={games} />
-      <Link href="/game/new">
-        <Button>Start a new game</Button>
-      </Link>
-    </Stack>
+    <>
+      {!userAuthData && !loading && (
+        <Center className={classes.center}>
+          <Text size={'xl'}>
+            To view your games you need to{' '}
+            <Link href={'/signin'}>
+              <a>Sign In</a>
+            </Link>
+          </Text>
+        </Center>
+      )}
+
+      {userAuthData && !loading && games && (
+        <Stack>
+          {userAuthData && <ProposedGames userUID={userAuthData.uid} />}
+          <ActiveGames games={games} />
+          <Link href="/game/new">
+            <Button>Start a new game</Button>
+          </Link>
+        </Stack>
+      )}
+    </>
   )
 }
 
