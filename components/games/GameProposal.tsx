@@ -2,6 +2,7 @@ import { Button, Card, Group, Badge, Center, Avatar } from '@mantine/core'
 import Game from '../../types/Game'
 import Oponent from '../Oponent'
 import acceptProposedGame from './firebase/acceptProposedGame'
+import rejectProposedGame from './firebase/rejectProposedGame'
 
 interface IGameProposal {
   game: Game
@@ -41,7 +42,22 @@ const GameProposal = ({ game }: IGameProposal) => {
         Accept
       </Button>
       <Center>
-        <Button variant="subtle" color="red" mt="md" radius="md">
+        <Button
+          variant="subtle"
+          color="red"
+          mt="md"
+          radius="md"
+          onClick={async () => {
+            await rejectProposedGame({
+              gameID: game.id!,
+              userRef: game.playerOne,
+            })
+            await rejectProposedGame({
+              gameID: game.id!,
+              userRef: game.playerTwo,
+            })
+          }}
+        >
           Reject
         </Button>
       </Center>
