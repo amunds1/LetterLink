@@ -28,8 +28,6 @@ const GameProposal = ({ game }: IGameProposal) => {
     })
   }, [game])
 
-  console.log(gameProposedTimeDelta)
-
   return (
     <Card>
       <Group position="apart" mt="md" mb="xs">
