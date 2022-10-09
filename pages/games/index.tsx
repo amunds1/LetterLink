@@ -39,7 +39,7 @@ const Games = () => {
   )
 
   // Return null if games array belonging to a user is empty, true otherwise
-  const hasGames = user?.data()?.games.length! ? true : null
+  const hasGames = user?.data()?.games?.length! ? true : null
 
   /* 
     2. Retrieves games belonging to a user from the useDocument() hook above
@@ -65,19 +65,20 @@ const Games = () => {
         </Center>
       )}
 
-      {userAuthData && !loading && games && (
+      {userAuthData && !loading && (
         <Center style={{ width: '100%' }}>
           <Stack className={classes.center} style={{ width: '80%' }}>
-            {userAuthData && <ProposedGames userUID={userAuthData.uid} />}
-            <ActiveGames games={games} />
-            <Center>
-              <Link href="/game/new">
-                <Button>Start a new game</Button>
-              </Link>
-            </Center>
+            <ProposedGames userUID={userAuthData.uid} />
+            {games && <ActiveGames games={games} />}
           </Stack>
         </Center>
       )}
+
+      <Center>
+        <Link href="/game/new">
+          <Button>Start a new game</Button>
+        </Link>
+      </Center>
     </>
   )
 }
