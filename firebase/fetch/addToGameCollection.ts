@@ -1,8 +1,8 @@
-import { doc, addDoc, collection, setDoc, documentId } from 'firebase/firestore'
-import gamesConverter from '../converters/gamesConverter'
+import { addDoc, collection, doc, setDoc, Timestamp } from 'firebase/firestore'
 import { db } from '../clientApp'
-import updateUserGamesList from './updateUserGamesList'
 import BASE_GAME_CONFIG from '../constants/BaseGameConfig'
+import gamesConverter from '../converters/gamesConverter'
+import updateUserGamesList from './updateUserGamesList'
 
 const addGameToCollection = async (userDocID: string, oponentDocID: string) => {
   // Generate document refrences to document in users collection, of player and oponent
@@ -16,6 +16,7 @@ const addGameToCollection = async (userDocID: string, oponentDocID: string) => {
       playerOne: userDocRef,
       playerTwo: oponentDocRef,
       isActive: false,
+      proposedAt: Timestamp.now(),
     }
   )
 

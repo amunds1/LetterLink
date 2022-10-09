@@ -1,4 +1,4 @@
-import { DocumentData, DocumentReference } from 'firebase/firestore'
+import { DocumentData, DocumentReference, Timestamp } from 'firebase/firestore'
 
 interface Game {
   id?: string
@@ -6,6 +6,7 @@ interface Game {
   boardSize: number
   playerOne: DocumentReference<DocumentData>
   playerTwo: DocumentReference<DocumentData>
+  proposedAt: Timestamp
 }
 
 export default Game
