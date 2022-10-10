@@ -6,6 +6,8 @@ import CheckBoardRequestData, {
   AffectedColumn,
   AffectedRow,
 } from '../pages/api/types/CheckBoardRequestData'
+import BoardData from '../types/BoardData'
+
 import validateBoard from '../utils/validateBoard'
 
 const useStyles = createStyles(() => ({
@@ -69,9 +71,29 @@ interface IGameBoard {
   }
   gameID: string
   userID: string
+  colPoints: {
+    [key: number]: number
+  }
+  rowPoints: {
+    [key: number]: number
+  }
+  columnValidWords: {
+    [key: number]: string[]
+  }
+  rowValidWords: {
+    [key: number]: string[]
+  }
 }
 
-const GameBoard = ({ grid, gameID, userID }: IGameBoard) => {
+const GameBoard = ({
+  grid,
+  gameID,
+  userID,
+  colPoints,
+  rowPoints,
+  columnValidWords,
+  rowValidWords,
+}: IGameBoard) => {
   const { classes } = useStyles()
   const [boardSize, setBoardSize] = useState<number>(grid.size)
   const [board, setBoard] = useState<string[]>(grid.values)

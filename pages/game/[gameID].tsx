@@ -8,6 +8,7 @@ import firebase, { db } from '../../firebase/clientApp'
 import { useAuthState } from 'react-firebase-hooks/auth'
 import { getAuth } from 'firebase/auth'
 import GameBoard from '../../components/GameBoard'
+import boardDataConverter from '../../firebase/converters/boardDataConverter'
 
 const GameID = () => {
   const router = useRouter()
@@ -28,14 +29,13 @@ const GameID = () => {
     doc(
       getFirestore(firebase),
       `games/${gameID}/${userAuthData?.uid}/boardData`
-    ),
+    ).withConverter(boardDataConverter),
     {
       snapshotListenOptions: { includeMetadataChanges: true },
     }
   )
 
   const data = value?.data()
-  console.log(data?.board)
 
   return (
     data &&
@@ -50,6 +50,10 @@ const GameID = () => {
           }}
           gameID={gameID}
           userID={userAuthData.uid}
+          rowValidWords={data.rowValidWords}
+          columnValidWords={data.columnValidWords}
+          colPoints={data.colPoints}
+          rowPoints={data.rowPoints}
         />
 
         <Link href="/games">
