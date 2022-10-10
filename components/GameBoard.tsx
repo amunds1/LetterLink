@@ -1,14 +1,12 @@
+import { Box, Button, Container, createStyles, Grid } from '@mantine/core'
 import { useState } from 'react'
-import { Container, Grid, Box, Button } from '@mantine/core'
-import { createStyles } from '@mantine/core'
+import { DragDropContext, Droppable } from 'react-beautiful-dnd'
 import LetterBox from '../components/LetterBox'
-import { Droppable, DragDropContext } from 'react-beautiful-dnd'
-import { DatabaseTypes } from '../interfaces/DatabaseTypes'
-import validateBoard from '../utils/validateBoard'
 import CheckBoardRequestData, {
-  AffectedRow,
   AffectedColumn,
+  AffectedRow,
 } from '../pages/api/types/CheckBoardRequestData'
+import validateBoard from '../utils/validateBoard'
 
 const useStyles = createStyles(() => ({
   grid: {
@@ -119,10 +117,14 @@ const GameBoard = ({ grid, gameID, userID }: IGameBoard) => {
   ) => {
     const positionIndex = droppableID % boardSize
     const differenceIndex = Math.floor(droppableID / boardSize)
-    const data = newBoard[positionIndex]
+    const data: string[] = []
+
+    for (let i = positionIndex; i < newBoard.length; i += boardSize) {
+      data.push(newBoard[i])
+    }
 
     const column = {
-      data: ['A', '', ''],
+      data: data,
       positionIndex: positionIndex,
       differentIndex: differenceIndex,
     }
