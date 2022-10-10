@@ -5,7 +5,7 @@ import {
   QueryDocumentSnapshot,
   SnapshotOptions,
 } from 'firebase/firestore'
-import User from '../types/User'
+import User from '../../types/User'
 
 const usersConverter: FirestoreDataConverter<User> = {
   toFirestore(user: WithFieldValue<User>): DocumentData {
@@ -20,6 +20,7 @@ const usersConverter: FirestoreDataConverter<User> = {
     return {
       id: snapshot.id,
       games: data.games,
+      proposedGames: data.proposedGames,
       name: data.name,
     }
   },

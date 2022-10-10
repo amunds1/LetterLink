@@ -1,16 +1,12 @@
 import { useRouter } from 'next/router'
 import { Button } from '@mantine/core'
 import Link from 'next/link'
-import {
-  doc,
-  DocumentData,
-  DocumentReference,
-  getFirestore,
-} from 'firebase/firestore'
+import { doc, getFirestore } from 'firebase/firestore'
 import { useEffect, useState } from 'react'
 import { useDocument } from 'react-firebase-hooks/firestore'
-import firebase from '../../firebase/clientApp'
-import gamesConverter from '../../utils/gamesConverter'
+import firebase, { db } from '../../firebase/clientApp'
+import { useAuthState } from 'react-firebase-hooks/auth'
+import { getAuth } from 'firebase/auth'
 
 export type GameStandalone = {
   boardSize: number
@@ -24,6 +20,10 @@ const GameID = () => {
   const router = useRouter()
   const [gameID, setgameID] = useState<string | undefined>()
 
+  const [userAuthData, loadingUserAuthData, userAuthDataError] = useAuthState(
+    getAuth(firebase)
+  )
+
   useEffect(() => {
     if (!router.isReady) return
 
@@ -32,7 +32,10 @@ const GameID = () => {
   }, [gameID, router.isReady, router.query])
 
   const [value, loading, error] = useDocument(
-    doc(getFirestore(firebase), `games/${gameID}`),
+    doc(
+      getFirestore(firebase),
+      `games/${gameID}/${userAuthData?.uid}/boardData`
+    ),
     {
       snapshotListenOptions: { includeMetadataChanges: true },
     }
@@ -41,13 +44,15 @@ const GameID = () => {
   const data = value?.data()
 
   return (
-    <div>
-      <p>Gameboard {data?.player1.board}</p>
-      <p>Gameboard {JSON.stringify(router.query)}</p>
-      <Link href="/games">
-        <Button>Back to games</Button>
-      </Link>
-    </div>
+    data && (
+      <div>
+        <p>Gameboard {data.board}</p>
+
+        <Link href="/games">
+          <Button>Back to games</Button>
+        </Link>
+      </div>
+    )
   )
 }
 

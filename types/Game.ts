@@ -1,16 +1,11 @@
-import { DocumentReference } from 'firebase/firestore'
+import { DocumentData, DocumentReference } from 'firebase/firestore'
 
 interface Game {
-  id: string
+  id?: string
+  isActive: boolean
   boardSize: number
-  player1: {
-    board: string[]
-    user: DocumentReference
-  }
-  player2: {
-    board: string[]
-    user: DocumentReference
-  }
+  playerOne: DocumentReference<DocumentData>
+  playerTwo: DocumentReference<DocumentData>
 }
 
 export default Game

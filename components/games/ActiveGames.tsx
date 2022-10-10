@@ -1,8 +1,8 @@
 import Link from 'next/link'
 import { Card, Group, Button, Text } from '@mantine/core'
 import { QuerySnapshot } from 'firebase/firestore'
-import Game from '../types/Game'
-import Oponent from './Oponent'
+import Game from '../../types/Game'
+import Oponent from '../Oponent'
 
 const ActiveGames = ({ games }: { games: QuerySnapshot<Game> | undefined }) => {
   return (
@@ -11,10 +11,8 @@ const ActiveGames = ({ games }: { games: QuerySnapshot<Game> | undefined }) => {
         games.docs.map((game) => {
           const gameData = game.data()
 
-          // console.log('ActiveGames', gameData)
-
           return (
-            <Card key={'abc'} shadow="sm" p="lg" radius="md" withBorder>
+            <Card key={game.id} shadow="sm" p="lg" radius="md" withBorder>
               <Group position="apart" mt="md" mb="xs">
                 <Oponent game={gameData} />
               </Group>
