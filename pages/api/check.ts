@@ -5,6 +5,10 @@ import CheckBoardResponseData from './types/CheckBoardResponseData'
 import CheckBoardRequestData from './types/CheckBoardRequestData'
 import { updateRowPoints, updateColumnPoints } from './utils/updatePoints'
 import { updateBoard } from './utils/updateBoard'
+import {
+  updateValidColumnWords,
+  updateValidRowWords,
+} from './utils/updateValidWords'
 
 export default async function handler(
   req: NextApiRequest,
@@ -37,6 +41,7 @@ export default async function handler(
     }
 
     updateRowPoints(boardData, validWordInRow)
+    updateValidRowWords(boardData, validWordInRow)
     updateBoard(boardData)
   }
 
@@ -56,6 +61,7 @@ export default async function handler(
     }
 
     updateColumnPoints(boardData, validWordInColumn)
+    updateValidColumnWords(boardData, validWordInColumn)
     updateBoard(boardData)
   }
 
