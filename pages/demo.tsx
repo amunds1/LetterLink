@@ -46,7 +46,7 @@ export const getServerSideProps: GetServerSideProps = async () => {
 }
 
 const Demo = () => {
-  return <GameBoard grid={database.grid} />
+  return <></>
 }
 
 export default Demo

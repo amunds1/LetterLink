@@ -1,9 +1,14 @@
 import { useState } from 'react'
-import { Container, Grid, Box } from '@mantine/core'
+import { Container, Grid, Box, Button } from '@mantine/core'
 import { createStyles } from '@mantine/core'
 import LetterBox from '../components/LetterBox'
 import { Droppable, DragDropContext } from 'react-beautiful-dnd'
 import { DatabaseTypes } from '../interfaces/DatabaseTypes'
+import validateBoard from '../utils/validateBoard'
+import CheckBoardRequestData, {
+  AffectedRow,
+  AffectedColumn,
+} from '../pages/api/types/CheckBoardRequestData'
 
 const useStyles = createStyles(() => ({
   grid: {
@@ -23,19 +28,108 @@ const useStyles = createStyles(() => ({
   },
 }))
 
-const GameBoard = ({ grid }: DatabaseTypes) => {
-  const { classes } = useStyles()
-  const [gridItems, setGridItems] = useState<string[]>(grid.values)
-  const [chosenLetter, setChosenLetter] = useState<string>('B')
+const submitMove = async ({
+  gameID,
+  userID,
+  board,
+  row,
+  column,
+}: CheckBoardRequestData) => {
+  const boardData: CheckBoardRequestData = {
+    // Hent GameID
+    gameID: gameID,
+    // Hent userID
+    userID: userID,
+    // Hent hele brettet
+    board: board,
+    row: {
+      // Hentet påvirket rad
+      data: row.data,
+      // Hent hvilken rad det var
+      positionIndex: row.positionIndex,
+      // Hent hvor i raden endringen skjedde
+      differentIndex: row.differentIndex,
+    },
+    column: {
+      // Hentet påvirket kolonne
+      data: column.data,
+      // Hent hvilken kolonne det var
+      positionIndex: column.positionIndex,
+      // Hen hvor i kolonnen endringen skjedde
+      differentIndex: column.differentIndex,
+    },
+  }
 
-  const addLetter = (list: string[], endIndex: string) => {
+  const r = await validateBoard(boardData)
+  console.log(r)
+}
+
+interface IGameBoard {
+  grid: {
+    size: number
+    values: string[]
+  }
+  gameID: string
+  userID: string
+}
+
+const GameBoard = ({ grid, gameID, userID }: IGameBoard) => {
+  const { classes } = useStyles()
+  const [boardSize, setBoardSize] = useState<number>(grid.size)
+  const [board, setBoard] = useState<string[]>(grid.values)
+  const [affectedRow, setAffectedRow] = useState<AffectedRow>()
+  const [affectedColumn, setAffectedColumn] = useState<AffectedColumn>()
+
+  const [chosenLetter, setChosenLetter] = useState<string>('I')
+
+  const addLetter = (list: string[], endIndex: number) => {
     const result = Array.from(list)
-    result[Number(endIndex)] = chosenLetter
+    result[endIndex] = chosenLetter
     setChosenLetter('')
     return result
   }
 
-  // TODO: send update gamebord to Firebase
+  const findAffectedRow = (
+    boardSize: number,
+    droppableID: number,
+    newBoard: string[]
+  ) => {
+    // Hvilken rad
+    const positionIndex = Math.floor(droppableID / boardSize)
+    // Hvilken celle
+    const differenceIndex = droppableID % boardSize
+    // Dataen i raden
+    const data = newBoard.slice(
+      positionIndex * boardSize,
+      positionIndex * boardSize + boardSize
+    )
+
+    const row = {
+      data: data,
+      positionIndex: positionIndex,
+      differentIndex: differenceIndex,
+    }
+    return row
+  }
+
+  const findAffectedColumn = (
+    boardSize: number,
+    droppableID: number,
+    newBoard: string[]
+  ) => {
+    const positionIndex = droppableID % boardSize
+    const differenceIndex = Math.floor(droppableID / boardSize)
+    const data = newBoard[positionIndex]
+
+    const column = {
+      data: ['A', '', ''],
+      positionIndex: positionIndex,
+      differentIndex: differenceIndex,
+    }
+    return column
+  }
+
+  // TODO: send update gameboard to Firebase
   // TODO: either choose a new letter or get a message to wait for the other player to do a move
   const onDragEnd = (result: any) => {
     if (
@@ -44,8 +138,20 @@ const GameBoard = ({ grid }: DatabaseTypes) => {
     ) {
       return
     }
-    const items: string[] = addLetter(gridItems, result.destination.droppableId)
-    setGridItems(items)
+    console.log(result)
+    const droppableID = Number(result.destination.droppableId)
+    const newBoard: string[] = addLetter(board, droppableID)
+
+    const row: AffectedRow = findAffectedRow(boardSize, droppableID, newBoard)
+    const column: AffectedColumn = findAffectedColumn(
+      boardSize,
+      droppableID,
+      newBoard
+    )
+
+    setAffectedRow(row)
+    setAffectedColumn(column)
+    setBoard(newBoard)
   }
 
   return (
@@ -53,7 +159,7 @@ const GameBoard = ({ grid }: DatabaseTypes) => {
       <DragDropContext onDragEnd={onDragEnd}>
         <div style={{ padding: '0 0 20px 0' }}>
           <Grid className={classes.grid} columns={grid.size}>
-            {gridItems.map((cellValue, index) => (
+            {board.map((cellValue, index) => (
               <Grid.Col className={classes.col} key={index} span={1}>
                 <>
                   {cellValue.length === 0 && (
@@ -102,6 +208,22 @@ const GameBoard = ({ grid }: DatabaseTypes) => {
           </Droppable>
         </div>
       </DragDropContext>
+
+      <Button
+        onClick={() =>
+          affectedRow &&
+          affectedColumn &&
+          submitMove({
+            gameID,
+            userID,
+            board,
+            row: affectedRow,
+            column: affectedColumn,
+          })
+        }
+      >
+        Submit
+      </Button>
     </Container>
   )
 }
