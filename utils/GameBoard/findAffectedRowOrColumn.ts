@@ -31,10 +31,13 @@ export const findAffectedColumn = ({
   index,
   newBoard,
 }: IfindAffectedRowOrColumn) => {
+  // Store affected column (0 is first column)
   const positionIndex = index % boardSize
+  // Store position of changed cell
   const differenceIndex = Math.floor(index / boardSize)
-  const data: string[] = []
 
+  // Extract data
+  const data: string[] = []
   for (let i = positionIndex; i < newBoard.length; i += boardSize) {
     data.push(newBoard[i])
   }
