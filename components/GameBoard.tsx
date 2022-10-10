@@ -3,10 +3,12 @@ import { useState } from 'react'
 import { DragDropContext, Droppable } from 'react-beautiful-dnd'
 import LetterBox from '../components/LetterBox'
 import CheckBoardRequestData, {
-  AffectedColumn,
-  AffectedRow,
+  AffectedRowOrColumn,
 } from '../pages/api/types/CheckBoardRequestData'
-import BoardData from '../types/BoardData'
+import {
+  findAffectedColumn,
+  findAffectedRow,
+} from '../utils/GameBoard/findAffectedRowOrColumn'
 
 import validateBoard from '../utils/validateBoard'
 
@@ -23,10 +25,17 @@ const useStyles = createStyles(() => ({
     padding: '10px',
     overflow: 'auto',
   },
+  cellValid: {
+    backgroundColor: 'green',
+    padding: '10px',
+    overflow: 'auto',
+  },
   container: {
     padding: '50px',
   },
 }))
+
+const cellIsPartOfValidWord = (index: number) => {}
 
 const submitMove = async ({
   gameID,
@@ -97,8 +106,8 @@ const GameBoard = ({
   const { classes } = useStyles()
   const [boardSize, setBoardSize] = useState<number>(grid.size)
   const [board, setBoard] = useState<string[]>(grid.values)
-  const [affectedRow, setAffectedRow] = useState<AffectedRow>()
-  const [affectedColumn, setAffectedColumn] = useState<AffectedColumn>()
+  const [affectedRow, setAffectedRow] = useState<AffectedRowOrColumn>()
+  const [affectedColumn, setAffectedColumn] = useState<AffectedRowOrColumn>()
 
   const [chosenLetter, setChosenLetter] = useState<string>('I')
 
@@ -107,50 +116,6 @@ const GameBoard = ({
     result[endIndex] = chosenLetter
     setChosenLetter('')
     return result
-  }
-
-  const findAffectedRow = (
-    boardSize: number,
-    droppableID: number,
-    newBoard: string[]
-  ) => {
-    // Hvilken rad
-    const positionIndex = Math.floor(droppableID / boardSize)
-    // Hvilken celle
-    const differenceIndex = droppableID % boardSize
-    // Dataen i raden
-    const data = newBoard.slice(
-      positionIndex * boardSize,
-      positionIndex * boardSize + boardSize
-    )
-
-    const row = {
-      data: data,
-      positionIndex: positionIndex,
-      differentIndex: differenceIndex,
-    }
-    return row
-  }
-
-  const findAffectedColumn = (
-    boardSize: number,
-    droppableID: number,
-    newBoard: string[]
-  ) => {
-    const positionIndex = droppableID % boardSize
-    const differenceIndex = Math.floor(droppableID / boardSize)
-    const data: string[] = []
-
-    for (let i = positionIndex; i < newBoard.length; i += boardSize) {
-      data.push(newBoard[i])
-    }
-
-    const column = {
-      data: data,
-      positionIndex: positionIndex,
-      differentIndex: differenceIndex,
-    }
-    return column
   }
 
   // TODO: send update gameboard to Firebase
@@ -166,12 +131,17 @@ const GameBoard = ({
     const droppableID = Number(result.destination.droppableId)
     const newBoard: string[] = addLetter(board, droppableID)
 
-    const row: AffectedRow = findAffectedRow(boardSize, droppableID, newBoard)
-    const column: AffectedColumn = findAffectedColumn(
+    const row: AffectedRowOrColumn = findAffectedRow({
       boardSize,
-      droppableID,
-      newBoard
-    )
+      index: droppableID,
+      newBoard,
+    })
+
+    const column: AffectedRowOrColumn = findAffectedColumn({
+      boardSize,
+      index: droppableID,
+      newBoard,
+    })
 
     setAffectedRow(row)
     setAffectedColumn(column)

@@ -2,17 +2,11 @@ type CheckBoardRequestData = {
   gameID: string
   userID: string
   board: string[]
-  row: AffectedRow
-  column: AffectedColumn
+  row: AffectedRowOrColumn
+  column: AffectedRowOrColumn
 }
 
-export type AffectedRow = {
-  data: string[]
-  positionIndex: number
-  differentIndex: number
-}
-
-export type AffectedColumn = {
+export type AffectedRowOrColumn = {
   data: string[]
   positionIndex: number
   differentIndex: number
