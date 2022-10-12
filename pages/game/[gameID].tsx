@@ -7,18 +7,12 @@ import { useDocument } from 'react-firebase-hooks/firestore'
 import firebase, { db } from '../../firebase/clientApp'
 import { useAuthState } from 'react-firebase-hooks/auth'
 import { getAuth } from 'firebase/auth'
-
-export type GameStandalone = {
-  boardSize: number
-  player1: {
-    board: string
-    user: string
-  }
-}
+import GameBoard from '../../components/GameBoard'
+import boardDataConverter from '../../firebase/converters/boardDataConverter'
 
 const GameID = () => {
   const router = useRouter()
-  const [gameID, setgameID] = useState<string | undefined>()
+  const [gameID, setgameID] = useState<string>()
 
   const [userAuthData, loadingUserAuthData, userAuthDataError] = useAuthState(
     getAuth(firebase)
@@ -35,7 +29,7 @@ const GameID = () => {
     doc(
       getFirestore(firebase),
       `games/${gameID}/${userAuthData?.uid}/boardData`
-    ),
+    ).withConverter(boardDataConverter),
     {
       snapshotListenOptions: { includeMetadataChanges: true },
     }
@@ -44,9 +38,23 @@ const GameID = () => {
   const data = value?.data()
 
   return (
-    data && (
+    data &&
+    gameID &&
+    userAuthData && (
       <div>
         <p>Gameboard {data.board}</p>
+        <GameBoard
+          grid={{
+            size: 3,
+            values: data.board,
+          }}
+          gameID={gameID}
+          userID={userAuthData.uid}
+          rowValidWords={data.rowValidWords}
+          columnValidWords={data.columnValidWords}
+          colPoints={data.colPoints}
+          rowPoints={data.rowPoints}
+        />
 
         <Link href="/games">
           <Button>Back to games</Button>
