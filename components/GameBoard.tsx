@@ -1,6 +1,6 @@
 import { Box, Button, Container, createStyles, Grid } from '@mantine/core'
 import { useState } from 'react'
-import { DragDropContext, Droppable } from 'react-beautiful-dnd'
+import { DragDropContext, Droppable, DropResult } from 'react-beautiful-dnd'
 import LetterBox from '../components/LetterBox'
 import CheckBoardRequestData, {
   AffectedRowOrColumn,
@@ -9,6 +9,10 @@ import {
   findAffectedColumn,
   findAffectedRow,
 } from '../utils/GameBoard/findAffectedRowOrColumn'
+import {
+  findColumnPosition,
+  findRowPosition,
+} from '../utils/GameBoard/findRoworColumnPosition'
 
 import validateBoard from '../utils/validateBoard'
 
@@ -35,8 +39,6 @@ const useStyles = createStyles(() => ({
   },
 }))
 
-const cellIsPartOfValidWord = (index: number) => {}
-
 const submitMove = async ({
   gameID,
   userID,
@@ -45,32 +47,66 @@ const submitMove = async ({
   column,
 }: CheckBoardRequestData) => {
   const boardData: CheckBoardRequestData = {
-    // Hent GameID
     gameID: gameID,
-    // Hent userID
     userID: userID,
-    // Hent hele brettet
     board: board,
     row: {
-      // Hentet påvirket rad
       data: row.data,
-      // Hent hvilken rad det var
       positionIndex: row.positionIndex,
-      // Hent hvor i raden endringen skjedde
       differentIndex: row.differentIndex,
     },
     column: {
-      // Hentet påvirket kolonne
       data: column.data,
-      // Hent hvilken kolonne det var
       positionIndex: column.positionIndex,
-      // Hen hvor i kolonnen endringen skjedde
       differentIndex: column.differentIndex,
     },
   }
 
   const r = await validateBoard(boardData)
   console.log(r)
+}
+
+type rowOrColPosition = {
+  positionIndex: Number
+  differenceIndex: Number
+}
+
+const isPartOfValidWord = (position: rowOrColPosition, validWords: Object) => {
+  for (const [key, value] of Object.entries(validWords)) {
+    if (Number(key) === position.positionIndex) {
+      if (
+        position.differenceIndex >= value[0] &&
+        position.differenceIndex < value[1]
+      ) {
+        return true
+      }
+    }
+  }
+  return false
+}
+
+const colorCellGreen = (
+  index: number,
+  boardSize: number,
+  rowValidWords: object,
+  columnValidWords: object
+) => {
+  if (rowValidWords) {
+    // Rowposition = { positionIndex, differenceIndex }
+    const rowPosition = findRowPosition({ index, boardSize })
+    if (isPartOfValidWord(rowPosition, rowValidWords)) {
+      return 'green'
+    }
+  }
+
+  if (columnValidWords) {
+    const colPosition = findColumnPosition({ index, boardSize })
+    if (isPartOfValidWord(colPosition, columnValidWords)) {
+      return 'green'
+    }
+  }
+
+  return 'white'
 }
 
 interface IGameBoard {
@@ -118,28 +154,25 @@ const GameBoard = ({
     return result
   }
 
-  // TODO: send update gameboard to Firebase
-  // TODO: either choose a new letter or get a message to wait for the other player to do a move
-  const onDragEnd = (result: any) => {
+  const onDragEnd = (result: DropResult) => {
     if (
       !result.destination ||
       result.destination.droppableId === 'letterStartBox'
     ) {
       return
     }
-    console.log(result)
-    const droppableID = Number(result.destination.droppableId)
-    const newBoard: string[] = addLetter(board, droppableID)
+    const index = Number(result.destination.droppableId)
+    const newBoard: string[] = addLetter(board, index)
 
     const row: AffectedRowOrColumn = findAffectedRow({
       boardSize,
-      index: droppableID,
+      index: index,
       newBoard,
     })
 
     const column: AffectedRowOrColumn = findAffectedColumn({
       boardSize,
-      index: droppableID,
+      index: index,
       newBoard,
     })
 
@@ -175,7 +208,19 @@ const GameBoard = ({
                     </Droppable>
                   )}
                   {cellValue.length !== 0 && (
-                    <Box className={classes.cell}>{cellValue}</Box>
+                    <Box
+                      className={classes.cell}
+                      style={{
+                        backgroundColor: colorCellGreen(
+                          index,
+                          boardSize,
+                          rowValidWords,
+                          columnValidWords
+                        ),
+                      }}
+                    >
+                      {cellValue}
+                    </Box>
                   )}
                 </>
               </Grid.Col>

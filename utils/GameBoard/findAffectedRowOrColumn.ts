@@ -1,3 +1,5 @@
+import { findColumnPosition, findRowPosition } from './findRoworColumnPosition'
+
 interface IfindAffectedRowOrColumn {
   boardSize: number
   index: number
@@ -9,10 +11,12 @@ export const findAffectedRow = ({
   index,
   newBoard,
 }: IfindAffectedRowOrColumn) => {
-  // Store affected row (0 is first row)
-  const positionIndex = Math.floor(index / boardSize)
-  // Store position of changed cell
-  const differenceIndex = index % boardSize
+  // Find row position
+  const { positionIndex, differenceIndex } = findRowPosition({
+    index,
+    boardSize,
+  })
+
   // Extract data
   const data = newBoard.slice(
     positionIndex * boardSize,
@@ -31,10 +35,11 @@ export const findAffectedColumn = ({
   index,
   newBoard,
 }: IfindAffectedRowOrColumn) => {
-  // Store affected column (0 is first column)
-  const positionIndex = index % boardSize
-  // Store position of changed cell
-  const differenceIndex = Math.floor(index / boardSize)
+  // Find col position
+  const { positionIndex, differenceIndex } = findColumnPosition({
+    index,
+    boardSize,
+  })
 
   // Extract data
   const data: string[] = []
