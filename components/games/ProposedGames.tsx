@@ -1,4 +1,3 @@
-import { Group } from '@mantine/core'
 import {
   collection,
   doc,
@@ -7,7 +6,6 @@ import {
   query,
   where,
 } from 'firebase/firestore'
-import React from 'react'
 import { useCollection, useDocument } from 'react-firebase-hooks/firestore'
 import firebase from '../../firebase/clientApp'
 import gamesConverter from '../../firebase/converters/gamesConverter'

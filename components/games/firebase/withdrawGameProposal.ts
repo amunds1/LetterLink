@@ -1,4 +1,4 @@
-import { DocumentReference, DocumentData } from 'firebase/firestore'
+import { DocumentData, DocumentReference } from 'firebase/firestore'
 import rejectProposedGame from './rejectProposedGame'
 
 interface IWidthdrawGameProposal {

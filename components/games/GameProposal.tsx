@@ -1,4 +1,4 @@
-import { Button, Card, Group, Badge, Center, Avatar } from '@mantine/core'
+import { Avatar, Badge, Button, Card, Center, Group } from '@mantine/core'
 import { doc } from 'firebase/firestore'
 import { useEffect, useState } from 'react'
 import { db } from '../../firebase/clientApp'
