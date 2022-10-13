@@ -69,7 +69,7 @@ const Games = () => {
         <Stack style={{ width: '100%' }}>
           <Stack className={classes.center} style={{ width: '100%' }}>
             <ProposedGames userUID={userAuthData.uid} />
-            {games && <ActiveGames games={games} />}
+            {games && <ActiveGames games={games} userUID={userAuthData.uid} />}
           </Stack>
 
           <Link href="/game/new">
