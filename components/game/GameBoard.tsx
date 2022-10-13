@@ -8,11 +8,11 @@ import CheckBoardRequestData, {
 import {
   findAffectedColumn,
   findAffectedRow,
-} from '../../utils/GameBoard/findAffectedRowOrColumn'
+} from '../../utils/game/findAffectedRowOrColumn'
 import {
   findColumnPosition,
   findRowPosition,
-} from '../../utils/GameBoard/findRoworColumnPosition'
+} from '../../utils/game/findRoworColumnPosition'
 
 import validateBoard from '../../utils/validateBoard'
 
