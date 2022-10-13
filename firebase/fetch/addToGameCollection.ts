@@ -19,6 +19,7 @@ const addGameToCollection = async (
   const userDocRef = doc(db, `users/${userDocID}`)
   const oponentDocRef = doc(db, `users/${oponentDocID}`)
 
+  // Path: games (collection)
   const docRef = await addDoc(
     collection(db, 'games').withConverter(gamesConverter),
     {
@@ -34,6 +35,7 @@ const addGameToCollection = async (
   // Get ID of newly created game document
   const gameID = docRef.id
 
+  // Add boardData to player subcollection inside game document, for the first player
   gameID &&
     userDocID &&
     (await setDoc(
@@ -41,6 +43,7 @@ const addGameToCollection = async (
       generateGameConfig(boardSizeAsNumber)
     ))
 
+  // Add boardData to player subcollection inside game document, for the second player
   gameID &&
     oponentDocID &&
     (await setDoc(
@@ -48,8 +51,8 @@ const addGameToCollection = async (
       generateGameConfig(boardSizeAsNumber)
     ))
 
-  updateUserGamesList(docRef, userDocID)
-  updateUserGamesList(docRef, oponentDocID)
+  updateUserGamesList(docRef, userDocRef)
+  updateUserGamesList(docRef, userDocRef)
 }
 
 export default addGameToCollection

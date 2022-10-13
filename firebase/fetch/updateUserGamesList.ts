@@ -1,22 +1,18 @@
 import {
-  doc,
-  updateDoc,
   arrayUnion,
   DocumentData,
   DocumentReference,
+  updateDoc,
 } from 'firebase/firestore'
-import { db } from '../clientApp'
 
 /* 
   Update games array stored on users document with the new game ID
 */
 const updateUserGamesList = async (
   gameRef: DocumentReference<DocumentData>,
-  userDocID: string
+  userDocRef: DocumentReference<DocumentData>
 ) => {
-  const usersRef = doc(db, `users/${userDocID}`)
-
-  await updateDoc(usersRef, {
+  await updateDoc(userDocRef, {
     proposedGames: arrayUnion(gameRef),
   })
 }
