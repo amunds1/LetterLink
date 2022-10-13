@@ -8,13 +8,13 @@ import CheckBoardRequestData, {
 import {
   findAffectedColumn,
   findAffectedRow,
-} from '../../utils/game/findAffectedRowOrColumn'
+} from './utils/findAffectedRowOrColumn'
 import {
   findColumnPosition,
   findRowPosition,
-} from '../../utils/game/findRoworColumnPosition'
+} from './utils/findRoworColumnPosition'
 
-import validateBoard from '../../utils/game/validateBoard'
+import validateBoard from './utils/validateBoard'
 
 const useStyles = createStyles(() => ({
   grid: {
