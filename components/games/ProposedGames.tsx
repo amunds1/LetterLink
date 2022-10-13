@@ -1,4 +1,3 @@
-import { Group } from '@mantine/core'
 import {
   collection,
   doc,
@@ -7,7 +6,6 @@ import {
   query,
   where,
 } from 'firebase/firestore'
-import React from 'react'
 import { useCollection, useDocument } from 'react-firebase-hooks/firestore'
 import firebase from '../../firebase/clientApp'
 import gamesConverter from '../../firebase/converters/gamesConverter'
@@ -40,8 +38,9 @@ const ProposedGames = ({ userUID }: { userUID: string }) => {
   return (
     <>
       {games &&
+        userUID &&
         games.docs.map((game) => (
-          <GameProposal key={game.id} game={game.data()} />
+          <GameProposal key={game.id} game={game.data()} userUID={userUID} />
         ))}
     </>
   )

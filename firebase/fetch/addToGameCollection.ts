@@ -17,6 +17,7 @@ const addGameToCollection = async (userDocID: string, oponentDocID: string) => {
       playerTwo: oponentDocRef,
       isActive: false,
       proposedAt: Timestamp.now(),
+      proposedBy: userDocRef,
     }
   )
 

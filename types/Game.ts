@@ -7,6 +7,7 @@ interface Game {
   playerOne: DocumentReference<DocumentData>
   playerTwo: DocumentReference<DocumentData>
   proposedAt: Timestamp
+  proposedBy: DocumentReference<DocumentData>
 }
 
 export default Game
