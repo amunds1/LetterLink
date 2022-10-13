@@ -1,4 +1,4 @@
-import { Button, Select, SelectItem } from '@mantine/core'
+import { Button, Center, Radio, Select, SelectItem, Stack } from '@mantine/core'
 import { getAuth, onAuthStateChanged } from 'firebase/auth'
 import {
   collection,
@@ -45,11 +45,13 @@ interface INewGame {
 
 const NewGame = ({ oponentOptions }: INewGame) => {
   const [oponent, setOponent] = useState<string | null>(null)
+  const [boardSize, setBoardSize] = useState<string>()
 
   const [userAuthData, loading, error] = useAuthState(getAuth(firebase))
 
   return (
-    <>
+    <Stack>
+      {/* SELECT OPONENT */}
       <Select
         label="Select oponent"
         placeholder="Pick one oponent"
@@ -58,21 +60,37 @@ const NewGame = ({ oponentOptions }: INewGame) => {
         data={oponentOptions}
         searchable
         clearable
+        withAsterisk
       />
+
+      <Radio.Group
+        value={boardSize}
+        onChange={setBoardSize}
+        name="desiredBoardSize"
+        label="Select a board size"
+        description=""
+        withAsterisk
+      >
+        <Radio value={'3'} label="3 x 3" />
+        <Radio value={'6'} label="6 x 6" />
+        <Radio value={'9'} label="9 x 9" />
+      </Radio.Group>
+
       <Button
         disabled={!oponent}
         onClick={() => {
           oponent &&
             userAuthData &&
-            addGameToCollection(userAuthData.uid, oponent)
+            boardSize &&
+            addGameToCollection(userAuthData.uid, oponent, boardSize)
         }}
       >
-        Add new game
+        Propose game
       </Button>
       <Link href="/games">
         <Button>Back to games list</Button>
       </Link>
-    </>
+    </Stack>
   )
 }
 
