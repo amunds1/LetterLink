@@ -7,7 +7,7 @@ import {
   updateDoc,
 } from 'firebase/firestore'
 import { db } from '../../../firebase/clientApp'
-import { generateBoardDataDocRef } from '../../../firebase/fetch/addToGameCollection'
+import { generateBoardDataDocRef } from '../../game/firebase/addToGameCollection'
 
 interface IRejectProposedGame {
   userRef: DocumentReference<DocumentData>

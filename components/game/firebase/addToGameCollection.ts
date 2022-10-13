@@ -1,8 +1,8 @@
 import { addDoc, collection, doc, setDoc, Timestamp } from 'firebase/firestore'
-import { db } from '../clientApp'
-import generateGameConfig from '../../components/game/constants/BaseGameConfig'
-import gamesConverter from '../converters/gamesConverter'
-import updateUserGamesList from './updateUserGamesList'
+import { db } from '../../../firebase/clientApp'
+import generateGameConfig from '../constants/BaseGameConfig'
+import gamesConverter from '../../../firebase/converters/gamesConverter'
+import updateUserGamesList from '../../../firebase/fetch/updateUserGamesList'
 
 export const generateBoardDataDocRef = (gameID: string, userID: string) =>
   // Path: games (collection) -> gameID (document) -> userID (subcollection) -> boardData (document)
