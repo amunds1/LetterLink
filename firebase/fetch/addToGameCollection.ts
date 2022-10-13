@@ -1,6 +1,6 @@
 import { addDoc, collection, doc, setDoc, Timestamp } from 'firebase/firestore'
 import { db } from '../clientApp'
-import generateGameConfig from '../constants/BaseGameConfig'
+import generateGameConfig from '../../components/game/constants/BaseGameConfig'
 import gamesConverter from '../converters/gamesConverter'
 import updateUserGamesList from './updateUserGamesList'
 
