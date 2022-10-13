@@ -4,15 +4,20 @@ import generateGameConfig from '../constants/BaseGameConfig'
 import gamesConverter from '../converters/gamesConverter'
 import updateUserGamesList from './updateUserGamesList'
 
+const generateBoardDataDocRef = (gameID: string, userID: string) =>
+  // Path: games (collection) -> GameID (document) -> UserID (subcollection) -> boardData (document)
+  doc(db, 'games', gameID, userID, 'boardData')
+
 const addGameToCollection = async (
   userDocID: string,
   oponentDocID: string,
   boardSize: string
 ) => {
+  const boardSizeAsNumber = parseInt(boardSize)
+
   // Generate document refrences to document in users collection, of player and oponent
   const userDocRef = doc(db, `users/${userDocID}`)
   const oponentDocRef = doc(db, `users/${oponentDocID}`)
-  const boardSizeAsNumber = parseInt(boardSize)
 
   const docRef = await addDoc(
     collection(db, 'games').withConverter(gamesConverter),
@@ -29,37 +34,19 @@ const addGameToCollection = async (
   // Get ID of newly created game document
   const gameID = docRef.id
 
-  if (gameID && userDocID) {
-    const docRef = doc(
-      db,
-      // Collection
-      'games',
-      // Document (GameID)
-      gameID,
-      // Subcollection (Player ID)
-      userDocID,
-      // Document inside subcollection
-      'boardData'
-    )
+  gameID &&
+    userDocID &&
+    (await setDoc(
+      generateBoardDataDocRef(docRef.id, userDocID),
+      generateGameConfig(boardSizeAsNumber)
+    ))
 
-    await setDoc(docRef, generateGameConfig(boardSizeAsNumber))
-  }
-
-  if (gameID && oponentDocID) {
-    const docRef = doc(
-      db,
-      // Collection
-      'games',
-      // Document (GameID)
-      gameID,
-      // Subcollection (Player ID)
-      oponentDocID,
-      // Document inside subcollection
-      'boardData'
-    )
-
-    await setDoc(docRef, generateGameConfig(boardSizeAsNumber))
-  }
+  gameID &&
+    oponentDocID &&
+    (await setDoc(
+      generateBoardDataDocRef(docRef.id, oponentDocID),
+      generateGameConfig(boardSizeAsNumber)
+    ))
 
   updateUserGamesList(docRef, userDocID)
   updateUserGamesList(docRef, oponentDocID)
