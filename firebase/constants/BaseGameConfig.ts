@@ -4,11 +4,9 @@ interface IBaseGameConfig {
   colPoints: {}
 }
 
-const generateBoardList = (size: number) => Array(size).fill('')
-
 const generateGameConfig = (boardSize: number): IBaseGameConfig => {
   return {
-    board: generateBoardList(boardSize),
+    board: Array(boardSize).fill(''),
     rowPoints: {},
     colPoints: {},
   }
