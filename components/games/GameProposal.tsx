@@ -37,7 +37,7 @@ const GameProposal = ({ game, userUID }: IGameProposal) => {
   return (
     <Card>
       <Group position="apart" mt="md" mb="xs">
-        <Oponent game={game} />
+        <Oponent game={game} userUID={userUID} />
         <Badge color="orange" variant="light">
           {gameProposedTimeDelta.value} {gameProposedTimeDelta.label} ago
         </Badge>
