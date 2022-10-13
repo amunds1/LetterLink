@@ -3,7 +3,7 @@
   Might come useful if we chose to do SSR on [gameID.tsx], because then useDocument() hook will not work
 */
 import { doc, DocumentData, DocumentSnapshot, getDoc } from 'firebase/firestore'
-import { db } from '../clientApp'
+import { db } from '../../../firebase/clientApp'
 
 interface Game {
   player1: string

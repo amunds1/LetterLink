@@ -1,10 +1,11 @@
 /* 
   Validate board against /api/check endpoint
 */
-import CheckBoardRequestData from '../pages/api/types/CheckBoardRequestData'
-import CheckBoardResponseData from '../pages/api/types/CheckBoardResponseData'
+import CheckBoardRequestData from '../../../pages/api/types/CheckBoardRequestData'
+import CheckBoardResponseData from '../../../pages/api/types/CheckBoardResponseData'
 
 const validateBoard = async (validateBoardData: CheckBoardRequestData) => {
+  // TODO Replace localhost address
   const response = await fetch('http://localhost:3000/api/check', {
     method: 'POST',
     headers: {

@@ -1,7 +1,7 @@
 import { Center, createStyles, Text } from '@mantine/core'
 import { getAuth } from 'firebase/auth'
 import { useAuthState } from 'react-firebase-hooks/auth'
-import { AuthenticationForm } from '../components/SignIn/AuthenticationForm'
+import AuthenticationForm from '../components/signin/AuthenticationForm'
 import firebase from '../firebase/clientApp'
 
 const useStyles = createStyles(() => ({

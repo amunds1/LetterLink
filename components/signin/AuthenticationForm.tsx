@@ -18,7 +18,7 @@ import { getAuth } from 'firebase/auth'
 import { useSignInWithGithub } from 'react-firebase-hooks/auth'
 import firebase from '../../firebase/clientApp'
 
-export function AuthenticationForm(props: PaperProps) {
+export default function AuthenticationForm(props: PaperProps) {
   const [type, toggle] = useToggle(['login', 'register'])
   const [signInWithGithub] = useSignInWithGithub(getAuth(firebase))
   const form = useForm({

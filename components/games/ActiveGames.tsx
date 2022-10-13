@@ -2,7 +2,7 @@ import Link from 'next/link'
 import { Card, Group, Button, Text } from '@mantine/core'
 import { QuerySnapshot } from 'firebase/firestore'
 import Game from '../../types/Game'
-import Oponent from '../Oponent'
+import Oponent from './Oponent'
 
 interface IActiveGames {
   userUID: string

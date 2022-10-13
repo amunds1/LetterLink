@@ -1,7 +1,7 @@
 import { addDoc, collection, doc, setDoc, Timestamp } from 'firebase/firestore'
-import { db } from '../clientApp'
+import { db } from '../../../firebase/clientApp'
 import generateGameConfig from '../constants/BaseGameConfig'
-import gamesConverter from '../converters/gamesConverter'
+import gamesConverter from '../../../firebase/converters/gamesConverter'
 import updateUserGamesList from './updateUserGamesList'
 
 export const generateBoardDataDocRef = (gameID: string, userID: string) =>
