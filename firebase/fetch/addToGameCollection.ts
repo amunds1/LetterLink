@@ -5,7 +5,7 @@ import gamesConverter from '../converters/gamesConverter'
 import updateUserGamesList from './updateUserGamesList'
 
 const generateBoardDataDocRef = (gameID: string, userID: string) =>
-  // Path: games (collection) -> GameID (document) -> UserID (subcollection) -> boardData (document)
+  // Path: games (collection) -> gameID (document) -> userID (subcollection) -> boardData (document)
   doc(db, 'games', gameID, userID, 'boardData')
 
 const addGameToCollection = async (
