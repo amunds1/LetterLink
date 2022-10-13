@@ -14,7 +14,7 @@ import {
   findRowPosition,
 } from '../../utils/game/findRoworColumnPosition'
 
-import validateBoard from '../../utils/validateBoard'
+import validateBoard from '../../utils/game/validateBoard'
 
 const useStyles = createStyles(() => ({
   grid: {

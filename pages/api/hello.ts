@@ -1,6 +1,6 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import type { NextApiRequest, NextApiResponse } from 'next'
-import validateBoard from '../../utils/validateBoard'
+import validateBoard from '../../utils/game/validateBoard'
 import CheckBoardRequestData from './types/CheckBoardRequestData'
 
 type Data = {
