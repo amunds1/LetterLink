@@ -7,7 +7,7 @@ import { useDocument } from 'react-firebase-hooks/firestore'
 import firebase, { db } from '../../firebase/clientApp'
 import { useAuthState } from 'react-firebase-hooks/auth'
 import { getAuth } from 'firebase/auth'
-import GameBoard from '../../components/GameBoard'
+import GameBoard from '../../components/game/GameBoard'
 import boardDataConverter from '../../firebase/converters/boardDataConverter'
 
 const GameID = () => {

@@ -1,10 +1,10 @@
 import { Text } from '@mantine/core'
 import { doc, getFirestore } from 'firebase/firestore'
 import { useDocument } from 'react-firebase-hooks/firestore'
-import firebase from '../firebase/clientApp'
-import usersConverter from '../firebase/converters/userConverter'
-import Game from '../types/Game'
-import selectUserID from '../utils/selectUserID'
+import firebase from '../../firebase/clientApp'
+import usersConverter from '../../firebase/converters/userConverter'
+import Game from '../../types/Game'
+import selectUserID from '../../utils/selectUserID'
 
 interface IOponent {
   userUID: string
