@@ -40,8 +40,9 @@ const ProposedGames = ({ userUID }: { userUID: string }) => {
   return (
     <>
       {games &&
+        userUID &&
         games.docs.map((game) => (
-          <GameProposal key={game.id} game={game.data()} />
+          <GameProposal key={game.id} game={game.data()} userUID={userUID} />
         ))}
     </>
   )
