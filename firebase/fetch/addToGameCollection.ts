@@ -1,18 +1,23 @@
 import { addDoc, collection, doc, setDoc, Timestamp } from 'firebase/firestore'
 import { db } from '../clientApp'
-import BASE_GAME_CONFIG from '../constants/BaseGameConfig'
+import generateGameConfig from '../constants/BaseGameConfig'
 import gamesConverter from '../converters/gamesConverter'
 import updateUserGamesList from './updateUserGamesList'
 
-const addGameToCollection = async (userDocID: string, oponentDocID: string) => {
+const addGameToCollection = async (
+  userDocID: string,
+  oponentDocID: string,
+  boardSize: string
+) => {
   // Generate document refrences to document in users collection, of player and oponent
   const userDocRef = doc(db, `users/${userDocID}`)
   const oponentDocRef = doc(db, `users/${oponentDocID}`)
+  const boardSizeAsNumber = parseInt(boardSize)
 
   const docRef = await addDoc(
     collection(db, 'games').withConverter(gamesConverter),
     {
-      boardSize: 6,
+      boardSize: boardSizeAsNumber,
       playerOne: userDocRef,
       playerTwo: oponentDocRef,
       isActive: false,
@@ -37,7 +42,7 @@ const addGameToCollection = async (userDocID: string, oponentDocID: string) => {
       'boardData'
     )
 
-    await setDoc(docRef, BASE_GAME_CONFIG)
+    await setDoc(docRef, generateGameConfig(boardSizeAsNumber))
   }
 
   if (gameID && oponentDocID) {
@@ -53,7 +58,7 @@ const addGameToCollection = async (userDocID: string, oponentDocID: string) => {
       'boardData'
     )
 
-    await setDoc(docRef, BASE_GAME_CONFIG)
+    await setDoc(docRef, generateGameConfig(boardSizeAsNumber))
   }
 
   updateUserGamesList(docRef, userDocID)

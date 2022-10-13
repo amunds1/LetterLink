@@ -22,7 +22,7 @@ const ProposedGames = ({ userUID }: { userUID: string }) => {
   )
 
   // Return null if games array belonging to a user is empty, true otherwise
-  const hasProposedGames = user?.data()?.proposedGames.length! ? true : null
+  const hasProposedGames = user?.data()?.proposedGames?.length! ? true : null
 
   // Fetch games by proposedGames
   const [games, gamesLoading, gamesError] = useCollection(

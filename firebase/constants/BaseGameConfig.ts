@@ -6,10 +6,12 @@ interface IBaseGameConfig {
 
 const generateBoardList = (size: number) => Array(size).fill('')
 
-const BASE_GAME_CONFIG: IBaseGameConfig = {
-  board: generateBoardList(9),
-  rowPoints: {},
-  colPoints: {},
+const generateGameConfig = (boardSize: number): IBaseGameConfig => {
+  return {
+    board: generateBoardList(boardSize),
+    rowPoints: {},
+    colPoints: {},
+  }
 }
 
-export default BASE_GAME_CONFIG
+export default generateGameConfig
