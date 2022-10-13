@@ -4,7 +4,7 @@ import generateGameConfig from '../constants/BaseGameConfig'
 import gamesConverter from '../converters/gamesConverter'
 import updateUserGamesList from './updateUserGamesList'
 
-const generateBoardDataDocRef = (gameID: string, userID: string) =>
+export const generateBoardDataDocRef = (gameID: string, userID: string) =>
   // Path: games (collection) -> gameID (document) -> userID (subcollection) -> boardData (document)
   doc(db, 'games', gameID, userID, 'boardData')
 

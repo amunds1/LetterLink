@@ -7,6 +7,7 @@ import {
   updateDoc,
 } from 'firebase/firestore'
 import { db } from '../../../firebase/clientApp'
+import { generateBoardDataDocRef } from '../../../firebase/fetch/addToGameCollection'
 
 interface IRejectProposedGame {
   userRef: DocumentReference<DocumentData>
@@ -15,13 +16,6 @@ interface IRejectProposedGame {
 
 const rejectProposedGame = async ({ userRef, gameID }: IRejectProposedGame) => {
   const gameRef = doc(db, 'games', gameID)
-  const playerSubcollectionGameRef = doc(
-    db,
-    'games',
-    gameID,
-    userRef.id,
-    'boardData'
-  )
 
   // 1. Remove game refrence from proposedGames
   await updateDoc(userRef, {
@@ -29,7 +23,7 @@ const rejectProposedGame = async ({ userRef, gameID }: IRejectProposedGame) => {
   })
 
   // 2. Delete doc inside subcollection of game doc
-  await deleteDoc(playerSubcollectionGameRef)
+  await deleteDoc(generateBoardDataDocRef(gameID, userRef.id))
 
   // 3. Delete game doc
   await deleteDoc(gameRef)
