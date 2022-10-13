@@ -850,9 +850,9 @@
   version "4.0.2"
   resolved "https://registry.npmjs.org/@types/long/-/long-4.0.2.tgz"
 
-"@types/node@18.8.4", "@types/node@>=12.12.47", "@types/node@>=13.7.0":
-  version "18.8.4"
-  resolved "https://registry.npmjs.org/@types/node/-/node-18.8.4.tgz"
+"@types/node@18.8.5", "@types/node@>=12.12.47", "@types/node@>=13.7.0":
+  version "18.8.5"
+  resolved "https://registry.yarnpkg.com/@types/node/-/node-18.8.5.tgz#6a31f820c1077c3f8ce44f9e203e68a176e8f59e"
 
 "@types/parse-json@^4.0.0":
   version "4.0.0"
