@@ -4,7 +4,12 @@ import { QuerySnapshot } from 'firebase/firestore'
 import Game from '../../types/Game'
 import Oponent from '../Oponent'
 
-const ActiveGames = ({ games }: { games: QuerySnapshot<Game> | undefined }) => {
+interface IActiveGames {
+  userUID: string
+  games: QuerySnapshot<Game> | undefined
+}
+
+const ActiveGames = ({ games, userUID }: IActiveGames) => {
   return (
     <>
       {games &&
@@ -14,7 +19,7 @@ const ActiveGames = ({ games }: { games: QuerySnapshot<Game> | undefined }) => {
           return (
             <Card key={game.id} shadow="sm" p="lg" radius="md" withBorder>
               <Group position="apart" mt="md" mb="xs">
-                <Oponent game={gameData} />
+                <Oponent game={gameData} userUID={userUID} />
               </Group>
 
               <Text size="sm" color="dimmed">
