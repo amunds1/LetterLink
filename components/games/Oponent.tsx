@@ -4,7 +4,7 @@ import { useDocument } from 'react-firebase-hooks/firestore'
 import firebase from '../../firebase/clientApp'
 import usersConverter from '../../firebase/converters/userConverter'
 import Game from '../../types/Game'
-import selectUserID from '../../utils/selectUserID'
+import selectUserID from '../../utils/games/selectUserID'
 
 interface IOponent {
   userUID: string

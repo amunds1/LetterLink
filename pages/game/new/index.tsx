@@ -1,5 +1,5 @@
-import { Button, Center, Radio, Select, SelectItem, Stack } from '@mantine/core'
-import { getAuth, onAuthStateChanged } from 'firebase/auth'
+import { Button, Radio, Select, SelectItem, Stack } from '@mantine/core'
+import { getAuth } from 'firebase/auth'
 import {
   collection,
   documentId,
@@ -9,11 +9,11 @@ import {
 } from 'firebase/firestore'
 import { GetServerSideProps } from 'next'
 import Link from 'next/link'
-import React, { useState } from 'react'
+import { useState } from 'react'
 import { useAuthState } from 'react-firebase-hooks/auth'
 import firebase, { db } from '../../../firebase/clientApp'
-import addGameToCollection from '../../../firebase/fetch/addToGameCollection'
 import usersConverter from '../../../firebase/converters/userConverter'
+import addGameToCollection from '../../../firebase/fetch/addToGameCollection'
 
 export const getServerSideProps: GetServerSideProps = async () => {
   /*
