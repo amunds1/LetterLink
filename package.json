@@ -16,7 +16,7 @@
     "@mantine/ds": "^5.5.4",
     "@mantine/hooks": "^5.3.3",
     "@mantine/next": "^5.5.5",
-    "@tabler/icons": "^1.103.0",
+    "@tabler/icons": "^1.104.0",
     "firebase": "^9.12.1",
     "firebaseui": "^6.0.1",
     "next": "12.3.1",
