@@ -1,9 +1,12 @@
 import { Center, createStyles, Text } from '@mantine/core'
+import { doc, getDoc } from 'firebase/firestore'
 import { GetServerSidePropsContext, InferGetServerSidePropsType } from 'next'
 import Link from 'next/link'
 import nookies from 'nookies'
 import Statistics from '../components/profile/Statistics'
 import { firebaseAdmin } from '../firebase/admin'
+import { db } from '../firebase/clientApp'
+import usersConverter from '../firebase/converters/userConverter'
 import User from '../types/User'
 
 const useStyles = createStyles(() => ({
@@ -16,17 +19,10 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
     const token = await firebaseAdmin.auth().verifyIdToken(cookies.token)
 
     // User is authenticated
-    const { uid, email } = token
+    const { uid } = token
 
-    const userDoc = (
-      await firebaseAdmin.firestore().doc(`users/${uid}`).get()
-    ).data()
-
-    const userData: User = {
-      ...userDoc,
-    }
-
-    console.log('UserData', userData)
+    const userDocRef = doc(db, `users/${uid}`).withConverter(usersConverter)
+    const userData = (await getDoc(userDocRef)).data()
 
     return {
       props: {
