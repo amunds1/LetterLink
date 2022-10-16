@@ -24,23 +24,20 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
     const userDocRef = doc(db, `users/${uid}`).withConverter(usersConverter)
     const userData = (await getDoc(userDocRef)).data()
 
+    // Can not directly pass userData because proposedGames and games are not serializable
+
     return {
       props: {
-        userData: userData,
+        userData: { name: userData?.name },
       },
     }
   } catch (err) {
-    // either the `token` cookie didn't exist
-    // or token verification failed
-    // either way: redirect to the login page
-    // ctx.res.writeHead(302, { Location: '/signin' })
-    // ctx.res.end()
-
-    // `as never` prevents inference issues
-    // with InferGetServerSidePropsType.
-    // The props returned here don't matter because we've
-    // already redirected the user.
-    return { props: {} as never }
+    return {
+      redirect: {
+        destination: '/signin',
+        permanent: false,
+      },
+    }
   }
 }
 
