@@ -1,5 +1,4 @@
 import { Button, Radio, Select, SelectItem, Stack } from '@mantine/core'
-import { getAuth } from 'firebase/auth'
 import {
   collection,
   documentId,
@@ -14,20 +13,15 @@ import {
 } from 'next'
 import Link from 'next/link'
 import { useState } from 'react'
-import { useAuthState } from 'react-firebase-hooks/auth'
-import firebase, { db } from '../../../firebase/clientApp'
-import usersConverter from '../../../firebase/converters/userConverter'
 import addGameToCollection from '../../../components/game/firebase/addToGameCollection'
-import { firebaseAdmin } from '../../../firebase/admin'
-import nookies from 'nookies'
+import { db } from '../../../firebase/clientApp'
+import usersConverter from '../../../firebase/converters/userConverter'
+import fetchUID from '../../../firebase/fetchUID'
 
 export const getServerSideProps: GetServerSideProps = async (
   ctx: GetServerSidePropsContext
 ) => {
-  // Retrieve uid of authenticated user
-  const cookies = nookies.get(ctx)
-  const token = await firebaseAdmin.auth().verifyIdToken(cookies.token)
-  const { uid } = token
+  const uid = await fetchUID(ctx)
 
   // Retrieve user documents of all users expect the authenticated one
   const q = query(
@@ -47,10 +41,6 @@ export const getServerSideProps: GetServerSideProps = async (
   return {
     props: { oponentOptions: options, uid: uid },
   }
-}
-
-interface INewGame {
-  oponentOptions: (string | SelectItem)[]
 }
 
 const NewGame = (
