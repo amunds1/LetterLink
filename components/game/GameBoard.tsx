@@ -3,6 +3,7 @@ import { useState } from 'react'
 import { DragDropContext, Droppable, DropResult } from 'react-beautiful-dnd'
 import { AffectedRowOrColumn } from '../../pages/api/types/CheckBoardRequestData'
 import LetterBox from './LetterBox'
+import IGameBoard from './types/IGameBoard'
 import colorCellGreen from './utils/colorCellGreen'
 import {
   findAffectedColumn,
@@ -32,27 +33,6 @@ const useStyles = createStyles(() => ({
     padding: '50px',
   },
 }))
-
-interface IGameBoard {
-  grid: {
-    size: number
-    values: string[]
-  }
-  gameID: string
-  userID: string
-  colPoints: {
-    [key: number]: number
-  }
-  rowPoints: {
-    [key: number]: number
-  }
-  columnValidWords: {
-    [key: number]: string[]
-  }
-  rowValidWords: {
-    [key: number]: string[]
-  }
-}
 
 const GameBoard = ({
   grid,
