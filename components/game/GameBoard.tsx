@@ -15,6 +15,7 @@ import {
 } from './utils/findRoworColumnPosition'
 
 import validateBoard from './utils/validateBoard'
+import selectUserID from '../games/utils/selectUserID'
 
 const useStyles = createStyles(() => ({
   grid: {
@@ -42,6 +43,7 @@ const useStyles = createStyles(() => ({
 const submitMove = async ({
   gameID,
   userID,
+  oponentID,
   board,
   row,
   column,
@@ -49,6 +51,7 @@ const submitMove = async ({
   const boardData: CheckBoardRequestData = {
     gameID: gameID,
     userID: userID,
+    oponentID: oponentID,
     board: board,
     row: {
       data: row.data,
@@ -144,6 +147,8 @@ const GameBoard = ({
   const [board, setBoard] = useState<string[]>(grid.values)
   const [affectedRow, setAffectedRow] = useState<AffectedRowOrColumn>()
   const [affectedColumn, setAffectedColumn] = useState<AffectedRowOrColumn>()
+  // FIXME Replace with actual oponentID
+  const oponentID = '123'
 
   const [chosenLetter, setChosenLetter] = useState<string>('I')
 
@@ -255,6 +260,7 @@ const GameBoard = ({
           submitMove({
             gameID,
             userID,
+            oponentID,
             board,
             row: affectedRow,
             column: affectedColumn,

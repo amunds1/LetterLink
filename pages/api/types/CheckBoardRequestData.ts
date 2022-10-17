@@ -1,6 +1,7 @@
 type CheckBoardRequestData = {
   gameID: string
   userID: string
+  oponentID: string
   board: string[]
   row: AffectedRowOrColumn
   column: AffectedRowOrColumn
