@@ -7,6 +7,7 @@ import { useEffect, useState } from 'react'
 import { useAuthState } from 'react-firebase-hooks/auth'
 import { useDocument } from 'react-firebase-hooks/firestore'
 import GameBoard from '../../components/game/GameBoard'
+import Points from '../../components/game/Points'
 import firebase from '../../firebase/clientApp'
 import boardDataConverter from '../../firebase/converters/boardDataConverter'
 
@@ -43,6 +44,10 @@ const GameID = () => {
     userAuthData && (
       <div>
         <p>Gameboard {data.board}</p>
+        <Points
+          columnPoints={data.columnPoints}
+          rowPoints={data.rowPoints}
+        ></Points>
         <GameBoard
           grid={{
             size: 3,
@@ -52,8 +57,6 @@ const GameID = () => {
           userID={userAuthData.uid}
           rowValidWords={data.rowValidWords}
           columnValidWords={data.columnValidWords}
-          colPoints={data.colPoints}
-          rowPoints={data.rowPoints}
         />
 
         <Link href="/games">

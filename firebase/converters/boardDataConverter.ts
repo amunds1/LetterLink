@@ -20,7 +20,7 @@ const boardDataConverter: FirestoreDataConverter<BoardData> = {
     const data = snapshot.data(options)
 
     return {
-      colPoints: data.colPoints,
+      columnPoints: data.columnPoints,
       rowPoints: data.rowPoints,
       board: data.board,
       rowValidWords: data.rowValidWords,
