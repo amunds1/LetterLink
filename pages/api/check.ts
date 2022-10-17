@@ -63,8 +63,8 @@ export default async function handler(
 
     updateColumnPoints(boardData, validWordInColumn)
     updateValidColumnWords(boardData, validWordInColumn)
-    updateBoard(boardData)
   }
+  updateBoard(boardData)
 
   // Set next turn to oponent
   updateTurn(boardData.gameID, boardData.oponentID)

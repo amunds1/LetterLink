@@ -1,10 +1,10 @@
 import wordIsValid from './wordIsValid'
 
-const checkRowOrColumn = async (rowData: string[], differentIndex: number) => {
+const checkRowOrColumn = async (data: string[], differentIndex: number) => {
   // In reverse, check words against Ordbok-API
   // Only checks words up to the differentIndex
-  for (let k = rowData.length; k > differentIndex; k--) {
-    const word = rowData.slice(0, k).join('')
+  for (let k = data.length; k > differentIndex; k--) {
+    const word = data.slice(0, k).join('')
 
     const result = await wordIsValid(word)
 
