@@ -1,19 +1,15 @@
-// firebaseAdmin.ts
-
 import * as firebaseAdmin from 'firebase-admin'
-
-// get this JSON from the Firebase board
-// you can also store the values in environment variables
-import serviceAccount from '../serviceAccountKey.json'
 
 if (!firebaseAdmin.apps.length) {
   firebaseAdmin.initializeApp({
     credential: firebaseAdmin.credential.cert({
-      privateKey: serviceAccount.private_key,
-      clientEmail: serviceAccount.client_email,
-      projectId: serviceAccount.project_id,
+      privateKey: process.env.NEXT_PUBLIC_FIREBASE_PRIVATE_KEY
+        ? process.env.NEXT_PUBLIC_FIREBASE_PRIVATE_KEY.replace(/\\n/g, '\n')
+        : undefined,
+      clientEmail: process.env.NEXT_PUBLIC_FIREBASE_CLIENT_EMAIL,
+      projectId: process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID,
     }),
-    databaseURL: 'https://masterthesis-5x5game.firebaseio.com',
+    databaseURL: process.env.NEXT_PUBLIC_FIREBASE_DATABASE_URL,
   })
 }
 
