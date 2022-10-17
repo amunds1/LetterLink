@@ -4,6 +4,8 @@ import { GetServerSideProps, GetServerSidePropsContext } from 'next'
 import Link from 'next/link'
 import GameBoard from '../../components/game/GameBoard'
 import { db } from '../../firebase/clientApp'
+import Points from '../../components/game/Points'
+import firebase from '../../firebase/clientApp'
 import boardDataConverter from '../../firebase/converters/boardDataConverter'
 import fetchUID from '../../firebase/fetchUID'
 import BoardData from '../../types/BoardData'
@@ -37,18 +39,20 @@ const GameID = (props: IGameID) => {
     boardData &&
     uid && (
       <div>
-        <p>Gameboard {boardData.board}</p>
+        <p>Gameboard {data.board}</p>
+        <Points
+          columnPoints={data.columnPoints}
+          rowPoints={data.rowPoints}
+        ></Points>
         <GameBoard
           grid={{
             size: 3,
             values: boardData.board,
           }}
           gameID={gameID}
-          userID={uid}
-          rowValidWords={boardData.rowValidWords}
-          columnValidWords={boardData.columnValidWords}
-          colPoints={boardData.colPoints}
-          rowPoints={boardData.rowPoints}
+          userID={userAuthData.uid}
+          rowValidWords={data.rowValidWords}
+          columnValidWords={data.columnValidWords}
         />
 
         <Link href="/games">

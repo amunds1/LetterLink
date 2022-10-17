@@ -1,14 +1,14 @@
 interface IBaseGameConfig {
   board: string[]
   rowPoints: {}
-  colPoints: {}
+  columnPoints: {}
 }
 
 const generateGameConfig = (boardSize: number): IBaseGameConfig => {
   return {
     board: Array(boardSize).fill(''),
     rowPoints: {},
-    colPoints: {},
+    columnPoints: {},
   }
 }
 
