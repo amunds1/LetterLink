@@ -1,10 +1,8 @@
 import { Box, Button, Container, createStyles, Grid } from '@mantine/core'
 import { useState } from 'react'
 import { DragDropContext, Droppable, DropResult } from 'react-beautiful-dnd'
+import { AffectedRowOrColumn } from '../../pages/api/types/CheckBoardRequestData'
 import LetterBox from './LetterBox'
-import CheckBoardRequestData, {
-  AffectedRowOrColumn,
-} from '../../pages/api/types/CheckBoardRequestData'
 import {
   findAffectedColumn,
   findAffectedRow,
@@ -13,8 +11,6 @@ import {
   findColumnPosition,
   findRowPosition,
 } from './utils/findRoworColumnPosition'
-
-import validateBoard from './utils/validateBoard'
 import submitMove from './utils/submitMove'
 
 const useStyles = createStyles(() => ({
