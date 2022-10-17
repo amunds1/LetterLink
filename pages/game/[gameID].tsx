@@ -1,4 +1,4 @@
-import { Button } from '@mantine/core'
+import { Button, Text } from '@mantine/core'
 import { getAuth } from 'firebase/auth'
 import { doc, getFirestore } from 'firebase/firestore'
 import Link from 'next/link'
@@ -6,9 +6,12 @@ import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
 import { useAuthState } from 'react-firebase-hooks/auth'
 import { useDocument } from 'react-firebase-hooks/firestore'
+import yourTurn from '../../components/game/firebase/yourTurn'
 import GameBoard from '../../components/game/GameBoard'
 import firebase from '../../firebase/clientApp'
 import boardDataConverter from '../../firebase/converters/boardDataConverter'
+import gamesConverter from '../../firebase/converters/gamesConverter'
+import Game from '../../types/Game'
 
 const GameID = () => {
   const router = useRouter()
@@ -35,14 +38,28 @@ const GameID = () => {
     }
   )
 
+  const [game, gameLoading, gameError] = useDocument(
+    doc(getFirestore(firebase), `games/${gameID}`).withConverter(
+      gamesConverter
+    ),
+    {
+      snapshotListenOptions: { includeMetadataChanges: true },
+    }
+  )
+
   const data = value?.data()
+  const gameData = game?.data()
 
   return (
     data &&
     gameID &&
+    gameData &&
     userAuthData && (
       <div>
-        <p>Gameboard {data.board}</p>
+        <Text>
+          Your turn: {yourTurn(gameData, userAuthData.uid).toString()}
+        </Text>
+
         <GameBoard
           grid={{
             size: 3,
