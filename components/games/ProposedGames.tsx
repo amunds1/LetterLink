@@ -1,31 +1,30 @@
-import {
-  collection,
-  doc,
-  documentId,
-  getFirestore,
-  query,
-  where,
-} from 'firebase/firestore'
-import { useCollection, useDocument } from 'react-firebase-hooks/firestore'
-import firebase from '../../firebase/clientApp'
-import gamesConverter from '../../firebase/converters/gamesConverter'
-import usersConverter from '../../firebase/converters/userConverter'
+import { QuerySnapshot } from 'firebase/firestore'
+import Game from '../../types/Game'
 import GameProposal from './GameProposal'
 
-const ProposedGames = ({ userUID }: { userUID: string }) => {
+interface IProposedGames {
+  userUID: string
+  games: QuerySnapshot<Game> | undefined
+}
+
+const ProposedGames = (props: IProposedGames) => {
+  const { userUID, games } = props
+
+  console.log('Gamesss', games)
+
   // Fetch proposedGames from user
-  const [user, userLoading, userError] = useDocument(
+  /* const [user, userLoading, userError] = useDocument(
     doc(getFirestore(firebase), 'users', userUID).withConverter(usersConverter),
     {
       snapshotListenOptions: { includeMetadataChanges: true },
     }
-  )
+  ) */
 
   // Return null if games array belonging to a user is empty, true otherwise
-  const hasProposedGames = user?.data()?.proposedGames?.length! ? true : null
+  //const hasProposedGames = user?.data()?.proposedGames?.length! ? true : null
 
   // Fetch games by proposedGames
-  const [games, gamesLoading, gamesError] = useCollection(
+  /* const [games, gamesLoading, gamesError] = useCollection(
     hasProposedGames &&
       user &&
       user.data() &&
@@ -33,7 +32,7 @@ const ProposedGames = ({ userUID }: { userUID: string }) => {
         collection(getFirestore(firebase), 'games'),
         where(documentId(), 'in', user.data()?.proposedGames)
       ).withConverter(gamesConverter)
-  )
+  ) */
 
   return (
     <>

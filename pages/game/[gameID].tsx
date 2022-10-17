@@ -1,59 +1,54 @@
 import { Button } from '@mantine/core'
-import { getAuth } from 'firebase/auth'
-import { doc, getFirestore } from 'firebase/firestore'
+import { doc, getDoc } from 'firebase/firestore'
+import { GetServerSideProps, GetServerSidePropsContext } from 'next'
 import Link from 'next/link'
-import { useRouter } from 'next/router'
-import { useEffect, useState } from 'react'
-import { useAuthState } from 'react-firebase-hooks/auth'
-import { useDocument } from 'react-firebase-hooks/firestore'
 import GameBoard from '../../components/game/GameBoard'
-import firebase from '../../firebase/clientApp'
+import { db } from '../../firebase/clientApp'
 import boardDataConverter from '../../firebase/converters/boardDataConverter'
+import fetchUID from '../../firebase/fetchUID'
+import BoardData from '../../types/BoardData'
 
-const GameID = () => {
-  const router = useRouter()
-  const [gameID, setgameID] = useState<string>()
+export const getServerSideProps: GetServerSideProps = async (
+  ctx: GetServerSidePropsContext
+) => {
+  const uid = await fetchUID(ctx)
+  const gameID = ctx.query.gameID
 
-  const [userAuthData, loadingUserAuthData, userAuthDataError] = useAuthState(
-    getAuth(firebase)
+  const boardDocRef = doc(db, `games/${gameID}/${uid}/boardData`).withConverter(
+    boardDataConverter
   )
+  const boardData = (await getDoc(boardDocRef)).data()
 
-  useEffect(() => {
-    if (!router.isReady) return
+  return {
+    props: { uid: uid, gameID: gameID, boardData: boardData },
+  }
+}
 
-    const { gameID } = router.query
-    setgameID(gameID as string)
-  }, [gameID, router.isReady, router.query])
+interface IGameID {
+  uid: string
+  gameID: string
+  boardData: BoardData
+}
 
-  const [value, loading, error] = useDocument(
-    doc(
-      getFirestore(firebase),
-      `games/${gameID}/${userAuthData?.uid}/boardData`
-    ).withConverter(boardDataConverter),
-    {
-      snapshotListenOptions: { includeMetadataChanges: true },
-    }
-  )
-
-  const data = value?.data()
+const GameID = (props: IGameID) => {
+  const { uid, gameID, boardData } = props
 
   return (
-    data &&
-    gameID &&
-    userAuthData && (
+    boardData &&
+    uid && (
       <div>
-        <p>Gameboard {data.board}</p>
+        <p>Gameboard {boardData.board}</p>
         <GameBoard
           grid={{
             size: 3,
-            values: data.board,
+            values: boardData.board,
           }}
           gameID={gameID}
-          userID={userAuthData.uid}
-          rowValidWords={data.rowValidWords}
-          columnValidWords={data.columnValidWords}
-          colPoints={data.colPoints}
-          rowPoints={data.rowPoints}
+          userID={uid}
+          rowValidWords={boardData.rowValidWords}
+          columnValidWords={boardData.columnValidWords}
+          colPoints={boardData.colPoints}
+          rowPoints={boardData.rowPoints}
         />
 
         <Link href="/games">
