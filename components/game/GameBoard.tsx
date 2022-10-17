@@ -15,6 +15,7 @@ import {
 } from './utils/findRoworColumnPosition'
 
 import validateBoard from './utils/validateBoard'
+import submitMove from './utils/submitMove'
 
 const useStyles = createStyles(() => ({
   grid: {
@@ -85,35 +86,6 @@ const colorCellGreen = (
   }
 
   return 'white'
-}
-
-const submitMove = async ({
-  gameID,
-  userID,
-  board,
-  row,
-  column,
-}: CheckBoardRequestData) => {
-  console.log('Board')
-  console.log(board)
-  const boardData: CheckBoardRequestData = {
-    gameID: gameID,
-    userID: userID,
-    board: board,
-    row: {
-      data: row.data,
-      positionIndex: row.positionIndex,
-      differentIndex: row.differentIndex,
-    },
-    column: {
-      data: column.data,
-      positionIndex: column.positionIndex,
-      differentIndex: column.differentIndex,
-    },
-  }
-
-  const r = await validateBoard(boardData)
-  console.log(r)
 }
 
 interface IGameBoard {
