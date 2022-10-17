@@ -5,7 +5,6 @@ import Link from 'next/link'
 import GameBoard from '../../components/game/GameBoard'
 import { db } from '../../firebase/clientApp'
 import Points from '../../components/game/Points'
-import firebase from '../../firebase/clientApp'
 import boardDataConverter from '../../firebase/converters/boardDataConverter'
 import fetchUID from '../../firebase/fetchUID'
 import BoardData from '../../types/BoardData'
@@ -39,10 +38,10 @@ const GameID = (props: IGameID) => {
     boardData &&
     uid && (
       <div>
-        <p>Gameboard {data.board}</p>
+        <p>Gameboard {boardData.board}</p>
         <Points
-          columnPoints={data.columnPoints}
-          rowPoints={data.rowPoints}
+          columnPoints={boardData.columnPoints}
+          rowPoints={boardData.rowPoints}
         ></Points>
         <GameBoard
           grid={{
@@ -50,9 +49,9 @@ const GameID = (props: IGameID) => {
             values: boardData.board,
           }}
           gameID={gameID}
-          userID={userAuthData.uid}
-          rowValidWords={data.rowValidWords}
-          columnValidWords={data.columnValidWords}
+          userID={uid}
+          rowValidWords={boardData.rowValidWords}
+          columnValidWords={boardData.columnValidWords}
         />
 
         <Link href="/games">
