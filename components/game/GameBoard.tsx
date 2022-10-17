@@ -1,20 +1,15 @@
 import { Box, Button, Container, createStyles, Grid } from '@mantine/core'
 import { useState } from 'react'
 import { DragDropContext, Droppable, DropResult } from 'react-beautiful-dnd'
+import { AffectedRowOrColumn } from '../../pages/api/types/CheckBoardRequestData'
 import LetterBox from './LetterBox'
-import CheckBoardRequestData, {
-  AffectedRowOrColumn,
-} from '../../pages/api/types/CheckBoardRequestData'
+import IGameBoard from './types/IGameBoard'
+import colorCellGreen from './utils/colorCellGreen'
 import {
   findAffectedColumn,
   findAffectedRow,
 } from './utils/findAffectedRowOrColumn'
-import {
-  findColumnPosition,
-  findRowPosition,
-} from './utils/findRoworColumnPosition'
-
-import validateBoard from './utils/validateBoard'
+import submitMove from './utils/submitMove'
 
 const useStyles = createStyles(() => ({
   grid: {
@@ -38,98 +33,6 @@ const useStyles = createStyles(() => ({
     padding: '50px',
   },
 }))
-
-type rowOrColPosition = {
-  positionIndex: Number
-  differenceIndex: Number
-}
-
-const isPartOfValidWord = (position: rowOrColPosition, validWords: Object) => {
-  for (const [key, value] of Object.entries(validWords)) {
-    if (Number(key) === position.positionIndex) {
-      if (
-        position.differenceIndex >= value[0] &&
-        position.differenceIndex < value[1]
-      ) {
-        return true
-      }
-    }
-  }
-  return false
-}
-
-const colorCellGreen = (
-  index: number,
-  boardSize: number,
-  rowValidWords: object,
-  columnValidWords: object
-) => {
-  if (rowValidWords) {
-    // rowPosition = { positionIndex, differenceIndex }
-    // positionIndex -> rownumber
-    // differenceIndex -> position in row
-    const rowPosition = findRowPosition({ index, boardSize })
-    if (isPartOfValidWord(rowPosition, rowValidWords)) {
-      return 'green'
-    }
-  }
-
-  if (columnValidWords) {
-    // colPosition = { positionIndex, differenceIndex }
-    // positionIndex -> colnumber
-    // differenceIndex -> position in col
-    const colPosition = findColumnPosition({ index, boardSize })
-    if (isPartOfValidWord(colPosition, columnValidWords)) {
-      return 'green'
-    }
-  }
-
-  return 'white'
-}
-
-const submitMove = async ({
-  gameID,
-  userID,
-  board,
-  row,
-  column,
-}: CheckBoardRequestData) => {
-  console.log('Board')
-  console.log(board)
-  const boardData: CheckBoardRequestData = {
-    gameID: gameID,
-    userID: userID,
-    board: board,
-    row: {
-      data: row.data,
-      positionIndex: row.positionIndex,
-      differentIndex: row.differentIndex,
-    },
-    column: {
-      data: column.data,
-      positionIndex: column.positionIndex,
-      differentIndex: column.differentIndex,
-    },
-  }
-
-  const r = await validateBoard(boardData)
-  console.log(r)
-}
-
-interface IGameBoard {
-  grid: {
-    size: number
-    values: string[]
-  }
-  gameID: string
-  userID: string
-  columnValidWords: {
-    [key: number]: string[]
-  }
-  rowValidWords: {
-    [key: number]: string[]
-  }
-}
 
 const GameBoard = ({
   grid,
