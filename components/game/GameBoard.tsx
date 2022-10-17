@@ -3,15 +3,11 @@ import { useState } from 'react'
 import { DragDropContext, Droppable, DropResult } from 'react-beautiful-dnd'
 import { AffectedRowOrColumn } from '../../pages/api/types/CheckBoardRequestData'
 import LetterBox from './LetterBox'
+import colorCellGreen from './utils/colorCellGreen'
 import {
   findAffectedColumn,
   findAffectedRow,
 } from './utils/findAffectedRowOrColumn'
-import {
-  findColumnPosition,
-  findRowPosition,
-} from './utils/findRoworColumnPosition'
-import isPartOfValidWord from './utils/isPartOfValidWord'
 import submitMove from './utils/submitMove'
 
 const useStyles = createStyles(() => ({
