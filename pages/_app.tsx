@@ -8,7 +8,7 @@ import { AppProps } from 'next/app'
 import Head from 'next/head'
 import { useState } from 'react'
 import { PageHeader } from '../components/PageHeader'
-import AuthProvider from '../firebase/AuthProvider'
+import { AuthProvider } from '../firebase/AuthProvider'
 
 export default function App(props: AppProps) {
   const { Component, pageProps } = props
