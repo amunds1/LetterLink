@@ -11,6 +11,7 @@ import {
   findColumnPosition,
   findRowPosition,
 } from './utils/findRoworColumnPosition'
+import isPartOfValidWord from './utils/isPartOfValidWord'
 import submitMove from './utils/submitMove'
 
 const useStyles = createStyles(() => ({
@@ -35,55 +36,6 @@ const useStyles = createStyles(() => ({
     padding: '50px',
   },
 }))
-
-const isPartOfValidWord = (
-  position: {
-    positionIndex: number
-    differenceIndex: number
-  },
-  validWords: Object
-) => {
-  for (const [key, value] of Object.entries(validWords)) {
-    if (Number(key) === position.positionIndex) {
-      if (
-        position.differenceIndex >= value[0] &&
-        position.differenceIndex < value[1]
-      ) {
-        return true
-      }
-    }
-  }
-  return false
-}
-
-const colorCellGreen = (
-  index: number,
-  boardSize: number,
-  rowValidWords: object,
-  columnValidWords: object
-) => {
-  if (rowValidWords) {
-    // rowPosition = { positionIndex, differenceIndex }
-    // positionIndex -> rownumber
-    // differenceIndex -> position in row
-    const rowPosition = findRowPosition({ index, boardSize })
-    if (isPartOfValidWord(rowPosition, rowValidWords)) {
-      return 'green'
-    }
-  }
-
-  if (columnValidWords) {
-    // colPosition = { positionIndex, differenceIndex }
-    // positionIndex -> colnumber
-    // differenceIndex -> position in col
-    const colPosition = findColumnPosition({ index, boardSize })
-    if (isPartOfValidWord(colPosition, columnValidWords)) {
-      return 'green'
-    }
-  }
-
-  return 'white'
-}
 
 interface IGameBoard {
   grid: {
