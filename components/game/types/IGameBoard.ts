@@ -5,12 +5,6 @@ interface IGameBoard {
   }
   gameID: string
   userID: string
-  colPoints: {
-    [key: number]: number
-  }
-  rowPoints: {
-    [key: number]: number
-  }
   columnValidWords: {
     [key: number]: string[]
   }
