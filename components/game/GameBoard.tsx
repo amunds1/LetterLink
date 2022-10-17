@@ -39,33 +39,6 @@ const useStyles = createStyles(() => ({
   },
 }))
 
-const submitMove = async ({
-  gameID,
-  userID,
-  board,
-  row,
-  column,
-}: CheckBoardRequestData) => {
-  const boardData: CheckBoardRequestData = {
-    gameID: gameID,
-    userID: userID,
-    board: board,
-    row: {
-      data: row.data,
-      positionIndex: row.positionIndex,
-      differentIndex: row.differentIndex,
-    },
-    column: {
-      data: column.data,
-      positionIndex: column.positionIndex,
-      differentIndex: column.differentIndex,
-    },
-  }
-
-  const r = await validateBoard(boardData)
-  console.log(r)
-}
-
 type rowOrColPosition = {
   positionIndex: Number
   differenceIndex: Number
@@ -92,7 +65,9 @@ const colorCellGreen = (
   columnValidWords: object
 ) => {
   if (rowValidWords) {
-    // Rowposition = { positionIndex, differenceIndex }
+    // rowPosition = { positionIndex, differenceIndex }
+    // positionIndex -> rownumber
+    // differenceIndex -> position in row
     const rowPosition = findRowPosition({ index, boardSize })
     if (isPartOfValidWord(rowPosition, rowValidWords)) {
       return 'green'
@@ -100,6 +75,9 @@ const colorCellGreen = (
   }
 
   if (columnValidWords) {
+    // colPosition = { positionIndex, differenceIndex }
+    // positionIndex -> colnumber
+    // differenceIndex -> position in col
     const colPosition = findColumnPosition({ index, boardSize })
     if (isPartOfValidWord(colPosition, columnValidWords)) {
       return 'green'
@@ -107,6 +85,35 @@ const colorCellGreen = (
   }
 
   return 'white'
+}
+
+const submitMove = async ({
+  gameID,
+  userID,
+  board,
+  row,
+  column,
+}: CheckBoardRequestData) => {
+  console.log('Board')
+  console.log(board)
+  const boardData: CheckBoardRequestData = {
+    gameID: gameID,
+    userID: userID,
+    board: board,
+    row: {
+      data: row.data,
+      positionIndex: row.positionIndex,
+      differentIndex: row.differentIndex,
+    },
+    column: {
+      data: column.data,
+      positionIndex: column.positionIndex,
+      differentIndex: column.differentIndex,
+    },
+  }
+
+  const r = await validateBoard(boardData)
+  console.log(r)
 }
 
 interface IGameBoard {
@@ -144,14 +151,24 @@ const GameBoard = ({
   const [board, setBoard] = useState<string[]>(grid.values)
   const [affectedRow, setAffectedRow] = useState<AffectedRowOrColumn>()
   const [affectedColumn, setAffectedColumn] = useState<AffectedRowOrColumn>()
-
   const [chosenLetter, setChosenLetter] = useState<string>('I')
 
-  const addLetter = (list: string[], endIndex: number) => {
-    const result = Array.from(list)
-    result[endIndex] = chosenLetter
+  // Regret move
+  const [dropID, setDropID] = useState<number>()
+  const [prevLetter, setPrevLetter] = useState<string>('')
+  const [tempBoard, setTempBoard] = useState<string[]>([''])
+
+  const addLetter = (
+    board: string[],
+    endIndex: number,
+    chosenLetter: string
+  ) => {
+    chosenLetter.length === 0 ? (chosenLetter = prevLetter) : null
+    const newBoard = Array.from(board)
+    newBoard[endIndex] = chosenLetter
+    setPrevLetter(chosenLetter)
     setChosenLetter('')
-    return result
+    return newBoard
   }
 
   const onDragEnd = (result: DropResult) => {
@@ -162,7 +179,11 @@ const GameBoard = ({
       return
     }
     const index = Number(result.destination.droppableId)
-    const newBoard: string[] = addLetter(board, index)
+    // Used to place the letterbox inside the cell its dropped into
+    setDropID(index)
+
+    const newBoard: string[] = addLetter(board, index, chosenLetter)
+    setTempBoard(newBoard)
 
     const row: AffectedRowOrColumn = findAffectedRow({
       boardSize,
@@ -178,7 +199,25 @@ const GameBoard = ({
 
     setAffectedRow(row)
     setAffectedColumn(column)
-    setBoard(newBoard)
+  }
+
+  const submit = () => {
+    if (tempBoard.length === boardSize ** 2) {
+      affectedRow &&
+        affectedColumn &&
+        submitMove({
+          gameID,
+          userID,
+          board: tempBoard,
+          row: affectedRow,
+          column: affectedColumn,
+        })
+      setBoard(tempBoard)
+      setTempBoard([''])
+    } else {
+      // TODO: add as feeback messeage
+      console.log('You have to place the letter')
+    }
   }
 
   return (
@@ -202,6 +241,12 @@ const GameBoard = ({
                             maxHeight: '40px',
                           }}
                         >
+                          {dropID === index && (
+                            <LetterBox
+                              letter={prevLetter}
+                              index={1}
+                            ></LetterBox>
+                          )}
                           {provided.placeholder}
                         </div>
                       )}
@@ -248,21 +293,7 @@ const GameBoard = ({
         </div>
       </DragDropContext>
 
-      <Button
-        onClick={() =>
-          affectedRow &&
-          affectedColumn &&
-          submitMove({
-            gameID,
-            userID,
-            board,
-            row: affectedRow,
-            column: affectedColumn,
-          })
-        }
-      >
-        Submit
-      </Button>
+      <Button onClick={() => submit()}>Submit</Button>
     </Container>
   )
 }

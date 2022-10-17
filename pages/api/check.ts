@@ -62,8 +62,8 @@ export default async function handler(
 
     updateColumnPoints(boardData, validWordInColumn)
     updateValidColumnWords(boardData, validWordInColumn)
-    updateBoard(boardData)
   }
+  updateBoard(boardData)
 
   res.status(200).json(response)
 }
