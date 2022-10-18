@@ -1,9 +1,5 @@
-import { Button, Radio, Select, Stack } from '@mantine/core'
-import {
-  GetServerSideProps,
-  GetServerSidePropsContext,
-  InferGetServerSidePropsType,
-} from 'next'
+import { Button, Radio, Select, SelectItem, Stack } from '@mantine/core'
+import { GetServerSideProps, GetServerSidePropsContext } from 'next'
 import Link from 'next/link'
 import { useState } from 'react'
 import addGameToCollection from '../../../components/game/firebase/addToGameCollection'
@@ -21,9 +17,14 @@ export const getServerSideProps: GetServerSideProps = async (
   }
 }
 
-const NewGame = (
-  props: InferGetServerSidePropsType<typeof getServerSideProps>
-) => {
+interface INewGame {
+  oponentOptions: (string | SelectItem)[]
+  uid: string
+}
+
+const NewGame = (props: INewGame) => {
+  const { oponentOptions, uid } = props
+
   const [oponent, setOponent] = useState<string | null>(null)
   const [boardSize, setBoardSize] = useState<string>()
 
@@ -35,7 +36,7 @@ const NewGame = (
         placeholder="Pick one oponent"
         value={oponent}
         onChange={setOponent}
-        data={props.oponentOptions}
+        data={oponentOptions}
         searchable
         clearable
         withAsterisk
@@ -58,9 +59,9 @@ const NewGame = (
         disabled={!oponent}
         onClick={() => {
           oponent &&
-            props.uid &&
+            uid &&
             boardSize &&
-            addGameToCollection(props.uid, oponent, boardSize)
+            addGameToCollection(uid, oponent, boardSize)
         }}
       >
         Propose game
