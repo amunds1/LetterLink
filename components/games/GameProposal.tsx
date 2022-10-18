@@ -1,9 +1,6 @@
 import { Avatar, Badge, Button, Card, Center, Group } from '@mantine/core'
-import { doc } from 'firebase/firestore'
 import { useEffect, useState } from 'react'
-import { db } from '../../firebase/clientApp'
 import Game from '../../types/Game'
-import Oponent from './Oponent'
 import acceptProposedGame from './firebase/acceptProposedGame'
 import rejectProposedGame from './firebase/rejectProposedGame'
 import withdrawGameProposal from './firebase/withdrawGameProposal'
@@ -14,14 +11,12 @@ interface IGameProposal {
 }
 
 const GameProposal = ({ game, userUID }: IGameProposal) => {
-  const userDocRef = doc(db, `users/${userUID}`)
-
   const [gameProposedTimeDelta, setGameProposedTimeDelta] = useState<{
     value: number
     label: string
   }>({ value: 0, label: '' })
 
-  /* useEffect(() => {
+  useEffect(() => {
     const timeDelta = Date.now() - game.proposedAt.toMillis()
 
     const timeDeltaSeconds = timeDelta / 1000
@@ -32,9 +27,10 @@ const GameProposal = ({ game, userUID }: IGameProposal) => {
       value: Math.round(timeDeltaHours),
       label: 'hours',
     })
-  }, [game]) */
+  }, [game])
 
-  console.log('Propppp', game)
+  console.log(userUID != game.proposedBy.id)
+
   return (
     <Card>
       <Group position="apart" mt="md" mb="xs">
@@ -49,18 +45,18 @@ const GameProposal = ({ game, userUID }: IGameProposal) => {
         </Avatar>
       </Center>
 
-      {userDocRef.id != game.proposedBy.id && (
+      {userUID === game.proposedBy.id && (
         <>
           {/* ACCEPT PROPOSAL BUTTON */}
           <Button
             onClick={async () => {
               await acceptProposedGame({
                 gameID: game.id!,
-                userRef: game.playerOne,
+                userUID: game.playerOne.id,
               })
               await acceptProposedGame({
                 gameID: game.id!,
-                userRef: game.playerTwo,
+                userUID: game.playerTwo.id,
               })
             }}
             variant="light"
@@ -82,11 +78,11 @@ const GameProposal = ({ game, userUID }: IGameProposal) => {
               onClick={async () => {
                 await rejectProposedGame({
                   gameID: game.id!,
-                  userRef: game.playerOne,
+                  userUID: game.playerOne.id,
                 })
                 await rejectProposedGame({
                   gameID: game.id!,
-                  userRef: game.playerTwo,
+                  userUID: game.playerTwo.id,
                 })
               }}
             >
@@ -96,7 +92,7 @@ const GameProposal = ({ game, userUID }: IGameProposal) => {
         </>
       )}
 
-      {userDocRef.id == game.proposedBy.id && (
+      {userUID != game.proposedBy.id && (
         <Button
           onClick={async () => {
             await withdrawGameProposal({
