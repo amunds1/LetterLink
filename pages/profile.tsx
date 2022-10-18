@@ -1,11 +1,9 @@
 import { Center, createStyles, Text } from '@mantine/core'
-import { doc, getDoc } from 'firebase/firestore'
 import { GetServerSidePropsContext } from 'next'
 import { fetchUserData } from '../components/profile/firebase/fetchUserData'
 import Statistics from '../components/profile/Statistics'
-import { db } from '../firebase/clientApp'
-import usersConverter from '../firebase/converters/userConverter'
 import fetchUID from '../firebase/fetchUID'
+import User from '../types/User'
 
 const useStyles = createStyles(() => ({
   center: { height: '100%' },
@@ -14,13 +12,11 @@ const useStyles = createStyles(() => ({
 export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
   try {
     const uid = await fetchUID(ctx)
-    const userData = await fetchUserData(uid)
-
-    // Can not directly pass userData because proposedGames and games are not serializable
+    const userData = JSON.parse(JSON.stringify(await fetchUserData(uid)))
 
     return {
       props: {
-        userData: { name: userData?.name },
+        userData,
       },
     }
   } catch (err) {
@@ -34,7 +30,7 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
 }
 
 interface IProfile {
-  userData: { name: string }
+  userData: User
 }
 
 const Profile = (props: IProfile) => {
