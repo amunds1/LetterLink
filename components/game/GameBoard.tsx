@@ -47,6 +47,8 @@ const GameBoard = ({
   const [affectedRow, setAffectedRow] = useState<AffectedRowOrColumn>()
   const [affectedColumn, setAffectedColumn] = useState<AffectedRowOrColumn>()
   const [chosenLetter, setChosenLetter] = useState<string>('I')
+  // FIXME Replace with actual oponentID
+  const oponentID = '123'
 
   // Regret move
   const [dropID, setDropID] = useState<number>()
@@ -103,6 +105,7 @@ const GameBoard = ({
         submitMove({
           gameID,
           userID,
+          oponentID,
           board: tempBoard,
           row: affectedRow,
           column: affectedColumn,

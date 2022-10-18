@@ -8,6 +8,7 @@ interface Game {
   playerTwo: DocumentReference<DocumentData>
   proposedAt: Timestamp
   proposedBy: DocumentReference<DocumentData>
+  nextTurn: DocumentReference<DocumentData>
 }
 
 export default Game

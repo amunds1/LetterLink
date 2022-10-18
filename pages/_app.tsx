@@ -8,6 +8,7 @@ import { AppProps } from 'next/app'
 import Head from 'next/head'
 import { useState } from 'react'
 import { PageHeader } from '../components/PageHeader'
+import { AuthProvider } from '../firebase/AuthProvider'
 
 export default function App(props: AppProps) {
   const { Component, pageProps } = props
@@ -40,20 +41,22 @@ export default function App(props: AppProps) {
             colorScheme: colorScheme,
           }}
         >
-          <AppShell
-            padding="md"
-            header={<PageHeader />}
-            styles={(theme) => ({
-              main: {
-                backgroundColor:
-                  theme.colorScheme === 'dark'
-                    ? theme.colors.dark[8]
-                    : theme.colors.gray[0],
-              },
-            })}
-          >
-            <Component {...pageProps} />
-          </AppShell>
+          <AuthProvider>
+            <AppShell
+              padding="md"
+              header={<PageHeader />}
+              styles={(theme) => ({
+                main: {
+                  backgroundColor:
+                    theme.colorScheme === 'dark'
+                      ? theme.colors.dark[8]
+                      : theme.colors.gray[0],
+                },
+              })}
+            >
+              <Component {...pageProps} />
+            </AppShell>
+          </AuthProvider>
         </MantineProvider>
       </ColorSchemeProvider>
     </>

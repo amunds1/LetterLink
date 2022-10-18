@@ -1,5 +1,4 @@
 import { Button, Radio, Select, SelectItem, Stack } from '@mantine/core'
-import { getAuth } from 'firebase/auth'
 import {
   collection,
   documentId,
@@ -7,47 +6,48 @@ import {
   query,
   where,
 } from 'firebase/firestore'
-import { GetServerSideProps } from 'next'
+import {
+  GetServerSideProps,
+  GetServerSidePropsContext,
+  InferGetServerSidePropsType,
+} from 'next'
 import Link from 'next/link'
 import { useState } from 'react'
-import { useAuthState } from 'react-firebase-hooks/auth'
-import firebase, { db } from '../../../firebase/clientApp'
-import usersConverter from '../../../firebase/converters/userConverter'
 import addGameToCollection from '../../../components/game/firebase/addToGameCollection'
+import { db } from '../../../firebase/clientApp'
+import usersConverter from '../../../firebase/converters/userConverter'
+import fetchUID from '../../../firebase/fetchUID'
 
-export const getServerSideProps: GetServerSideProps = async () => {
-  /*
-   Generate array of name and id to be used as Select options
-   Authenticated users is filtered out
-  */
-  const options: (string | SelectItem)[] = []
+export const getServerSideProps: GetServerSideProps = async (
+  ctx: GetServerSidePropsContext
+) => {
+  const uid = await fetchUID(ctx)
 
+  // Retrieve user documents of all users expect the authenticated one
   const q = query(
     collection(db, 'users'),
-    // FIXME Replace hardcoded id
-    where(documentId(), '!=', '5B7aHn9nPMbGj0RvapSacncvdDl1')
+    where(documentId(), '!=', uid)
   ).withConverter(usersConverter)
 
   const querySnapshot = await getDocs(q)
+
+  // Generate array of name and id to be used as Select options
+  const options: (string | SelectItem)[] = []
 
   querySnapshot.forEach((user) => {
     options.push({ value: user.data().id, label: user.data().name })
   })
 
   return {
-    props: { oponentOptions: options },
+    props: { oponentOptions: options, uid: uid },
   }
 }
 
-interface INewGame {
-  oponentOptions: (string | SelectItem)[]
-}
-
-const NewGame = ({ oponentOptions }: INewGame) => {
+const NewGame = (
+  props: InferGetServerSidePropsType<typeof getServerSideProps>
+) => {
   const [oponent, setOponent] = useState<string | null>(null)
   const [boardSize, setBoardSize] = useState<string>()
-
-  const [userAuthData, loading, error] = useAuthState(getAuth(firebase))
 
   return (
     <Stack>
@@ -57,7 +57,7 @@ const NewGame = ({ oponentOptions }: INewGame) => {
         placeholder="Pick one oponent"
         value={oponent}
         onChange={setOponent}
-        data={oponentOptions}
+        data={props.oponentOptions}
         searchable
         clearable
         withAsterisk
@@ -80,9 +80,9 @@ const NewGame = ({ oponentOptions }: INewGame) => {
         disabled={!oponent}
         onClick={() => {
           oponent &&
-            userAuthData &&
+            props.uid &&
             boardSize &&
-            addGameToCollection(userAuthData.uid, oponent, boardSize)
+            addGameToCollection(props.uid, oponent, boardSize)
         }}
       >
         Propose game

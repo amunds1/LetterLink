@@ -23,8 +23,8 @@ const boardDataConverter: FirestoreDataConverter<BoardData> = {
       columnPoints: data.columnPoints,
       rowPoints: data.rowPoints,
       board: data.board,
-      rowValidWords: data.rowValidWords,
-      columnValidWords: data.columnValidWords,
+      rowValidWords: data.rowValidWords || null,
+      columnValidWords: data.columnValidWords || null,
     }
   },
 }
