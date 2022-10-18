@@ -1,31 +1,24 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useContext } from 'react'
+import { GameContext } from './utils/gameContext'
 
-interface pointsData {
-  columnPoints: {
-    [key: number]: number
-  }
-  rowPoints: {
-    [key: number]: number
-  }
-}
-
-const Points = ({ columnPoints, rowPoints }: pointsData) => {
+const Points = () => {
   const [points, setPoints] = useState<number>(0)
+
+  const gameContext = useContext(GameContext)
 
   useEffect(() => {
     let sumPoints = 0
-    if (columnPoints) {
-      for (const [key, value] of Object.entries(columnPoints)) {
+    if (gameContext) {
+      for (const [key, value] of Object.entries(gameContext.columnPoints)) {
+        sumPoints += value
+      }
+      for (const [key, value] of Object.entries(gameContext.rowPoints)) {
         sumPoints += value
       }
     }
-    if (rowPoints) {
-      for (const [key, value] of Object.entries(rowPoints)) {
-        sumPoints += value
-      }
-    }
+
     setPoints(sumPoints)
-  })
+  }, [gameContext])
 
   return (
     <div>

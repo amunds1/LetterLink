@@ -54,7 +54,7 @@ const addGameToCollection = async (
     ))
 
   updateUserGamesList(docRef, userDocRef)
-  updateUserGamesList(docRef, userDocRef)
+  updateUserGamesList(docRef, oponentDocRef)
 }
 
 export default addGameToCollection

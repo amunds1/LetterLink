@@ -1,6 +1,6 @@
 import { Alert } from '@mantine/core'
 
-const TurnStatusMessage = () => {
+export const YourTurnStatusMessage = () => {
   return (
     <Alert title="It is your turn!" radius="xl">
       Drag the letter to the grid
@@ -8,4 +8,10 @@ const TurnStatusMessage = () => {
   )
 }
 
-export default TurnStatusMessage
+export const OpponentTurnStatusMessage = () => {
+  return (
+    <Alert title="It is your opponents turn!" radius="xl">
+      Sit back and relax or plan your next move!
+    </Alert>
+  )
+}
