@@ -9,6 +9,7 @@ import { useDocument } from 'react-firebase-hooks/firestore'
 import yourTurn from '../../components/game/firebase/yourTurn'
 import GameBoard from '../../components/game/GameBoard'
 import Points from '../../components/game/Points'
+import TurnStatusMessage from '../../components/game/TurnStatusMessage'
 import firebase from '../../firebase/clientApp'
 import boardDataConverter from '../../firebase/converters/boardDataConverter'
 import gamesConverter from '../../firebase/converters/gamesConverter'
@@ -57,7 +58,7 @@ const GameID = () => {
     gameData &&
     userAuthData && (
       <div>
-        <p>Gameboard {data.board}</p>
+        {yourTurn(gameData, userAuthData.uid) && <TurnStatusMessage />}
         <Points
           columnPoints={data.columnPoints}
           rowPoints={data.rowPoints}
@@ -72,7 +73,6 @@ const GameID = () => {
           rowValidWords={data.rowValidWords}
           columnValidWords={data.columnValidWords}
         />
-
         <Link href="/games">
           <Button>Back to games</Button>
         </Link>
