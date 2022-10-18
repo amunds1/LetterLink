@@ -1,5 +1,5 @@
 import { Box, Button, Container, createStyles, Grid } from '@mantine/core'
-import { useContext, useState } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import { DragDropContext, Droppable, DropResult } from 'react-beautiful-dnd'
 import { AffectedRowOrColumn } from '../../pages/api/types/CheckBoardRequestData'
 import LetterBox from './LetterBox'
@@ -123,6 +123,9 @@ const GameBoard = ({ grid }: IGameBoard) => {
       console.log('You have to place the letter')
     }
   }
+
+  // Re-render board after response from /api/check
+  useEffect(() => {}, [board])
 
   return (
     <>
