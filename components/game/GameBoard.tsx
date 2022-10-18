@@ -4,7 +4,6 @@ import { DragDropContext, Droppable, DropResult } from 'react-beautiful-dnd'
 import { AffectedRowOrColumn } from '../../pages/api/types/CheckBoardRequestData'
 import LetterBox from './LetterBox'
 import GameStates from './types/gameStates'
-import IGameBoard from './types/IGameBoard'
 import colorCellGreen from './utils/colorCellGreen'
 import {
   findAffectedColumn,
@@ -36,12 +35,16 @@ const useStyles = createStyles(() => ({
   },
 }))
 
-const GameBoard = ({ grid }: IGameBoard) => {
+const GameBoard = () => {
   const gameContext = useContext(GameContext)
 
   const { classes } = useStyles()
-  const [boardSize, setBoardSize] = useState<number>(grid.size || 0)
-  const [board, setBoard] = useState<string[]>(grid.values)
+  const [boardSize, setBoardSize] = useState<number>(
+    gameContext?.grid.size || 0
+  )
+  const [board, setBoard] = useState<string[]>(
+    gameContext?.grid.values as string[]
+  )
   const [affectedRow, setAffectedRow] = useState<AffectedRowOrColumn>()
   const [affectedColumn, setAffectedColumn] = useState<AffectedRowOrColumn>()
 
@@ -133,7 +136,7 @@ const GameBoard = ({ grid }: IGameBoard) => {
         <Container className={classes.container}>
           <DragDropContext onDragEnd={onDragEnd}>
             <div style={{ padding: '0 0 20px 0' }}>
-              <Grid className={classes.grid} columns={grid.size}>
+              <Grid className={classes.grid} columns={gameContext.grid.size}>
                 {board.map((cellValue, index) => (
                   <Grid.Col className={classes.col} key={index} span={1}>
                     <>
