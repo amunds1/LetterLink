@@ -1,5 +1,4 @@
 import { Button, createStyles, Stack } from '@mantine/core'
-import { QuerySnapshot } from 'firebase/firestore'
 import { GetServerSidePropsContext } from 'next'
 import Link from 'next/link'
 import ActiveGames from '../../components/games/ActiveGames'
