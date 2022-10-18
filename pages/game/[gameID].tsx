@@ -2,9 +2,12 @@ import { Button } from '@mantine/core'
 import { doc, getDoc } from 'firebase/firestore'
 import { GetServerSideProps, GetServerSidePropsContext } from 'next'
 import Link from 'next/link'
+import { useState } from 'react'
 import GameBoard from '../../components/game/GameBoard'
-import { db } from '../../firebase/clientApp'
 import Points from '../../components/game/Points'
+import SelectLetter from '../../components/game/SelectLetter'
+import GameStates from '../../components/game/types/gameStates'
+import { db } from '../../firebase/clientApp'
 import boardDataConverter from '../../firebase/converters/boardDataConverter'
 import fetchUID from '../../firebase/fetchUID'
 import BoardData from '../../types/BoardData'
@@ -18,6 +21,7 @@ export const getServerSideProps: GetServerSideProps = async (
   const boardDocRef = doc(db, `games/${gameID}/${uid}/boardData`).withConverter(
     boardDataConverter
   )
+
   const boardData = (await getDoc(boardDocRef)).data()
 
   return {
@@ -34,10 +38,16 @@ interface IGameID {
 const GameID = (props: IGameID) => {
   const { uid, gameID, boardData } = props
 
+  const [selectedLetter, setSelectedLetter] = useState<string | null>(null)
+
+  const [gameState, setGameState] = useState<
+    GameStates.PLACE | GameStates.CHOOSE
+  >(GameStates.PLACE)
+
   return (
     boardData &&
     uid && (
-      <div>
+      <>
         <p>Gameboard {boardData.board}</p>
         <Points
           columnPoints={boardData.columnPoints}
@@ -52,12 +62,25 @@ const GameID = (props: IGameID) => {
           userID={uid}
           rowValidWords={boardData.rowValidWords}
           columnValidWords={boardData.columnValidWords}
+          selectedLetter={selectedLetter}
+          setSelectedLetter={setSelectedLetter}
+          gameState={gameState}
+          setGameState={setGameState}
         />
+
+        {gameState === GameStates.CHOOSE && (
+          <SelectLetter
+            selectedLetter={selectedLetter}
+            setSelectedLetter={setSelectedLetter}
+            gameState={gameState}
+            setGameState={setGameState}
+          />
+        )}
 
         <Link href="/games">
           <Button>Back to games</Button>
         </Link>
-      </div>
+      </>
     )
   )
 }

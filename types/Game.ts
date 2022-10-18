@@ -8,7 +8,9 @@ interface Game {
   playerOne: User
   playerTwo: User
   proposedAt: Timestamp
-  proposedBy: User
+  proposedBy: DocumentReference<DocumentData>
+  nextTurn: DocumentReference<DocumentData>
+  selectedLetter: string | null
 }
 
 export default Game
