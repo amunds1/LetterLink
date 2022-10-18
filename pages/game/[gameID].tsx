@@ -108,10 +108,7 @@ const GameID = (props: IGameID) => {
       )}
 
       <GameContext.Provider value={GameContextValues}>
-        {/* Display points */}
         <Points />
-
-        {/* Gameboard */}
         <GameBoard
           // TODO Replace with GameContext
           grid={{
@@ -119,8 +116,6 @@ const GameID = (props: IGameID) => {
             values: boardData.board,
           }}
         />
-
-        {/* Display select letter UI */}
         {gameState === GameStates.CHOOSE && <SelectLetter />}
       </GameContext.Provider>
 
