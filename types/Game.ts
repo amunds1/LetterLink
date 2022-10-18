@@ -8,6 +8,8 @@ interface Game {
   playerTwo: DocumentReference<DocumentData>
   proposedAt: Timestamp
   proposedBy: DocumentReference<DocumentData>
+  nextTurn: DocumentReference<DocumentData>
+  selectedLetter: string | null
 }
 
 export default Game

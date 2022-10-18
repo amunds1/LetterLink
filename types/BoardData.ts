@@ -1,5 +1,5 @@
 interface BoardData {
-  colPoints: {
+  columnPoints: {
     [key: number]: number
   }
   rowPoints: {

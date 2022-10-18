@@ -27,6 +27,8 @@ const gamesConverter: FirestoreDataConverter<Game> = {
       isActive: data.isActive,
       proposedAt: data.proposedAt,
       proposedBy: data.proposedBy,
+      nextTurn: data.nextTurn,
+      selectedLetter: data.selectedLetter,
     }
   },
 }

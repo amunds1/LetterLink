@@ -1,20 +1,16 @@
 import { Box, Button, Container, createStyles, Grid } from '@mantine/core'
-import { useState } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import { DragDropContext, Droppable, DropResult } from 'react-beautiful-dnd'
+import { AffectedRowOrColumn } from '../../pages/api/types/CheckBoardRequestData'
 import LetterBox from './LetterBox'
-import CheckBoardRequestData, {
-  AffectedRowOrColumn,
-} from '../../pages/api/types/CheckBoardRequestData'
+import GameStates from './types/gameStates'
+import colorCellGreen from './utils/colorCellGreen'
 import {
   findAffectedColumn,
   findAffectedRow,
 } from './utils/findAffectedRowOrColumn'
-import {
-  findColumnPosition,
-  findRowPosition,
-} from './utils/findRoworColumnPosition'
-
-import validateBoard from './utils/validateBoard'
+import { GameContext } from './utils/gameContext'
+import submitMove from './utils/submitMove'
 
 const useStyles = createStyles(() => ({
   grid: {
@@ -39,130 +35,60 @@ const useStyles = createStyles(() => ({
   },
 }))
 
-const submitMove = async ({
-  gameID,
-  userID,
-  board,
-  row,
-  column,
-}: CheckBoardRequestData) => {
-  const boardData: CheckBoardRequestData = {
-    gameID: gameID,
-    userID: userID,
-    board: board,
-    row: {
-      data: row.data,
-      positionIndex: row.positionIndex,
-      differentIndex: row.differentIndex,
-    },
-    column: {
-      data: column.data,
-      positionIndex: column.positionIndex,
-      differentIndex: column.differentIndex,
-    },
-  }
+const GameBoard = () => {
+  const gameContext = useContext(GameContext)
 
-  const r = await validateBoard(boardData)
-  console.log(r)
-}
-
-type rowOrColPosition = {
-  positionIndex: Number
-  differenceIndex: Number
-}
-
-const isPartOfValidWord = (position: rowOrColPosition, validWords: Object) => {
-  for (const [key, value] of Object.entries(validWords)) {
-    if (Number(key) === position.positionIndex) {
-      if (
-        position.differenceIndex >= value[0] &&
-        position.differenceIndex < value[1]
-      ) {
-        return true
-      }
-    }
-  }
-  return false
-}
-
-const colorCellGreen = (
-  index: number,
-  boardSize: number,
-  rowValidWords: object,
-  columnValidWords: object
-) => {
-  if (rowValidWords) {
-    // Rowposition = { positionIndex, differenceIndex }
-    const rowPosition = findRowPosition({ index, boardSize })
-    if (isPartOfValidWord(rowPosition, rowValidWords)) {
-      return 'green'
-    }
-  }
-
-  if (columnValidWords) {
-    const colPosition = findColumnPosition({ index, boardSize })
-    if (isPartOfValidWord(colPosition, columnValidWords)) {
-      return 'green'
-    }
-  }
-
-  return 'white'
-}
-
-interface IGameBoard {
-  grid: {
-    size: number
-    values: string[]
-  }
-  gameID: string
-  userID: string
-  colPoints: {
-    [key: number]: number
-  }
-  rowPoints: {
-    [key: number]: number
-  }
-  columnValidWords: {
-    [key: number]: string[]
-  }
-  rowValidWords: {
-    [key: number]: string[]
-  }
-}
-
-const GameBoard = ({
-  grid,
-  gameID,
-  userID,
-  colPoints,
-  rowPoints,
-  columnValidWords,
-  rowValidWords,
-}: IGameBoard) => {
   const { classes } = useStyles()
-  const [boardSize, setBoardSize] = useState<number>(grid.size)
-  const [board, setBoard] = useState<string[]>(grid.values)
+  const [boardSize, setBoardSize] = useState<number>(
+    gameContext?.grid.size || 0
+  )
+  const [board, setBoard] = useState<string[]>(
+    gameContext?.grid.values as string[]
+  )
   const [affectedRow, setAffectedRow] = useState<AffectedRowOrColumn>()
   const [affectedColumn, setAffectedColumn] = useState<AffectedRowOrColumn>()
 
-  const [chosenLetter, setChosenLetter] = useState<string>('I')
+  // FIXME Replace with actual oponentID
+  const oponentID = '123'
 
-  const addLetter = (list: string[], endIndex: number) => {
-    const result = Array.from(list)
-    result[endIndex] = chosenLetter
-    setChosenLetter('')
-    return result
+  // Regret move
+  const [dropID, setDropID] = useState<number>()
+  const [prevLetter, setPrevLetter] = useState<string>('')
+  const [tempBoard, setTempBoard] = useState<string[]>([''])
+
+  const addLetter = (
+    board: string[],
+    endIndex: number,
+    selectedLetter: string | null
+  ) => {
+    selectedLetter ? selectedLetter : (selectedLetter = prevLetter)
+    console.log('AddLetter ', selectedLetter)
+
+    const newBoard = Array.from(board)
+    newBoard[endIndex] = selectedLetter
+    setPrevLetter(selectedLetter)
+    gameContext!.setSelectedLetter(null)
+    return newBoard
   }
 
   const onDragEnd = (result: DropResult) => {
     if (
       !result.destination ||
-      result.destination.droppableId === 'letterStartBox'
+      result.destination.droppableId === 'letterStartBox' ||
+      !gameContext
     ) {
       return
     }
     const index = Number(result.destination.droppableId)
-    const newBoard: string[] = addLetter(board, index)
+    // Used to place the letterbox inside the cell its dropped into
+    setDropID(index)
+
+    const newBoard: string[] = addLetter(
+      board,
+      index,
+      gameContext.selectedLetter
+    )
+    setTempBoard(newBoard)
 
     const row: AffectedRowOrColumn = findAffectedRow({
       boardSize,
@@ -178,92 +104,119 @@ const GameBoard = ({
 
     setAffectedRow(row)
     setAffectedColumn(column)
-    setBoard(newBoard)
   }
 
+  const submit = () => {
+    if (tempBoard.length === boardSize ** 2 && gameContext) {
+      affectedRow &&
+        affectedColumn &&
+        submitMove({
+          gameID: gameContext.gameID,
+          userID: gameContext.userID,
+          oponentID,
+          board: tempBoard,
+          row: affectedRow,
+          column: affectedColumn,
+        })
+      setBoard(tempBoard)
+      setTempBoard([''])
+      gameContext.setGameState(GameStates.CHOOSE)
+    } else {
+      // TODO: add as feeback messeage
+      console.log('You have to place the letter')
+    }
+  }
+
+  // Re-render board after response from /api/check
+  useEffect(() => {}, [board])
+
   return (
-    <Container className={classes.container}>
-      <DragDropContext onDragEnd={onDragEnd}>
-        <div style={{ padding: '0 0 20px 0' }}>
-          <Grid className={classes.grid} columns={grid.size}>
-            {board.map((cellValue, index) => (
-              <Grid.Col className={classes.col} key={index} span={1}>
-                <>
-                  {cellValue.length === 0 && (
-                    <Droppable droppableId={index.toString()}>
-                      {(provided, snapshot) => (
-                        <div
-                          ref={provided.innerRef}
-                          {...provided.droppableProps}
+    <>
+      {gameContext && (
+        <Container className={classes.container}>
+          <DragDropContext onDragEnd={onDragEnd}>
+            <div style={{ padding: '0 0 20px 0' }}>
+              <Grid className={classes.grid} columns={gameContext.grid.size}>
+                {board.map((cellValue, index) => (
+                  <Grid.Col className={classes.col} key={index} span={1}>
+                    <>
+                      {cellValue.length === 0 && (
+                        <Droppable droppableId={index.toString()}>
+                          {(provided, snapshot) => (
+                            <div
+                              ref={provided.innerRef}
+                              {...provided.droppableProps}
+                              style={{
+                                backgroundColor: snapshot.isDraggingOver
+                                  ? 'MediumSeaGreen'
+                                  : 'white',
+                                maxHeight: '40px',
+                              }}
+                            >
+                              {dropID === index && (
+                                <LetterBox
+                                  letter={prevLetter}
+                                  index={1}
+                                ></LetterBox>
+                              )}
+                              {provided.placeholder}
+                            </div>
+                          )}
+                        </Droppable>
+                      )}
+                      {cellValue.length !== 0 && (
+                        <Box
+                          className={classes.cell}
                           style={{
-                            backgroundColor: snapshot.isDraggingOver
-                              ? 'MediumSeaGreen'
-                              : 'white',
-                            maxHeight: '40px',
+                            backgroundColor: colorCellGreen(
+                              index,
+                              boardSize,
+                              gameContext.rowValidWords,
+                              gameContext.columnValidWords
+                            ),
                           }}
                         >
-                          {provided.placeholder}
-                        </div>
+                          {cellValue}
+                        </Box>
                       )}
-                    </Droppable>
-                  )}
-                  {cellValue.length !== 0 && (
-                    <Box
-                      className={classes.cell}
+                    </>
+                  </Grid.Col>
+                ))}
+              </Grid>
+            </div>
+            {gameContext.gameState === GameStates.PLACE && (
+              <div style={{ display: 'flex', justifyContent: 'center' }}>
+                <Droppable droppableId="letterStartBox">
+                  {(provided) => (
+                    <div
+                      ref={provided.innerRef}
+                      {...provided.droppableProps}
                       style={{
-                        backgroundColor: colorCellGreen(
-                          index,
-                          boardSize,
-                          rowValidWords,
-                          columnValidWords
-                        ),
+                        padding: '10px',
+                        width: 'fit-content',
                       }}
                     >
-                      {cellValue}
-                    </Box>
+                      {gameContext.selectedLetter &&
+                        gameContext.selectedLetter.length > 0 && (
+                          <LetterBox
+                            letter={gameContext.selectedLetter}
+                            index={-1}
+                          ></LetterBox>
+                        )}
+                      {provided.placeholder}
+                    </div>
                   )}
-                </>
-              </Grid.Col>
-            ))}
-          </Grid>
-        </div>
-        <div style={{ display: 'flex', justifyContent: 'center' }}>
-          <Droppable droppableId="letterStartBox">
-            {(provided) => (
-              <div
-                ref={provided.innerRef}
-                {...provided.droppableProps}
-                style={{
-                  padding: '10px',
-                  width: 'fit-content',
-                }}
-              >
-                {chosenLetter.length > 0 && (
-                  <LetterBox letter={chosenLetter} index={-1}></LetterBox>
-                )}
-                {provided.placeholder}
+                </Droppable>
               </div>
             )}
-          </Droppable>
-        </div>
-      </DragDropContext>
+          </DragDropContext>
 
-      <Button
-        onClick={() =>
-          affectedRow &&
-          affectedColumn &&
-          submitMove({
-            gameID,
-            userID,
-            board,
-            row: affectedRow,
-            column: affectedColumn,
-          })
-        }
-      >
-        Submit
-      </Button>
-    </Container>
+          {gameContext.gameState === GameStates.PLACE && (
+            <Button onClick={() => submit()}>Submit</Button>
+          )}
+        </Container>
+      )}
+    </>
   )
 }
 

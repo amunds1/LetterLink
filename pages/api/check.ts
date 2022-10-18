@@ -9,6 +9,7 @@ import {
   updateValidColumnWords,
   updateValidRowWords,
 } from './utils/updateValidWords'
+import { updateTurn } from './utils/updateTurn'
 
 export default async function handler(
   req: NextApiRequest,
@@ -62,8 +63,11 @@ export default async function handler(
 
     updateColumnPoints(boardData, validWordInColumn)
     updateValidColumnWords(boardData, validWordInColumn)
-    updateBoard(boardData)
   }
+  updateBoard(boardData)
+
+  // Set next turn to oponent
+  updateTurn(boardData.gameID, boardData.oponentID)
 
   res.status(200).json(response)
 }
