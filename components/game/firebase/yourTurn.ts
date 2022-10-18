@@ -1,5 +1,5 @@
 import Game from '../../../types/Game'
 
-const yourTurn = (game: Game, uid: string) => game.nextTurn.id === uid
+const yourTurn = (nextTurnUserID: string, uid: string) => nextTurnUserID === uid
 
 export default yourTurn

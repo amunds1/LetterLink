@@ -6,7 +6,7 @@ interface IBaseGameConfig {
 
 const generateGameConfig = (boardSize: number): IBaseGameConfig => {
   return {
-    board: Array(boardSize).fill(''),
+    board: Array(boardSize ^ 2).fill(''),
     rowPoints: {},
     columnPoints: {},
   }

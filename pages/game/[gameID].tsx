@@ -1,6 +1,6 @@
 import { Button, Text } from '@mantine/core'
 import { getAuth } from 'firebase/auth'
-import { doc, getFirestore } from 'firebase/firestore'
+import { doc, getDoc, getFirestore } from 'firebase/firestore'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
@@ -11,15 +11,55 @@ import GameBoard from '../../components/game/GameBoard'
 import Points from '../../components/game/Points'
 import SelectLetter from '../../components/game/SelectLetter'
 import TurnStatusMessage from '../../components/game/TurnStatusMessage'
-import firebase from '../../firebase/clientApp'
+import firebase, { db } from '../../firebase/clientApp'
 import boardDataConverter from '../../firebase/converters/boardDataConverter'
 import gamesConverter from '../../firebase/converters/gamesConverter'
 import Game from '../../types/Game'
 import GameStates from '../../components/game/types/gameStates'
+import { GetServerSideProps, GetServerSidePropsContext } from 'next'
+import fetchUID from '../../firebase/fetchUID'
+import BoardData from '../../types/BoardData'
+import { resetServerContext } from 'react-beautiful-dnd'
 
-const GameID = () => {
-  const router = useRouter()
-  const [gameID, setgameID] = useState<string>()
+export const getServerSideProps: GetServerSideProps = async (
+  ctx: GetServerSidePropsContext
+) => {
+  const uid = await fetchUID(ctx)
+  const gameID = ctx.query.gameID
+
+  const boardDocRef = doc(db, `games/${gameID}/${uid}/boardData`).withConverter(
+    boardDataConverter
+  )
+
+  const boardData = (await getDoc(boardDocRef)).data()
+
+  const gameDocRef = doc(db, `games/${gameID}`).withConverter(gamesConverter)
+
+  const gameData = (await getDoc(gameDocRef)).data()
+
+  console.log(gameData)
+
+  return {
+    props: {
+      uid: uid,
+      gameID: gameID,
+      boardData: boardData,
+      nextTurn: gameData?.nextTurn.id,
+    },
+  }
+}
+
+interface IGameID {
+  uid: string
+  gameID: string
+  boardData: BoardData
+  nextTurn: string
+}
+
+const GameID = (props: IGameID) => {
+  const { uid, gameID, boardData, nextTurn } = props
+
+  resetServerContext()
 
   const [selectedLetter, setSelectedLetter] = useState<string | null>(null)
 
@@ -27,69 +67,25 @@ const GameID = () => {
     GameStates.PLACE | GameStates.CHOOSE
   >(GameStates.PLACE)
 
-  const [userAuthData, loadingUserAuthData, userAuthDataError] = useAuthState(
-    getAuth(firebase)
-  )
-
-  useEffect(() => {
-    if (!router.isReady) return
-
-    const { gameID } = router.query
-    setgameID(gameID as string)
-  }, [gameID, router.isReady, router.query])
-
-  const [value, loading, error] = useDocument(
-    doc(
-      getFirestore(firebase),
-      `games/${gameID}/${userAuthData?.uid}/boardData`
-    ).withConverter(boardDataConverter),
-    {
-      snapshotListenOptions: { includeMetadataChanges: true },
-    }
-  )
-
-  const [game, gameLoading, gameError] = useDocument(
-    doc(getFirestore(firebase), `games/${gameID}`).withConverter(
-      gamesConverter
-    ),
-    {
-      snapshotListenOptions: { includeMetadataChanges: true },
-    }
-  )
-
-  console.log('State is:', gameState)
-
-  const data = value?.data()
-  const gameData = game?.data()
-
-  useEffect(() => {
-    if (gameData) {
-      if (gameState === GameStates.PLACE) {
-        // Hent bokstav fra Firebase
-        setSelectedLetter(gameData.selectedLetter)
-      } else {
-        setSelectedLetter(null)
-      }
-    }
-  }, [gameState])
-
   return (
-    data &&
-    gameID &&
-    gameData &&
-    userAuthData && (
+    nextTurn &&
+    boardData &&
+    uid && (
       <>
-        {yourTurn(gameData, userAuthData.uid) && <TurnStatusMessage />}
-        <Points columnPoints={data.columnPoints} rowPoints={data.rowPoints} />
+        {yourTurn(nextTurn, uid) && <TurnStatusMessage />}
+        <Points
+          columnPoints={boardData.columnPoints}
+          rowPoints={boardData.rowPoints}
+        />
         <GameBoard
           grid={{
             size: 3,
-            values: data.board,
+            values: boardData.board,
           }}
           gameID={gameID}
-          userID={userAuthData.uid}
-          rowValidWords={data.rowValidWords}
-          columnValidWords={data.columnValidWords}
+          userID={uid}
+          rowValidWords={boardData.rowValidWords}
+          columnValidWords={boardData.columnValidWords}
           selectedLetter={selectedLetter}
           setSelectedLetter={setSelectedLetter}
           gameState={gameState}
