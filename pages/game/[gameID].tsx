@@ -1,50 +1,42 @@
-import { Button, Text } from '@mantine/core'
-import { getAuth } from 'firebase/auth'
-import { doc, getDoc, getFirestore } from 'firebase/firestore'
+import { Button } from '@mantine/core'
+import { GetServerSideProps, GetServerSidePropsContext } from 'next'
 import Link from 'next/link'
-import { useRouter } from 'next/router'
-import { useEffect, useState } from 'react'
-import { useAuthState } from 'react-firebase-hooks/auth'
-import { useDocument } from 'react-firebase-hooks/firestore'
+import { useState } from 'react'
+import { resetServerContext } from 'react-beautiful-dnd'
+import { fetchBoardData } from '../../components/game/firebase/fetchBoardData'
+import fetchGameData from '../../components/game/firebase/fetchGameData'
 import yourTurn from '../../components/game/firebase/yourTurn'
 import GameBoard from '../../components/game/GameBoard'
 import Points from '../../components/game/Points'
 import SelectLetter from '../../components/game/SelectLetter'
 import TurnStatusMessage from '../../components/game/TurnStatusMessage'
-import firebase, { db } from '../../firebase/clientApp'
-import boardDataConverter from '../../firebase/converters/boardDataConverter'
-import gamesConverter from '../../firebase/converters/gamesConverter'
-import Game from '../../types/Game'
 import GameStates from '../../components/game/types/gameStates'
-import { GetServerSideProps, GetServerSidePropsContext } from 'next'
 import fetchUID from '../../firebase/fetchUID'
 import BoardData from '../../types/BoardData'
-import { resetServerContext } from 'react-beautiful-dnd'
 
 export const getServerSideProps: GetServerSideProps = async (
   ctx: GetServerSidePropsContext
 ) => {
+  const gameID = ctx.query.gameID as string
+
+  // Fetch uid, boardData and gameData
   const uid = await fetchUID(ctx)
-  const gameID = ctx.query.gameID
+  const boardData = await fetchBoardData(gameID, uid)
+  const gameData = await fetchGameData(gameID)
 
-  const boardDocRef = doc(db, `games/${gameID}/${uid}/boardData`).withConverter(
-    boardDataConverter
-  )
-
-  const boardData = (await getDoc(boardDocRef)).data()
-
-  const gameDocRef = doc(db, `games/${gameID}`).withConverter(gamesConverter)
-
-  const gameData = (await getDoc(gameDocRef)).data()
-
-  console.log(gameData)
+  // Retrieve nextTurn, boardSize, selectedLetter from gameData
+  const nextTurn = gameData?.nextTurn.id
+  const boardSize = gameData?.boardSize
+  const selectedLetter = gameData?.selectedLetter
 
   return {
     props: {
       uid: uid,
       gameID: gameID,
       boardData: boardData,
-      nextTurn: gameData?.nextTurn.id,
+      nextTurn: nextTurn,
+      boardSize: boardSize,
+      selectedLetterFromServer: selectedLetter,
     },
   }
 }
@@ -54,14 +46,28 @@ interface IGameID {
   gameID: string
   boardData: BoardData
   nextTurn: string
+  boardSize: number
+  selectedLetterFromServer: string
 }
 
 const GameID = (props: IGameID) => {
-  const { uid, gameID, boardData, nextTurn } = props
+  // Destructure props
+  const {
+    uid,
+    gameID,
+    boardData,
+    nextTurn,
+    boardSize,
+    selectedLetterFromServer,
+  } = props
 
+  // https://github.com/atlassian/react-beautiful-dnd/issues/1756#issuecomment-599388505
   resetServerContext()
 
-  const [selectedLetter, setSelectedLetter] = useState<string | null>(null)
+  // Assign selectedLetter from Firebase as default value
+  const [selectedLetter, setSelectedLetter] = useState<string | null>(
+    selectedLetterFromServer || null
+  )
 
   const [gameState, setGameState] = useState<
     GameStates.PLACE | GameStates.CHOOSE
@@ -79,7 +85,7 @@ const GameID = (props: IGameID) => {
         />
         <GameBoard
           grid={{
-            size: 3,
+            size: boardSize,
             values: boardData.board,
           }}
           gameID={gameID}
