@@ -30,6 +30,7 @@ const addGameToCollection = async (
       proposedAt: Timestamp.now(),
       proposedBy: userDocRef,
       nextTurn: oponentDocRef,
+      selectedLetter: null,
     }
   )
 

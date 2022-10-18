@@ -3,6 +3,7 @@ import { useState } from 'react'
 import { DragDropContext, Droppable, DropResult } from 'react-beautiful-dnd'
 import { AffectedRowOrColumn } from '../../pages/api/types/CheckBoardRequestData'
 import LetterBox from './LetterBox'
+import GameStates from './types/gameStates'
 import IGameBoard from './types/IGameBoard'
 import colorCellGreen from './utils/colorCellGreen'
 import {
@@ -40,13 +41,17 @@ const GameBoard = ({
   userID,
   columnValidWords,
   rowValidWords,
+  selectedLetter,
+  setSelectedLetter,
+  gameState,
+  setGameState,
 }: IGameBoard) => {
   const { classes } = useStyles()
   const [boardSize, setBoardSize] = useState<number>(grid.size)
   const [board, setBoard] = useState<string[]>(grid.values)
   const [affectedRow, setAffectedRow] = useState<AffectedRowOrColumn>()
   const [affectedColumn, setAffectedColumn] = useState<AffectedRowOrColumn>()
-  const [chosenLetter, setChosenLetter] = useState<string>('I')
+
   // FIXME Replace with actual oponentID
   const oponentID = '123'
 
@@ -58,13 +63,14 @@ const GameBoard = ({
   const addLetter = (
     board: string[],
     endIndex: number,
-    chosenLetter: string
+    selectedLetter: string | null
   ) => {
-    chosenLetter.length === 0 ? (chosenLetter = prevLetter) : null
+    selectedLetter ? selectedLetter : (selectedLetter = prevLetter)
+    console.log('AddLetter ', selectedLetter)
     const newBoard = Array.from(board)
-    newBoard[endIndex] = chosenLetter
-    setPrevLetter(chosenLetter)
-    setChosenLetter('')
+    newBoard[endIndex] = selectedLetter
+    setPrevLetter(selectedLetter)
+    setSelectedLetter(null)
     return newBoard
   }
 
@@ -79,7 +85,7 @@ const GameBoard = ({
     // Used to place the letterbox inside the cell its dropped into
     setDropID(index)
 
-    const newBoard: string[] = addLetter(board, index, chosenLetter)
+    const newBoard: string[] = addLetter(board, index, selectedLetter)
     setTempBoard(newBoard)
 
     const row: AffectedRowOrColumn = findAffectedRow({
@@ -112,6 +118,7 @@ const GameBoard = ({
         })
       setBoard(tempBoard)
       setTempBoard([''])
+      setGameState(GameStates.CHOOSE)
     } else {
       // TODO: add as feeback messeage
       console.log('You have to place the letter')
@@ -170,28 +177,32 @@ const GameBoard = ({
             ))}
           </Grid>
         </div>
-        <div style={{ display: 'flex', justifyContent: 'center' }}>
-          <Droppable droppableId="letterStartBox">
-            {(provided) => (
-              <div
-                ref={provided.innerRef}
-                {...provided.droppableProps}
-                style={{
-                  padding: '10px',
-                  width: 'fit-content',
-                }}
-              >
-                {chosenLetter.length > 0 && (
-                  <LetterBox letter={chosenLetter} index={-1}></LetterBox>
-                )}
-                {provided.placeholder}
-              </div>
-            )}
-          </Droppable>
-        </div>
+        {gameState === GameStates.PLACE && (
+          <div style={{ display: 'flex', justifyContent: 'center' }}>
+            <Droppable droppableId="letterStartBox">
+              {(provided) => (
+                <div
+                  ref={provided.innerRef}
+                  {...provided.droppableProps}
+                  style={{
+                    padding: '10px',
+                    width: 'fit-content',
+                  }}
+                >
+                  {selectedLetter && selectedLetter.length > 0 && (
+                    <LetterBox letter={selectedLetter} index={-1}></LetterBox>
+                  )}
+                  {provided.placeholder}
+                </div>
+              )}
+            </Droppable>
+          </div>
+        )}
       </DragDropContext>
 
-      <Button onClick={() => submit()}>Submit</Button>
+      {gameState === GameStates.PLACE && (
+        <Button onClick={() => submit()}>Submit</Button>
+      )}
     </Container>
   )
 }

@@ -9,6 +9,7 @@ interface Game {
   proposedAt: Timestamp
   proposedBy: DocumentReference<DocumentData>
   nextTurn: DocumentReference<DocumentData>
+  selectedLetter: string | null
 }
 
 export default Game
