@@ -1,47 +1,43 @@
-import { Select, Button } from '@mantine/core'
-import { Dispatch, SetStateAction } from 'react'
+import { Button, Select } from '@mantine/core'
+import { useContext } from 'react'
 import updateSelectedLetter from '../../pages/api/utils/updateSelectedLetter'
 import GameStates from './types/gameStates'
+import { GameContext } from './utils/gameContext'
 
-interface ISelectLetter {
-  selectedLetter: string | null
-  setSelectedLetter: Dispatch<SetStateAction<string | null>>
-  gameState: GameStates.PLACE | GameStates.CHOOSE
-  setGameState: Dispatch<SetStateAction<GameStates.PLACE | GameStates.CHOOSE>>
-  gameID: string
-}
+const SelectLetter = () => {
+  const gameContext = useContext(GameContext)
 
-const SelectLetter = ({
-  selectedLetter,
-  setSelectedLetter,
-  gameState,
-  setGameState,
-  gameID,
-}: ISelectLetter) => {
   return (
     <>
-      <Select
-        label="Select letter"
-        placeholder=""
-        value={selectedLetter}
-        onChange={setSelectedLetter}
-        data={[
-          { value: 'P', label: 'P' },
-          { value: 'A', label: 'A' },
-          { value: 'I', label: 'I' },
-        ]}
-      />
-      <Button
-        onClick={() => {
-          // Set game state to 'PLACE'
-          setGameState(GameStates.PLACE)
+      {gameContext && (
+        <>
+          <Select
+            label="Select letter"
+            placeholder=""
+            value={gameContext.selectedLetter}
+            onChange={gameContext.setSelectedLetter}
+            data={[
+              { value: 'P', label: 'P' },
+              { value: 'A', label: 'A' },
+              { value: 'I', label: 'I' },
+            ]}
+          />
+          <Button
+            onClick={() => {
+              // Set game state to 'PLACE'
+              gameContext.setGameState(GameStates.PLACE)
 
-          // Update selectedLetter
-          updateSelectedLetter(gameID, selectedLetter as string)
-        }}
-      >
-        Choose letter
-      </Button>
+              // Update selectedLetter
+              updateSelectedLetter(
+                gameContext.gameID,
+                gameContext.selectedLetter as string
+              )
+            }}
+          >
+            Choose letter
+          </Button>
+        </>
+      )}
     </>
   )
 }

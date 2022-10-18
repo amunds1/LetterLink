@@ -1,7 +1,7 @@
 import { Button } from '@mantine/core'
 import { GetServerSideProps, GetServerSidePropsContext } from 'next'
 import Link from 'next/link'
-import { useState } from 'react'
+import { SetStateAction, useState } from 'react'
 import { resetServerContext } from 'react-beautiful-dnd'
 import { fetchBoardData } from '../../components/game/firebase/fetchBoardData'
 import fetchGameData from '../../components/game/firebase/fetchGameData'
@@ -9,8 +9,15 @@ import yourTurn from '../../components/game/firebase/yourTurn'
 import GameBoard from '../../components/game/GameBoard'
 import Points from '../../components/game/Points'
 import SelectLetter from '../../components/game/SelectLetter'
-import TurnStatusMessage from '../../components/game/TurnStatusMessage'
+import {
+  OpponentTurnStatusMessage,
+  YourTurnStatusMessage,
+} from '../../components/game/TurnStatusMessage'
 import GameStates from '../../components/game/types/gameStates'
+import {
+  GameContext,
+  IGameContext,
+} from '../../components/game/utils/gameContext'
 import fetchUID from '../../firebase/fetchUID'
 import BoardData from '../../types/BoardData'
 
@@ -73,40 +80,51 @@ const GameID = (props: IGameID) => {
     GameStates.PLACE | GameStates.CHOOSE
   >(GameStates.PLACE)
 
+  // Populate context object
+  const GameContextValues: IGameContext = {
+    selectedLetter: selectedLetter,
+    setSelectedLetter: setSelectedLetter,
+    gameState: gameState,
+    setGameState: setGameState,
+    gameID: gameID,
+    userID: uid,
+    rowPoints: boardData.rowPoints,
+    columnPoints: boardData.columnPoints,
+    grid: {
+      size: boardSize,
+      values: boardData.board,
+    },
+    columnValidWords: boardData.columnValidWords,
+    rowValidWords: boardData.rowValidWords,
+  }
+
   return (
     nextTurn &&
     boardData &&
     uid && (
       <>
-        {yourTurn(nextTurn, uid) && <TurnStatusMessage />}
-        <Points
-          columnPoints={boardData.columnPoints}
-          rowPoints={boardData.rowPoints}
-        />
-        <GameBoard
-          grid={{
-            size: boardSize,
-            values: boardData.board,
-          }}
-          gameID={gameID}
-          userID={uid}
-          rowValidWords={boardData.rowValidWords}
-          columnValidWords={boardData.columnValidWords}
-          selectedLetter={selectedLetter}
-          setSelectedLetter={setSelectedLetter}
-          gameState={gameState}
-          setGameState={setGameState}
-        />
-
-        {gameState === GameStates.CHOOSE && (
-          <SelectLetter
-            selectedLetter={selectedLetter}
-            setSelectedLetter={setSelectedLetter}
-            gameState={gameState}
-            setGameState={setGameState}
-            gameID={gameID}
-          />
+        {/* Display who turn it is */}
+        {yourTurn(nextTurn, uid) ? (
+          <YourTurnStatusMessage />
+        ) : (
+          <OpponentTurnStatusMessage />
         )}
+
+        <GameContext.Provider value={GameContextValues}>
+          {/* Display points */}
+          <Points />
+
+          {/* Gameboard */}
+          <GameBoard
+            grid={{
+              size: boardSize,
+              values: boardData.board,
+            }}
+          />
+
+          {/* Display select letter UI */}
+          {gameState === GameStates.CHOOSE && <SelectLetter />}
+        </GameContext.Provider>
 
         <Link href="/games">
           <Button>Back to games</Button>
