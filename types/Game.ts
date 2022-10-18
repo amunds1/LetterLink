@@ -1,5 +1,4 @@
 import { DocumentData, DocumentReference, Timestamp } from 'firebase/firestore'
-import User from './User'
 
 interface Game {
   id?: string
