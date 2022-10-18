@@ -5,8 +5,8 @@ interface Game {
   id?: string
   isActive: boolean
   boardSize: number
-  playerOne: User
-  playerTwo: User
+  playerOne: DocumentReference<DocumentData>
+  playerTwo: DocumentReference<DocumentData>
   proposedAt: Timestamp
   proposedBy: DocumentReference<DocumentData>
   nextTurn: DocumentReference<DocumentData>

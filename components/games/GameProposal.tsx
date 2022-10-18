@@ -21,7 +21,7 @@ const GameProposal = ({ game, userUID }: IGameProposal) => {
     label: string
   }>({ value: 0, label: '' })
 
-  useEffect(() => {
+  /* useEffect(() => {
     const timeDelta = Date.now() - game.proposedAt.toMillis()
 
     const timeDeltaSeconds = timeDelta / 1000
@@ -32,12 +32,13 @@ const GameProposal = ({ game, userUID }: IGameProposal) => {
       value: Math.round(timeDeltaHours),
       label: 'hours',
     })
-  }, [game])
+  }, [game]) */
 
+  console.log('Propppp', game)
   return (
     <Card>
       <Group position="apart" mt="md" mb="xs">
-        <Oponent game={game} userUID={userUID} />
+        {/* <Oponent game={game} userUID={userUID} /> */}
         <Badge color="orange" variant="light">
           {gameProposedTimeDelta.value} {gameProposedTimeDelta.label} ago
         </Badge>
