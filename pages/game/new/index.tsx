@@ -1,11 +1,4 @@
-import { Button, Radio, Select, SelectItem, Stack } from '@mantine/core'
-import {
-  collection,
-  documentId,
-  getDocs,
-  query,
-  where,
-} from 'firebase/firestore'
+import { Button, Radio, Select, Stack } from '@mantine/core'
 import {
   GetServerSideProps,
   GetServerSidePropsContext,
@@ -14,29 +7,14 @@ import {
 import Link from 'next/link'
 import { useState } from 'react'
 import addGameToCollection from '../../../components/game/firebase/addToGameCollection'
-import { db } from '../../../firebase/clientApp'
-import usersConverter from '../../../firebase/converters/userConverter'
+import { fetchUsersAsSelectOptions } from '../../../components/game/firebase/fetchUsersAsSelectOptions'
 import fetchUID from '../../../firebase/fetchUID'
 
 export const getServerSideProps: GetServerSideProps = async (
   ctx: GetServerSidePropsContext
 ) => {
   const uid = await fetchUID(ctx)
-
-  // Retrieve user documents of all users expect the authenticated one
-  const q = query(
-    collection(db, 'users'),
-    where(documentId(), '!=', uid)
-  ).withConverter(usersConverter)
-
-  const querySnapshot = await getDocs(q)
-
-  // Generate array of name and id to be used as Select options
-  const options: (string | SelectItem)[] = []
-
-  querySnapshot.forEach((user) => {
-    options.push({ value: user.data().id, label: user.data().name })
-  })
+  const options = await fetchUsersAsSelectOptions(uid)
 
   return {
     props: { oponentOptions: options, uid: uid },
