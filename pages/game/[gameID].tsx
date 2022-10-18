@@ -1,7 +1,7 @@
 import { Button } from '@mantine/core'
 import { GetServerSideProps, GetServerSidePropsContext } from 'next'
 import Link from 'next/link'
-import { SetStateAction, useState } from 'react'
+import { useState } from 'react'
 import { resetServerContext } from 'react-beautiful-dnd'
 import { fetchBoardData } from '../../components/game/firebase/fetchBoardData'
 import fetchGameData from '../../components/game/firebase/fetchGameData'
@@ -80,7 +80,7 @@ const GameID = (props: IGameID) => {
     GameStates.PLACE | GameStates.CHOOSE
   >(GameStates.PLACE)
 
-  // Populate context object
+  // Populate GameContext
   const GameContextValues: IGameContext = {
     selectedLetter: selectedLetter,
     setSelectedLetter: setSelectedLetter,
@@ -99,38 +99,35 @@ const GameID = (props: IGameID) => {
   }
 
   return (
-    nextTurn &&
-    boardData &&
-    uid && (
-      <>
-        {/* Display who turn it is */}
-        {yourTurn(nextTurn, uid) ? (
-          <YourTurnStatusMessage />
-        ) : (
-          <OpponentTurnStatusMessage />
-        )}
+    <>
+      {/* Display who turn it is */}
+      {yourTurn(nextTurn, uid) ? (
+        <YourTurnStatusMessage />
+      ) : (
+        <OpponentTurnStatusMessage />
+      )}
 
-        <GameContext.Provider value={GameContextValues}>
-          {/* Display points */}
-          <Points />
+      <GameContext.Provider value={GameContextValues}>
+        {/* Display points */}
+        <Points />
 
-          {/* Gameboard */}
-          <GameBoard
-            grid={{
-              size: boardSize,
-              values: boardData.board,
-            }}
-          />
+        {/* Gameboard */}
+        <GameBoard
+          // TODO Replace with GameContext
+          grid={{
+            size: boardSize,
+            values: boardData.board,
+          }}
+        />
 
-          {/* Display select letter UI */}
-          {gameState === GameStates.CHOOSE && <SelectLetter />}
-        </GameContext.Provider>
+        {/* Display select letter UI */}
+        {gameState === GameStates.CHOOSE && <SelectLetter />}
+      </GameContext.Provider>
 
-        <Link href="/games">
-          <Button>Back to games</Button>
-        </Link>
-      </>
-    )
+      <Link href="/games">
+        <Button>Back to games</Button>
+      </Link>
+    </>
   )
 }
 
