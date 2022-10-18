@@ -1,5 +1,6 @@
 import { Select, Button } from '@mantine/core'
 import { Dispatch, SetStateAction } from 'react'
+import updateSelectedLetter from '../../pages/api/utils/updateSelectedLetter'
 import GameStates from './types/gameStates'
 
 interface ISelectLetter {
@@ -7,6 +8,7 @@ interface ISelectLetter {
   setSelectedLetter: Dispatch<SetStateAction<string | null>>
   gameState: GameStates.PLACE | GameStates.CHOOSE
   setGameState: Dispatch<SetStateAction<GameStates.PLACE | GameStates.CHOOSE>>
+  gameID: string
 }
 
 const SelectLetter = ({
@@ -14,6 +16,7 @@ const SelectLetter = ({
   setSelectedLetter,
   gameState,
   setGameState,
+  gameID,
 }: ISelectLetter) => {
   return (
     <>
@@ -23,13 +26,21 @@ const SelectLetter = ({
         value={selectedLetter}
         onChange={setSelectedLetter}
         data={[
+          { value: 'P', label: 'P' },
           { value: 'A', label: 'A' },
-          { value: 'B', label: 'B' },
-          { value: 'C', label: 'C' },
+          { value: 'I', label: 'I' },
         ]}
       />
-      <Button onClick={() => setGameState(GameStates.PLACE)}>
-        Chose letter
+      <Button
+        onClick={() => {
+          // Set game state to 'PLACE'
+          setGameState(GameStates.PLACE)
+
+          // Update selectedLetter
+          updateSelectedLetter(gameID, selectedLetter as string)
+        }}
+      >
+        Choose letter
       </Button>
     </>
   )

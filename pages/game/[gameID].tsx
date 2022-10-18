@@ -104,6 +104,7 @@ const GameID = (props: IGameID) => {
             setSelectedLetter={setSelectedLetter}
             gameState={gameState}
             setGameState={setGameState}
+            gameID={gameID}
           />
         )}
 
