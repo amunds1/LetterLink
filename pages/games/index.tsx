@@ -1,82 +1,79 @@
-import { Button, Center, createStyles, Stack, Text } from '@mantine/core'
-import { getAuth } from 'firebase/auth'
-import {
-  collection,
-  doc,
-  documentId,
-  getFirestore,
-  query,
-  where,
-} from 'firebase/firestore'
+import { Button, createStyles, Stack } from '@mantine/core'
+import { GetServerSidePropsContext } from 'next'
 import Link from 'next/link'
-import { useAuthState } from 'react-firebase-hooks/auth'
-import { useCollection, useDocument } from 'react-firebase-hooks/firestore'
 import ActiveGames from '../../components/games/ActiveGames'
+import {
+  fetchActiveGames,
+  fetchProposedGames,
+} from '../../components/games/firebase/fetchGames'
 import ProposedGames from '../../components/games/ProposedGames'
-import firebase from '../../firebase/clientApp'
-import gamesConverter from '../../firebase/converters/gamesConverter'
-import usersConverter from '../../firebase/converters/userConverter'
+import { fetchUserData } from '../../components/profile/firebase/fetchUserData'
+import fetchUID from '../../firebase/fetchUID'
+import Game from '../../types/Game'
 
 const useStyles = createStyles(() => ({
   center: { height: '100%' },
 }))
 
-const Games = () => {
-  const { classes } = useStyles()
-  const [userAuthData, loading, error] = useAuthState(getAuth(firebase))
+export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
+  try {
+    let activeGames: Game[] | null = null
+    let proposedGames: Game[] | null = null
 
-  /* 
-    1. Fetch 'games' array from the document of the logged in user, from the 'users' collection
-  */
-  const [user, userLoading, userError] = useDocument(
-    userAuthData &&
-      doc(getFirestore(firebase), 'users', userAuthData.uid).withConverter(
-        usersConverter
-      ),
-    {
-      snapshotListenOptions: { includeMetadataChanges: true },
+    const uid = await fetchUID(ctx)
+
+    // Fetch user data
+    const userData = await fetchUserData(uid)
+
+    // Fetch active games
+    if (userData?.games?.length) {
+      activeGames = await fetchActiveGames(userData.games)
     }
-  )
 
-  // Return null if games array belonging to a user is empty, true otherwise
-  const hasGames = user?.data()?.games?.length! ? true : null
+    // Fetch proposed games
+    if (userData?.proposedGames?.length) {
+      proposedGames = await fetchProposedGames(userData.proposedGames)
+    }
 
-  /* 
-    2. Retrieves games belonging to a user from the useDocument() hook above
-  */
-  const [games, gamesLoading, gamesError] = useCollection(
-    hasGames &&
-      query(
-        collection(getFirestore(firebase), 'games'),
-        where(documentId(), 'in', user?.data()?.games)
-      ).withConverter(gamesConverter)
-  )
+    return {
+      props: {
+        uid: uid,
+        activeGames: activeGames,
+        proposedGames: proposedGames,
+      },
+    }
+  } catch (err) {
+    return {
+      redirect: {
+        destination: '/signin',
+        permanent: false,
+      },
+    }
+  }
+}
+
+interface IGames {
+  uid: string
+  activeGames: Game[] | null
+  proposedGames: Game[] | null
+}
+
+const Games = (props: IGames) => {
+  const { classes } = useStyles()
+  const { uid, activeGames, proposedGames } = props
 
   return (
     <>
-      {!userAuthData && !loading && (
-        <Center className={classes.center}>
-          <Text size={'xl'}>
-            To view your games you need to{' '}
-            <Link href={'/signin'}>
-              <a>Sign In</a>
-            </Link>
-          </Text>
-        </Center>
-      )}
-
-      {userAuthData && !loading && (
-        <Stack style={{ width: '100%' }}>
-          <Stack className={classes.center} style={{ width: '100%' }}>
-            <ProposedGames userUID={userAuthData.uid} />
-            {games && <ActiveGames games={games} userUID={userAuthData.uid} />}
-          </Stack>
-
-          <Link href="/game/new">
-            <Button>Start a new game</Button>
-          </Link>
+      <Stack style={{ width: '100%' }}>
+        <Stack className={classes.center} style={{ width: '100%' }}>
+          <ProposedGames userUID={uid} games={proposedGames} />
+          <ActiveGames userUID={uid} games={activeGames} />
         </Stack>
-      )}
+
+        <Link href="/game/new">
+          <Button>Start a new game</Button>
+        </Link>
+      </Stack>
     </>
   )
 }

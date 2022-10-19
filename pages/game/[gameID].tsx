@@ -32,7 +32,7 @@ export const getServerSideProps: GetServerSideProps = async (
   const gameData = await fetchGameData(gameID)
 
   // Retrieve nextTurn, boardSize, selectedLetter from gameData
-  const nextTurn = gameData?.nextTurn.id
+  const nextTurn = gameData?.nextTurn
   const boardSize = gameData?.boardSize
   const selectedLetter = gameData?.selectedLetter
 

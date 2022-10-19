@@ -22,12 +22,12 @@ const gamesConverter: FirestoreDataConverter<Game> = {
     return {
       id: snapshot.id,
       boardSize: data.boardSize,
-      playerOne: data.playerOne,
-      playerTwo: data.playerTwo,
+      playerOne: data.playerOne.id,
+      playerTwo: data.playerTwo.id,
       isActive: data.isActive,
-      proposedAt: data.proposedAt,
-      proposedBy: data.proposedBy,
-      nextTurn: data.nextTurn,
+      proposedAt: JSON.parse(JSON.stringify(data.proposedAt.toDate())) as Date,
+      proposedBy: data.proposedBy.id,
+      nextTurn: data.nextTurn.id,
       selectedLetter: data.selectedLetter,
     }
   },

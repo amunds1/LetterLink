@@ -1,9 +1,7 @@
 import { Text } from '@mantine/core'
-import { doc, getFirestore } from 'firebase/firestore'
-import { useDocument } from 'react-firebase-hooks/firestore'
-import firebase from '../../firebase/clientApp'
-import usersConverter from '../../firebase/converters/userConverter'
+import { useEffect, useState } from 'react'
 import Game from '../../types/Game'
+import { fetchUserData } from '../profile/firebase/fetchUserData'
 import selectUserID from './utils/selectUserID'
 
 interface IOponent {
@@ -12,18 +10,24 @@ interface IOponent {
 }
 
 const Oponent = ({ userUID, game }: IOponent) => {
-  const [userData, userLoading, userError] = useDocument(
-    doc(
-      getFirestore(firebase),
-      'users',
-      selectUserID(userUID, game.playerOne.id, game.playerTwo.id)
-    ).withConverter(usersConverter),
-    {
-      snapshotListenOptions: { includeMetadataChanges: true },
-    }
-  )
+  const [opponentName, setOpponentName] = useState('')
 
-  return <Text weight={500}>Game against {userData?.data()?.name}</Text>
+  useEffect(() => {
+    async function fetchData() {
+      const oponentID = selectUserID(
+        userUID,
+        game.playerOne as string,
+        game.playerTwo as string
+      )
+
+      const userData = await fetchUserData(oponentID)
+      setOpponentName(userData?.name as string)
+    }
+
+    fetchData()
+  }, [game.playerOne, game.playerTwo, userUID])
+
+  return <Text weight={500}>Game against {opponentName}</Text>
 }
 
 export default Oponent

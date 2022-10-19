@@ -6,27 +6,25 @@ import Oponent from './Oponent'
 
 interface IActiveGames {
   userUID: string
-  games: QuerySnapshot<Game> | undefined
+  games: Game[] | null
 }
 
 const ActiveGames = ({ games, userUID }: IActiveGames) => {
   return (
     <>
       {games &&
-        games.docs.map((game) => {
-          const gameData = game.data()
-
+        games.map((game) => {
           return (
             <Card key={game.id} shadow="sm" p="lg" radius="md" withBorder>
               <Group position="apart" mt="md" mb="xs">
-                <Oponent game={gameData} userUID={userUID} />
+                <Oponent game={game} userUID={userUID} />
               </Group>
 
               <Text size="sm" color="dimmed">
-                Boardsize {gameData.boardSize}
+                Boardsize {game.boardSize}
               </Text>
 
-              <Link href={`/game/${gameData.id}`}>
+              <Link href={`/game/${game.id}`}>
                 <Button
                   variant="light"
                   color="blue"
