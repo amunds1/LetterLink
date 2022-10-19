@@ -17,8 +17,11 @@ const GameProposal = ({ game, userUID }: IGameProposal) => {
     label: string
   }>({ value: 0, label: '' })
 
-  /* useEffect(() => {
-    const timeDelta = Date.now() - game.proposedAt.toMillis()
+  console.log('Proposed at', game.proposedAt as Date)
+
+  useEffect(() => {
+    const proposedAtAsDate = new Date(game.proposedAt as Date)
+    const timeDelta = Date.now() - proposedAtAsDate.getTime()
 
     const timeDeltaSeconds = timeDelta / 1000
     const timeDeltaMinutes = timeDeltaSeconds / 60
@@ -28,7 +31,7 @@ const GameProposal = ({ game, userUID }: IGameProposal) => {
       value: Math.round(timeDeltaHours),
       label: 'hours',
     })
-  }, [game]) */
+  }, [game])
 
   return (
     <Card>
