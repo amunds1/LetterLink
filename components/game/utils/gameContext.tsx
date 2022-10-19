@@ -24,6 +24,7 @@ export interface IGameContext {
   rowValidWords: {
     [key: number]: string[]
   }
+  yourTurn: boolean
 }
 
 export const GameContext = createContext<IGameContext | null>(null)

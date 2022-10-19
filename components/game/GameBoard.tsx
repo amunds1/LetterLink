@@ -2,6 +2,7 @@ import { Box, Button, Container, createStyles, Grid } from '@mantine/core'
 import { useContext, useEffect, useState } from 'react'
 import { DragDropContext, Droppable, DropResult } from 'react-beautiful-dnd'
 import { AffectedRowOrColumn } from '../../pages/api/types/CheckBoardRequestData'
+import yourTurn from './firebase/yourTurn'
 import LetterBox from './LetterBox'
 import GameStates from './types/gameStates'
 import colorCellGreen from './utils/colorCellGreen'
@@ -184,36 +185,38 @@ const GameBoard = () => {
                 ))}
               </Grid>
             </div>
-            {gameContext.gameState === GameStates.PLACE && (
-              <div style={{ display: 'flex', justifyContent: 'center' }}>
-                <Droppable droppableId="letterStartBox">
-                  {(provided) => (
-                    <div
-                      ref={provided.innerRef}
-                      {...provided.droppableProps}
-                      style={{
-                        padding: '10px',
-                        width: 'fit-content',
-                      }}
-                    >
-                      {gameContext.selectedLetter &&
-                        gameContext.selectedLetter.length > 0 && (
-                          <LetterBox
-                            letter={gameContext.selectedLetter}
-                            index={-1}
-                          ></LetterBox>
-                        )}
-                      {provided.placeholder}
-                    </div>
-                  )}
-                </Droppable>
-              </div>
-            )}
+            {gameContext.gameState === GameStates.PLACE &&
+              gameContext.yourTurn && (
+                <div style={{ display: 'flex', justifyContent: 'center' }}>
+                  <Droppable droppableId="letterStartBox">
+                    {(provided) => (
+                      <div
+                        ref={provided.innerRef}
+                        {...provided.droppableProps}
+                        style={{
+                          padding: '10px',
+                          width: 'fit-content',
+                        }}
+                      >
+                        {gameContext.selectedLetter &&
+                          gameContext.selectedLetter.length > 0 && (
+                            <LetterBox
+                              letter={gameContext.selectedLetter}
+                              index={-1}
+                            ></LetterBox>
+                          )}
+                        {provided.placeholder}
+                      </div>
+                    )}
+                  </Droppable>
+                </div>
+              )}
           </DragDropContext>
 
-          {gameContext.gameState === GameStates.PLACE && (
-            <Button onClick={() => submit()}>Submit</Button>
-          )}
+          {gameContext.gameState === GameStates.PLACE &&
+            gameContext.yourTurn && (
+              <Button onClick={() => submit()}>Submit</Button>
+            )}
         </Container>
       )}
     </>

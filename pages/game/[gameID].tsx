@@ -36,6 +36,13 @@ export const getServerSideProps: GetServerSideProps = async (
   const boardSize = gameData?.boardSize
   const selectedLetter = gameData?.selectedLetter
 
+  let initialGameState = GameStates.PLACE
+  if (selectedLetter == null) {
+    initialGameState = GameStates.CHOOSE
+  } else {
+    initialGameState = GameStates.PLACE
+  }
+
   return {
     props: {
       uid: uid,
@@ -44,6 +51,7 @@ export const getServerSideProps: GetServerSideProps = async (
       nextTurn: nextTurn,
       boardSize: boardSize,
       selectedLetterFromServer: selectedLetter,
+      initialGameState: initialGameState,
     },
   }
 }
@@ -55,6 +63,7 @@ interface IGameID {
   nextTurn: string
   boardSize: number
   selectedLetterFromServer: string
+  initialGameState: GameStates
 }
 
 const GameID = (props: IGameID) => {
@@ -66,6 +75,7 @@ const GameID = (props: IGameID) => {
     nextTurn,
     boardSize,
     selectedLetterFromServer,
+    initialGameState,
   } = props
 
   // https://github.com/atlassian/react-beautiful-dnd/issues/1756#issuecomment-599388505
@@ -78,7 +88,7 @@ const GameID = (props: IGameID) => {
 
   const [gameState, setGameState] = useState<
     GameStates.PLACE | GameStates.CHOOSE
-  >(GameStates.PLACE)
+  >(initialGameState)
 
   // Populate GameContext
   const GameContextValues: IGameContext = {
@@ -96,6 +106,7 @@ const GameID = (props: IGameID) => {
     },
     columnValidWords: boardData.columnValidWords,
     rowValidWords: boardData.rowValidWords,
+    yourTurn: yourTurn(nextTurn, uid),
   }
 
   return (

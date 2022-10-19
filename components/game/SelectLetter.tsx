@@ -9,7 +9,7 @@ const SelectLetter = () => {
 
   return (
     <>
-      {gameContext && (
+      {gameContext?.yourTurn && (
         <>
           <Select
             label="Select letter"
