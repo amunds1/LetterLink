@@ -43,7 +43,6 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
       },
     }
   } catch (err) {
-    console.log(err)
     return {
       redirect: {
         destination: '/signin',
