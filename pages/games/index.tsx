@@ -38,11 +38,12 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
     return {
       props: {
         uid: uid,
-        activeGames: JSON.parse(JSON.stringify(activeGames)),
-        proposedGames: JSON.parse(JSON.stringify(proposedGames)),
+        activeGames: activeGames,
+        proposedGames: proposedGames,
       },
     }
   } catch (err) {
+    console.log(err)
     return {
       redirect: {
         destination: '/signin',

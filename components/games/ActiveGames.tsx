@@ -17,7 +17,7 @@ const ActiveGames = ({ games, userUID }: IActiveGames) => {
           return (
             <Card key={game.id} shadow="sm" p="lg" radius="md" withBorder>
               <Group position="apart" mt="md" mb="xs">
-                {/* <Oponent game={game} userUID={userUID} /> */}
+                <Oponent game={game} userUID={userUID} />
               </Group>
 
               <Text size="sm" color="dimmed">

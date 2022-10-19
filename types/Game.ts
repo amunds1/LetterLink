@@ -4,11 +4,11 @@ interface Game {
   id?: string
   isActive: boolean
   boardSize: number
-  playerOne: DocumentReference<DocumentData>
-  playerTwo: DocumentReference<DocumentData>
-  proposedAt: Timestamp
-  proposedBy: DocumentReference<DocumentData>
-  nextTurn: DocumentReference<DocumentData>
+  playerOne: DocumentReference<DocumentData> | string
+  playerTwo: DocumentReference<DocumentData> | string
+  proposedAt: Timestamp | Date
+  proposedBy: DocumentReference<DocumentData> | string
+  nextTurn: DocumentReference<DocumentData> | string
   selectedLetter: string | null
 }
 

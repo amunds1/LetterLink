@@ -1,15 +1,14 @@
-import { DocumentData, DocumentReference } from 'firebase/firestore'
 import rejectProposedGame from './rejectProposedGame'
 
 interface IWidthdrawGameProposal {
-  userRef: DocumentReference<DocumentData>
+  userUID: string
   gameID: string
 }
 
-const withdrawGameProposal = ({ userRef, gameID }: IWidthdrawGameProposal) => {
+const withdrawGameProposal = ({ userUID, gameID }: IWidthdrawGameProposal) => {
   rejectProposedGame({
     gameID,
-    userRef,
+    userUID,
   })
 }
 

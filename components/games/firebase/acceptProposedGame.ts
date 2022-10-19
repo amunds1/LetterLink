@@ -8,7 +8,7 @@ interface IAcceptProposedGame {
 
 const acceptProposedGame = async ({ userUID, gameID }: IAcceptProposedGame) => {
   const gameRef = doc(db, 'games', gameID)
-  const userRef = doc(db, 'user', userUID)
+  const userRef = doc(db, 'users', userUID)
 
   // 1. Add game refrence to games (active games)
   await updateDoc(userRef, {
