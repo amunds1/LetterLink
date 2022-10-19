@@ -4,8 +4,15 @@ import GameStates from '../types/gameStates'
 export interface IGameContext {
   selectedLetter: string | null
   setSelectedLetter: Dispatch<SetStateAction<string | null>>
-  gameState: GameStates.PLACE | GameStates.CHOOSE
-  setGameState: Dispatch<SetStateAction<GameStates.PLACE | GameStates.CHOOSE>>
+  gameState:
+    | GameStates.PLACE_OWN
+    | GameStates.CHOOSE
+    | GameStates.PLACE_OPPONENTS
+  setGameState: Dispatch<
+    SetStateAction<
+      GameStates.PLACE_OWN | GameStates.CHOOSE | GameStates.PLACE_OPPONENTS
+    >
+  >
   gameID: string
   userID: string
   columnPoints: {
@@ -25,6 +32,7 @@ export interface IGameContext {
     [key: number]: string[]
   }
   yourTurn: boolean
+  opponentID: string
 }
 
 export const GameContext = createContext<IGameContext | null>(null)

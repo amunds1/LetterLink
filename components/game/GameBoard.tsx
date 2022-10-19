@@ -11,6 +11,7 @@ import {
   findAffectedRow,
 } from './utils/findAffectedRowOrColumn'
 import { GameContext } from './utils/gameContext'
+import getNextState from './utils/getNextState'
 import submitMove from './utils/submitMove'
 
 const useStyles = createStyles(() => ({
@@ -48,9 +49,6 @@ const GameBoard = () => {
   )
   const [affectedRow, setAffectedRow] = useState<AffectedRowOrColumn>()
   const [affectedColumn, setAffectedColumn] = useState<AffectedRowOrColumn>()
-
-  // FIXME Replace with actual oponentID
-  const oponentID = '123'
 
   // Regret move
   const [dropID, setDropID] = useState<number>()
@@ -114,14 +112,20 @@ const GameBoard = () => {
         submitMove({
           gameID: gameContext.gameID,
           userID: gameContext.userID,
-          oponentID,
+
           board: tempBoard,
           row: affectedRow,
           column: affectedColumn,
         })
       setBoard(tempBoard)
       setTempBoard([''])
-      gameContext.setGameState(GameStates.CHOOSE)
+      gameContext.setGameState(
+        getNextState(
+          gameContext.gameState,
+          gameContext.gameID,
+          gameContext.gameID
+        )
+      )
     } else {
       // TODO: add as feeback messeage
       console.log('You have to place the letter')
@@ -130,6 +134,10 @@ const GameBoard = () => {
 
   // Re-render board after response from /api/check
   useEffect(() => {}, [board])
+
+  console.log(
+    `Your turn: ${gameContext?.yourTurn} \nGame state: ${gameContext?.gameState}`
+  )
 
   return (
     <>
@@ -185,7 +193,8 @@ const GameBoard = () => {
                 ))}
               </Grid>
             </div>
-            {gameContext.gameState === GameStates.PLACE &&
+            {(gameContext.gameState === GameStates.PLACE_OWN ||
+              gameContext.gameState === GameStates.PLACE_OPPONENTS) &&
               gameContext.yourTurn && (
                 <div style={{ display: 'flex', justifyContent: 'center' }}>
                   <Droppable droppableId="letterStartBox">
@@ -213,7 +222,8 @@ const GameBoard = () => {
               )}
           </DragDropContext>
 
-          {gameContext.gameState === GameStates.PLACE &&
+          {(gameContext.gameState === GameStates.PLACE_OWN ||
+            gameContext.gameState === GameStates.PLACE_OPPONENTS) &&
             gameContext.yourTurn && (
               <Button onClick={() => submit()}>Submit</Button>
             )}

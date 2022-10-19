@@ -25,7 +25,7 @@ const SelectLetter = () => {
           <Button
             onClick={() => {
               // Set game state to 'PLACE'
-              gameContext.setGameState(GameStates.PLACE)
+              gameContext.setGameState(GameStates.PLACE_OWN)
 
               // Update selectedLetter
               updateSelectedLetter(

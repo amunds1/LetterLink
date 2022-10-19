@@ -1,6 +1,7 @@
 enum GameStates {
   CHOOSE = 'CHOOSE',
-  PLACE = 'PLACE',
+  PLACE_OWN = 'PLACE_OWN',
+  PLACE_OPPONENTS = 'PLACE_OPPONENTS',
 }
 
 export default GameStates

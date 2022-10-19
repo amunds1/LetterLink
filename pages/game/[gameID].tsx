@@ -18,6 +18,7 @@ import {
   GameContext,
   IGameContext,
 } from '../../components/game/utils/gameContext'
+import selectUserID from '../../components/games/utils/selectUserID'
 import fetchUID from '../../firebase/fetchUID'
 import BoardData from '../../types/BoardData'
 
@@ -36,11 +37,9 @@ export const getServerSideProps: GetServerSideProps = async (
   const boardSize = gameData?.boardSize
   const selectedLetter = gameData?.selectedLetter
 
-  let initialGameState = GameStates.PLACE
+  let initialGameState = GameStates.PLACE_OPPONENTS
   if (selectedLetter == null) {
     initialGameState = GameStates.CHOOSE
-  } else {
-    initialGameState = GameStates.PLACE
   }
 
   return {
@@ -87,7 +86,7 @@ const GameID = (props: IGameID) => {
   )
 
   const [gameState, setGameState] = useState<
-    GameStates.PLACE | GameStates.CHOOSE
+    GameStates.PLACE_OWN | GameStates.CHOOSE | GameStates.PLACE_OPPONENTS
   >(initialGameState)
 
   // Populate GameContext
@@ -107,6 +106,7 @@ const GameID = (props: IGameID) => {
     columnValidWords: boardData.columnValidWords,
     rowValidWords: boardData.rowValidWords,
     yourTurn: yourTurn(nextTurn, uid),
+    opponentID: selectUserID(uid, boardData.),
   }
 
   return (
