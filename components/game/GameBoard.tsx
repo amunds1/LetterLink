@@ -123,8 +123,8 @@ const GameBoard = () => {
         getNextState(
           gameContext.gameState,
           gameContext.gameID,
-          gameContext.gameID
-        )
+          gameContext.opponentID
+        ) as GameStates
       )
     } else {
       // TODO: add as feeback messeage
