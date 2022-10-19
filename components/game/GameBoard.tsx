@@ -112,13 +112,14 @@ const GameBoard = () => {
         submitMove({
           gameID: gameContext.gameID,
           userID: gameContext.userID,
-
           board: tempBoard,
           row: affectedRow,
           column: affectedColumn,
         })
       setBoard(tempBoard)
       setTempBoard([''])
+
+      // Set gameState in GameContext using getNextState
       gameContext.setGameState(
         getNextState(
           gameContext.gameState,
@@ -134,6 +135,23 @@ const GameBoard = () => {
 
   // Re-render board after response from /api/check
   useEffect(() => {}, [board])
+
+  /* useEffect(() => {
+    const prevState = gameContext?.gameState
+
+    const nextState = getNextState(
+      gameContext!.gameState,
+      gameContext!.gameID,
+      gameContext!.opponentID
+    ) as GameStates
+
+    if (
+      prevState == GameStates.CHOOSE &&
+      nextState == GameStates.PLACE_OPPONENTS
+    ) {
+      gameContext?.yourTurn = false as boolean
+    }
+  }, [gameContext, gameContext!.gameState]) */
 
   console.log(
     `Your turn: ${gameContext?.yourTurn} \nGame state: ${gameContext?.gameState}`
