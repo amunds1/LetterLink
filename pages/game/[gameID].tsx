@@ -33,11 +33,7 @@ export const getServerSideProps: GetServerSideProps = async (
   const boardData = await fetchBoardData(gameID, uid)
   const gameData = await fetchGameData(gameID)
 
-  // Retrieve nextTurn, boardSize, selectedLetter from gameData
-  //const nextTurn = gameData?.nextTurn
-  //const boardSize = gameData?.boardSize
-  //const selectedLetter = gameData?.selectedLetter
-
+  // Set intialGameState to be CHOOSE, if selectedLetter is null
   let initialGameState = GameStates.PLACE_OPPONENTS
   if (gameData?.selectedLetter == null) {
     console.log('Hei')
@@ -47,11 +43,7 @@ export const getServerSideProps: GetServerSideProps = async (
   return {
     props: {
       uid: uid,
-      gameID: gameID,
       boardData: boardData,
-      //nextTurn: nextTurn,
-      //boardSize: boardSize,
-      //selectedLetterFromServer: selectedLetter,
       gameData: gameData,
       initialGameState: initialGameState,
     },
@@ -60,27 +52,13 @@ export const getServerSideProps: GetServerSideProps = async (
 
 interface IGameID {
   uid: string
-  gameID: string
   boardData: BoardData
-  //nextTurn: string
-  //boardSize: number
-  //selectedLetterFromServer: string
   initialGameState: GameStates
   gameData: Game
 }
 
 const GameID = (props: IGameID) => {
-  // Destructure props
-  const {
-    uid,
-    gameID,
-    boardData,
-    //nextTurn,
-    //boardSize,
-    //selectedLetterFromServer,
-    initialGameState,
-    gameData,
-  } = props
+  const { uid, boardData, initialGameState, gameData } = props
 
   // https://github.com/atlassian/react-beautiful-dnd/issues/1756#issuecomment-599388505
   resetServerContext()
@@ -100,7 +78,7 @@ const GameID = (props: IGameID) => {
     setSelectedLetter: setSelectedLetter,
     gameState: gameState,
     setGameState: setGameState,
-    gameID: gameID,
+    gameID: gameData.id as string,
     userID: uid,
     rowPoints: boardData.rowPoints,
     columnPoints: boardData.columnPoints,
