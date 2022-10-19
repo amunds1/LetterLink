@@ -18,8 +18,10 @@ import {
   GameContext,
   IGameContext,
 } from '../../components/game/utils/gameContext'
+import selectUserID from '../../components/games/utils/selectUserID'
 import fetchUID from '../../firebase/fetchUID'
 import BoardData from '../../types/BoardData'
+import Game from '../../types/Game'
 
 export const getServerSideProps: GetServerSideProps = async (
   ctx: GetServerSidePropsContext
@@ -31,54 +33,44 @@ export const getServerSideProps: GetServerSideProps = async (
   const boardData = await fetchBoardData(gameID, uid)
   const gameData = await fetchGameData(gameID)
 
-  // Retrieve nextTurn, boardSize, selectedLetter from gameData
-  const nextTurn = gameData?.nextTurn
-  const boardSize = gameData?.boardSize
-  const selectedLetter = gameData?.selectedLetter
+  // Set intialGameState to be CHOOSE, if selectedLetter is null
+  let initialGameState = GameStates.PLACE_OPPONENTS
+  if (gameData?.selectedLetter == null) {
+    console.log('Hei')
+    initialGameState = GameStates.CHOOSE
+  }
 
   return {
     props: {
       uid: uid,
-      gameID: gameID,
       boardData: boardData,
-      nextTurn: nextTurn,
-      boardSize: boardSize,
-      selectedLetterFromServer: selectedLetter,
+      gameData: gameData,
+      initialGameState: initialGameState,
     },
   }
 }
 
 interface IGameID {
   uid: string
-  gameID: string
   boardData: BoardData
-  nextTurn: string
-  boardSize: number
-  selectedLetterFromServer: string
+  initialGameState: GameStates
+  gameData: Game
 }
 
 const GameID = (props: IGameID) => {
-  // Destructure props
-  const {
-    uid,
-    gameID,
-    boardData,
-    nextTurn,
-    boardSize,
-    selectedLetterFromServer,
-  } = props
+  const { uid, boardData, initialGameState, gameData } = props
 
   // https://github.com/atlassian/react-beautiful-dnd/issues/1756#issuecomment-599388505
   resetServerContext()
 
   // Assign selectedLetter from Firebase as default value
   const [selectedLetter, setSelectedLetter] = useState<string | null>(
-    selectedLetterFromServer || null
+    gameData.selectedLetter || null
   )
 
   const [gameState, setGameState] = useState<
-    GameStates.PLACE | GameStates.CHOOSE
-  >(GameStates.PLACE)
+    GameStates.PLACE_OWN | GameStates.CHOOSE | GameStates.PLACE_OPPONENTS
+  >(initialGameState)
 
   // Populate GameContext
   const GameContextValues: IGameContext = {
@@ -86,22 +78,28 @@ const GameID = (props: IGameID) => {
     setSelectedLetter: setSelectedLetter,
     gameState: gameState,
     setGameState: setGameState,
-    gameID: gameID,
+    gameID: gameData.id as string,
     userID: uid,
     rowPoints: boardData.rowPoints,
     columnPoints: boardData.columnPoints,
     grid: {
-      size: boardSize,
+      size: gameData.boardSize,
       values: boardData.board,
     },
     columnValidWords: boardData.columnValidWords,
     rowValidWords: boardData.rowValidWords,
+    yourTurn: yourTurn(gameData.nextTurn as string, uid),
+    opponentID: selectUserID(
+      uid,
+      gameData.playerOne as string,
+      gameData.playerTwo as string
+    ),
   }
 
   return (
     <>
       {/* Display who turn it is */}
-      {yourTurn(nextTurn, uid) ? (
+      {yourTurn(gameData.nextTurn as string, uid) ? (
         <YourTurnStatusMessage />
       ) : (
         <OpponentTurnStatusMessage />

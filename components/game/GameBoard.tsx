@@ -2,6 +2,7 @@ import { Box, Button, Container, createStyles, Grid } from '@mantine/core'
 import { useContext, useEffect, useState } from 'react'
 import { DragDropContext, Droppable, DropResult } from 'react-beautiful-dnd'
 import { AffectedRowOrColumn } from '../../pages/api/types/CheckBoardRequestData'
+import yourTurn from './firebase/yourTurn'
 import LetterBox from './LetterBox'
 import GameStates from './types/gameStates'
 import colorCellGreen from './utils/colorCellGreen'
@@ -10,6 +11,7 @@ import {
   findAffectedRow,
 } from './utils/findAffectedRowOrColumn'
 import { GameContext } from './utils/gameContext'
+import getNextState from './utils/getNextState'
 import submitMove from './utils/submitMove'
 
 const useStyles = createStyles(() => ({
@@ -47,9 +49,6 @@ const GameBoard = () => {
   )
   const [affectedRow, setAffectedRow] = useState<AffectedRowOrColumn>()
   const [affectedColumn, setAffectedColumn] = useState<AffectedRowOrColumn>()
-
-  // FIXME Replace with actual oponentID
-  const oponentID = '123'
 
   // Regret move
   const [dropID, setDropID] = useState<number>()
@@ -113,14 +112,21 @@ const GameBoard = () => {
         submitMove({
           gameID: gameContext.gameID,
           userID: gameContext.userID,
-          oponentID,
           board: tempBoard,
           row: affectedRow,
           column: affectedColumn,
         })
       setBoard(tempBoard)
       setTempBoard([''])
-      gameContext.setGameState(GameStates.CHOOSE)
+
+      // Set gameState in GameContext using getNextState
+      gameContext.setGameState(
+        getNextState(
+          gameContext.gameState,
+          gameContext.gameID,
+          gameContext.opponentID
+        ) as GameStates
+      )
     } else {
       // TODO: add as feeback messeage
       console.log('You have to place the letter')
@@ -129,6 +135,27 @@ const GameBoard = () => {
 
   // Re-render board after response from /api/check
   useEffect(() => {}, [board])
+
+  /* useEffect(() => {
+    const prevState = gameContext?.gameState
+
+    const nextState = getNextState(
+      gameContext!.gameState,
+      gameContext!.gameID,
+      gameContext!.opponentID
+    ) as GameStates
+
+    if (
+      prevState == GameStates.CHOOSE &&
+      nextState == GameStates.PLACE_OPPONENTS
+    ) {
+      gameContext?.yourTurn = false as boolean
+    }
+  }, [gameContext, gameContext!.gameState]) */
+
+  console.log(
+    `Your turn: ${gameContext?.yourTurn} \nGame state: ${gameContext?.gameState}`
+  )
 
   return (
     <>
@@ -184,36 +211,40 @@ const GameBoard = () => {
                 ))}
               </Grid>
             </div>
-            {gameContext.gameState === GameStates.PLACE && (
-              <div style={{ display: 'flex', justifyContent: 'center' }}>
-                <Droppable droppableId="letterStartBox">
-                  {(provided) => (
-                    <div
-                      ref={provided.innerRef}
-                      {...provided.droppableProps}
-                      style={{
-                        padding: '10px',
-                        width: 'fit-content',
-                      }}
-                    >
-                      {gameContext.selectedLetter &&
-                        gameContext.selectedLetter.length > 0 && (
-                          <LetterBox
-                            letter={gameContext.selectedLetter}
-                            index={-1}
-                          ></LetterBox>
-                        )}
-                      {provided.placeholder}
-                    </div>
-                  )}
-                </Droppable>
-              </div>
-            )}
+            {(gameContext.gameState === GameStates.PLACE_OWN ||
+              gameContext.gameState === GameStates.PLACE_OPPONENTS) &&
+              gameContext.yourTurn && (
+                <div style={{ display: 'flex', justifyContent: 'center' }}>
+                  <Droppable droppableId="letterStartBox">
+                    {(provided) => (
+                      <div
+                        ref={provided.innerRef}
+                        {...provided.droppableProps}
+                        style={{
+                          padding: '10px',
+                          width: 'fit-content',
+                        }}
+                      >
+                        {gameContext.selectedLetter &&
+                          gameContext.selectedLetter.length > 0 && (
+                            <LetterBox
+                              letter={gameContext.selectedLetter}
+                              index={-1}
+                            ></LetterBox>
+                          )}
+                        {provided.placeholder}
+                      </div>
+                    )}
+                  </Droppable>
+                </div>
+              )}
           </DragDropContext>
 
-          {gameContext.gameState === GameStates.PLACE && (
-            <Button onClick={() => submit()}>Submit</Button>
-          )}
+          {(gameContext.gameState === GameStates.PLACE_OWN ||
+            gameContext.gameState === GameStates.PLACE_OPPONENTS) &&
+            gameContext.yourTurn && (
+              <Button onClick={() => submit()}>Submit</Button>
+            )}
         </Container>
       )}
     </>

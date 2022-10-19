@@ -67,7 +67,7 @@ export default async function handler(
   updateBoard(boardData)
 
   // Set next turn to oponent
-  updateTurn(boardData.gameID, boardData.oponentID)
+  // updateTurn(boardData.gameID, boardData.oponentID)
 
   res.status(200).json(response)
 }
