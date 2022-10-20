@@ -138,32 +138,6 @@ const GameBoard = () => {
   // Re-render board after response from /api/check
   useEffect(() => {}, [board])
 
-  /* useEffect(() => {
-    if (gameContext) {
-      const prevState = gameContext.gameState
-
-      console.log('PrevState', prevState)
-
-      const nextState = getNextState(
-        gameContext.gameState,
-        gameContext.gameID,
-        gameContext.opponentID
-      ) as GameStates
-
-      console.log('NextState', nextState)
-
-      if (
-        prevState == GameStates.PLACE_OWN &&
-        nextState == GameStates.PLACE_OPPONENTS &&
-        gameContext
-      ) {
-        gameContext.setYourTurn(false)
-      }
-    } else {
-      console.log('No game context')
-    }
-  }, [gameContext, gameContext!.gameState]) */
-
   console.log(
     `Your turn: ${gameContext?.yourTurn} \nGame state: ${gameContext?.gameState}`
   )
