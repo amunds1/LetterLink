@@ -111,7 +111,7 @@ const GameBoard = () => {
         affectedColumn &&
         submitMove({
           gameID: gameContext.gameID,
-          userID: gameContext.userID,
+          userID: gameContext.userUID,
           board: tempBoard,
           row: affectedRow,
           column: affectedColumn,
@@ -124,7 +124,9 @@ const GameBoard = () => {
         getNextState(
           gameContext.gameState,
           gameContext.gameID,
-          gameContext.opponentID
+          gameContext.opponentID,
+          gameContext.setYourTurn,
+          gameContext.userUID
         ) as GameStates
       )
     } else {
@@ -137,19 +139,28 @@ const GameBoard = () => {
   useEffect(() => {}, [board])
 
   /* useEffect(() => {
-    const prevState = gameContext?.gameState
+    if (gameContext) {
+      const prevState = gameContext.gameState
 
-    const nextState = getNextState(
-      gameContext!.gameState,
-      gameContext!.gameID,
-      gameContext!.opponentID
-    ) as GameStates
+      console.log('PrevState', prevState)
 
-    if (
-      prevState == GameStates.CHOOSE &&
-      nextState == GameStates.PLACE_OPPONENTS
-    ) {
-      gameContext?.yourTurn = false as boolean
+      const nextState = getNextState(
+        gameContext.gameState,
+        gameContext.gameID,
+        gameContext.opponentID
+      ) as GameStates
+
+      console.log('NextState', nextState)
+
+      if (
+        prevState == GameStates.PLACE_OWN &&
+        nextState == GameStates.PLACE_OPPONENTS &&
+        gameContext
+      ) {
+        gameContext.setYourTurn(false)
+      }
+    } else {
+      console.log('No game context')
     }
   }, [gameContext, gameContext!.gameState]) */
 

@@ -34,11 +34,9 @@ export const getServerSideProps: GetServerSideProps = async (
   const gameData = await fetchGameData(gameID)
 
   // Set intialGameState to be CHOOSE, if selectedLetter is null
-  let initialGameState = GameStates.PLACE_OPPONENTS
-  if (gameData?.selectedLetter == null) {
-    console.log('Hei')
-    initialGameState = GameStates.CHOOSE
-  }
+  const initialGameState = gameData?.gameState
+
+  const itsYourTurn = yourTurn(gameData?.nextTurn as string, uid)
 
   return {
     props: {
@@ -46,6 +44,7 @@ export const getServerSideProps: GetServerSideProps = async (
       boardData: boardData,
       gameData: gameData,
       initialGameState: initialGameState,
+      itsYourTurn: itsYourTurn,
     },
   }
 }
@@ -55,13 +54,16 @@ interface IGameID {
   boardData: BoardData
   initialGameState: GameStates
   gameData: Game
+  itsYourTurn: boolean
 }
 
 const GameID = (props: IGameID) => {
-  const { uid, boardData, initialGameState, gameData } = props
+  const { uid, boardData, initialGameState, gameData, itsYourTurn } = props
 
   // https://github.com/atlassian/react-beautiful-dnd/issues/1756#issuecomment-599388505
   resetServerContext()
+
+  const [yourTurn, setYourTurn] = useState<boolean>(itsYourTurn)
 
   // Assign selectedLetter from Firebase as default value
   const [selectedLetter, setSelectedLetter] = useState<string | null>(
@@ -79,7 +81,7 @@ const GameID = (props: IGameID) => {
     gameState: gameState,
     setGameState: setGameState,
     gameID: gameData.id as string,
-    userID: uid,
+    userUID: uid,
     rowPoints: boardData.rowPoints,
     columnPoints: boardData.columnPoints,
     grid: {
@@ -88,7 +90,8 @@ const GameID = (props: IGameID) => {
     },
     columnValidWords: boardData.columnValidWords,
     rowValidWords: boardData.rowValidWords,
-    yourTurn: yourTurn(gameData.nextTurn as string, uid),
+    yourTurn: yourTurn,
+    setYourTurn: setYourTurn,
     opponentID: selectUserID(
       uid,
       gameData.playerOne as string,
@@ -99,11 +102,7 @@ const GameID = (props: IGameID) => {
   return (
     <>
       {/* Display who turn it is */}
-      {yourTurn(gameData.nextTurn as string, uid) ? (
-        <YourTurnStatusMessage />
-      ) : (
-        <OpponentTurnStatusMessage />
-      )}
+      {yourTurn ? <YourTurnStatusMessage /> : <OpponentTurnStatusMessage />}
 
       <GameContext.Provider value={GameContextValues}>
         <Points />
