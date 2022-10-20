@@ -1,14 +1,11 @@
 import { Button, createStyles, Stack } from '@mantine/core'
 import { GetServerSidePropsContext } from 'next'
 import Link from 'next/link'
-import { useRouter } from 'next/router'
-import { useEffect } from 'react'
 import ActiveGames from '../../components/games/ActiveGames'
 import {
   fetchActiveGames,
   fetchProposedGames,
 } from '../../components/games/firebase/fetchGames'
-import gamesListener from '../../components/games/firebase/gamesListener'
 import ProposedGames from '../../components/games/ProposedGames'
 import { fetchUserData } from '../../components/profile/firebase/fetchUserData'
 import fetchUID from '../../firebase/fetchUID'
