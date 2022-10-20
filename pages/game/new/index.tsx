@@ -33,9 +33,7 @@ const NewGame = (props: INewGame) => {
 
   const onClick = async () => {
     addGameToCollection(uid, oponent as string, boardSize as string).then(
-      (res) => {
-        console.log('Hei')
-        router.prefetch('/games')
+      () => {
         router.push('/games')
       }
     )

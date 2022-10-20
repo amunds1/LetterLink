@@ -55,8 +55,10 @@ const addGameToCollection = async (
       generateGameConfig(boardSizeAsNumber)
     ))
 
-  updateUserGamesList(docRef, userDocRef)
-  updateUserGamesList(docRef, oponentDocRef)
+  await updateUserGamesList(docRef, userDocRef)
+  await updateUserGamesList(docRef, oponentDocRef)
+
+  return true
 }
 
 export default addGameToCollection
