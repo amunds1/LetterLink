@@ -1,7 +1,7 @@
 import { Button } from '@mantine/core'
 import { GetServerSideProps, GetServerSidePropsContext } from 'next'
 import Link from 'next/link'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { resetServerContext } from 'react-beautiful-dnd'
 import { fetchBoardData } from '../../components/game/firebase/fetchBoardData'
 import fetchGameData from '../../components/game/firebase/fetchGameData'
@@ -22,6 +22,10 @@ import selectUserID from '../../components/games/utils/selectUserID'
 import fetchUID from '../../firebase/fetchUID'
 import BoardData from '../../types/BoardData'
 import Game from '../../types/Game'
+import { doc, onSnapshot } from 'firebase/firestore'
+import { db } from '../../firebase/clientApp'
+import gamesConverter from '../../firebase/converters/gamesConverter'
+import nextTurnListener from '../api/utils/nextTurnListener'
 
 export const getServerSideProps: GetServerSideProps = async (
   ctx: GetServerSidePropsContext
@@ -69,6 +73,11 @@ const GameID = (props: IGameID) => {
   const [selectedLetter, setSelectedLetter] = useState<string | null>(
     gameData.selectedLetter || null
   )
+
+  nextTurnListener(gameData.id as string, uid, setYourTurn)
+
+  // Re-render component after value of yourTurn changes
+  useEffect(() => {}, [yourTurn])
 
   const [gameState, setGameState] = useState<
     GameStates.PLACE_OWN | GameStates.CHOOSE | GameStates.PLACE_OPPONENTS
