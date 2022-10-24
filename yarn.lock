@@ -644,18 +644,18 @@
   version "5.5.4"
   resolved "https://registry.npmjs.org/@mantine/hooks/-/hooks-5.5.4.tgz"
 
-"@mantine/next@^5.6.0":
-  version "5.6.0"
-  resolved "https://registry.yarnpkg.com/@mantine/next/-/next-5.6.0.tgz#a11e83e805532e876eca39f91f90e35f8ac1af72"
+"@mantine/next@^5.6.1":
+  version "5.6.1"
+  resolved "https://registry.yarnpkg.com/@mantine/next/-/next-5.6.1.tgz#7565bb384b71f9afdcd2ccf3ad37c05735d37997"
   dependencies:
-    "@mantine/ssr" "5.6.0"
-    "@mantine/styles" "5.6.0"
+    "@mantine/ssr" "5.6.1"
+    "@mantine/styles" "5.6.1"
 
-"@mantine/ssr@5.6.0":
-  version "5.6.0"
-  resolved "https://registry.yarnpkg.com/@mantine/ssr/-/ssr-5.6.0.tgz#f02bd1e0ccedc192a930ad7135c1e3bf71023a16"
+"@mantine/ssr@5.6.1":
+  version "5.6.1"
+  resolved "https://registry.yarnpkg.com/@mantine/ssr/-/ssr-5.6.1.tgz#4d019f96c028204710b90bec45a53ef5fe6e2738"
   dependencies:
-    "@mantine/styles" "5.6.0"
+    "@mantine/styles" "5.6.1"
     html-react-parser "1.4.12"
 
 "@mantine/styles@5.5.4":
@@ -665,9 +665,9 @@
     clsx "1.1.1"
     csstype "3.0.9"
 
-"@mantine/styles@5.6.0":
-  version "5.6.0"
-  resolved "https://registry.yarnpkg.com/@mantine/styles/-/styles-5.6.0.tgz#2c7e66f9978e3c9cd75ae869c16e43b2bc67a679"
+"@mantine/styles@5.6.1":
+  version "5.6.1"
+  resolved "https://registry.yarnpkg.com/@mantine/styles/-/styles-5.6.1.tgz#71866098b473adfe49aeeee7d0ab158693ba1a5c"
   dependencies:
     clsx "1.1.1"
     csstype "3.0.9"
