@@ -13,7 +13,7 @@
     "@emotion/server": "^11.10.0",
     "@mantine/core": "^5.3.3",
     "@mantine/ds": "^5.5.4",
-    "@mantine/form": "^5.6.0",
+    "@mantine/form": "^5.6.1",
     "@mantine/hooks": "^5.3.3",
     "@mantine/next": "^5.6.0",
     "@tabler/icons": "^1.106.0",
