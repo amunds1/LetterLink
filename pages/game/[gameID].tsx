@@ -22,9 +22,6 @@ import selectUserID from '../../components/games/utils/selectUserID'
 import fetchUID from '../../firebase/fetchUID'
 import BoardData from '../../types/BoardData'
 import Game from '../../types/Game'
-import { doc, onSnapshot } from 'firebase/firestore'
-import { db } from '../../firebase/clientApp'
-import gamesConverter from '../../firebase/converters/gamesConverter'
 import nextTurnListener from '../api/utils/nextTurnListener'
 
 export const getServerSideProps: GetServerSideProps = async (
