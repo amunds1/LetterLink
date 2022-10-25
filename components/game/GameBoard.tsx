@@ -137,10 +137,10 @@ const GameBoard = () => {
 
   // Re-render board after response from /api/check
   useEffect(() => {}, [board])
-
+  /* 
   console.log(
     `Your turn: ${gameContext?.yourTurn} \nGame state: ${gameContext?.gameState}`
-  )
+  ) */
 
   return (
     <>
