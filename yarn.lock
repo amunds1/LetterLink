@@ -601,9 +601,9 @@
     protobufjs "^7.0.0"
     yargs "^16.2.0"
 
-"@humanwhocodes/config-array@^0.10.5":
-  version "0.10.5"
-  resolved "https://registry.npmjs.org/@humanwhocodes/config-array/-/config-array-0.10.5.tgz"
+"@humanwhocodes/config-array@^0.11.6":
+  version "0.11.6"
+  resolved "https://registry.yarnpkg.com/@humanwhocodes/config-array/-/config-array-0.11.6.tgz#6a51d603a3aaf8d4cf45b42b3f2ac9318a4adc4b"
   dependencies:
     "@humanwhocodes/object-schema" "^1.2.1"
     debug "^4.1.1"
@@ -633,9 +633,9 @@
   dependencies:
     "@mantine/utils" "5.5.4"
 
-"@mantine/form@^5.5.6":
-  version "5.5.6"
-  resolved "https://registry.yarnpkg.com/@mantine/form/-/form-5.5.6.tgz#57adc638bedc9ab1294a50179d1bc792c41c0a1a"
+"@mantine/form@^5.6.0":
+  version "5.6.0"
+  resolved "https://registry.yarnpkg.com/@mantine/form/-/form-5.6.0.tgz#ffc2d2b9adfe3a649887818ace3363389b265f27"
   dependencies:
     fast-deep-equal "^3.1.3"
     klona "^2.0.5"
@@ -644,18 +644,18 @@
   version "5.5.4"
   resolved "https://registry.npmjs.org/@mantine/hooks/-/hooks-5.5.4.tgz"
 
-"@mantine/next@^5.5.6":
-  version "5.5.6"
-  resolved "https://registry.yarnpkg.com/@mantine/next/-/next-5.5.6.tgz#b05b7f8ab573874fae0fe4af8f198be9cba3f43c"
+"@mantine/next@^5.6.2":
+  version "5.6.2"
+  resolved "https://registry.yarnpkg.com/@mantine/next/-/next-5.6.2.tgz#e748bbe4bf562e76b98dae7b69a986a2cc24d821"
   dependencies:
-    "@mantine/ssr" "5.5.6"
-    "@mantine/styles" "5.5.6"
+    "@mantine/ssr" "5.6.2"
+    "@mantine/styles" "5.6.2"
 
-"@mantine/ssr@5.5.6":
-  version "5.5.6"
-  resolved "https://registry.yarnpkg.com/@mantine/ssr/-/ssr-5.5.6.tgz#b471557760e56cae295bc16c581cad1763f78173"
+"@mantine/ssr@5.6.2":
+  version "5.6.2"
+  resolved "https://registry.yarnpkg.com/@mantine/ssr/-/ssr-5.6.2.tgz#d3b8bd5e73081c91be0c019b409a0e91157c32b7"
   dependencies:
-    "@mantine/styles" "5.5.6"
+    "@mantine/styles" "5.6.2"
     html-react-parser "1.4.12"
 
 "@mantine/styles@5.5.4":
@@ -665,9 +665,9 @@
     clsx "1.1.1"
     csstype "3.0.9"
 
-"@mantine/styles@5.5.6":
-  version "5.5.6"
-  resolved "https://registry.yarnpkg.com/@mantine/styles/-/styles-5.5.6.tgz#de5ea457c04f612e14632d6a253479314b075446"
+"@mantine/styles@5.6.2":
+  version "5.6.2"
+  resolved "https://registry.yarnpkg.com/@mantine/styles/-/styles-5.6.2.tgz#01a401be81bc2d3ca05888fef8f4b36ce8e92b99"
   dependencies:
     clsx "1.1.1"
     csstype "3.0.9"
@@ -749,7 +749,7 @@
   version "2.0.5"
   resolved "https://registry.npmjs.org/@nodelib/fs.stat/-/fs.stat-2.0.5.tgz"
 
-"@nodelib/fs.walk@^1.2.3":
+"@nodelib/fs.walk@^1.2.3", "@nodelib/fs.walk@^1.2.8":
   version "1.2.8"
   resolved "https://registry.npmjs.org/@nodelib/fs.walk/-/fs.walk-1.2.8.tgz"
   dependencies:
@@ -970,9 +970,9 @@
   version "3.0.1"
   resolved "https://registry.npmjs.org/@types/mime/-/mime-3.0.1.tgz"
 
-"@types/node@*", "@types/node@18.11.2", "@types/node@>=12.12.47", "@types/node@>=13.7.0":
-  version "18.11.2"
-  resolved "https://registry.yarnpkg.com/@types/node/-/node-18.11.2.tgz#c59b7641832531264fda3f1ba610362dc9a7dfc8"
+"@types/node@*", "@types/node@18.11.3", "@types/node@>=12.12.47", "@types/node@>=13.7.0":
+  version "18.11.3"
+  resolved "https://registry.yarnpkg.com/@types/node/-/node-18.11.3.tgz#78a6d7ec962b596fc2d2ec102c4dd3ef073fea6a"
 
 "@types/parse-json@^4.0.0":
   version "4.0.0"
@@ -1692,13 +1692,14 @@ eslint-visitor-keys@^3.3.0:
   version "3.3.0"
   resolved "https://registry.npmjs.org/eslint-visitor-keys/-/eslint-visitor-keys-3.3.0.tgz"
 
-eslint@8.25.0:
-  version "8.25.0"
-  resolved "https://registry.npmjs.org/eslint/-/eslint-8.25.0.tgz"
+eslint@8.26.0:
+  version "8.26.0"
+  resolved "https://registry.yarnpkg.com/eslint/-/eslint-8.26.0.tgz#2bcc8836e6c424c4ac26a5674a70d44d84f2181d"
   dependencies:
     "@eslint/eslintrc" "^1.3.3"
-    "@humanwhocodes/config-array" "^0.10.5"
+    "@humanwhocodes/config-array" "^0.11.6"
     "@humanwhocodes/module-importer" "^1.0.1"
+    "@nodelib/fs.walk" "^1.2.8"
     ajv "^6.10.0"
     chalk "^4.0.0"
     cross-spawn "^7.0.2"
@@ -1714,14 +1715,14 @@ eslint@8.25.0:
     fast-deep-equal "^3.1.3"
     file-entry-cache "^6.0.1"
     find-up "^5.0.0"
-    glob-parent "^6.0.1"
+    glob-parent "^6.0.2"
     globals "^13.15.0"
-    globby "^11.1.0"
     grapheme-splitter "^1.0.4"
     ignore "^5.2.0"
     import-fresh "^3.0.0"
     imurmurhash "^0.1.4"
     is-glob "^4.0.0"
+    is-path-inside "^3.0.3"
     js-sdsl "^4.1.4"
     js-yaml "^4.1.0"
     json-stable-stringify-without-jsonify "^1.0.1"
@@ -1971,9 +1972,9 @@ glob-parent@^5.1.2:
   dependencies:
     is-glob "^4.0.1"
 
-glob-parent@^6.0.1:
+glob-parent@^6.0.2:
   version "6.0.2"
-  resolved "https://registry.npmjs.org/glob-parent/-/glob-parent-6.0.2.tgz"
+  resolved "https://registry.yarnpkg.com/glob-parent/-/glob-parent-6.0.2.tgz#6d237d99083950c79290f24c7642a3de9a28f9e3"
   dependencies:
     is-glob "^4.0.3"
 
@@ -2281,6 +2282,10 @@ is-number-object@^1.0.4:
 is-number@^7.0.0:
   version "7.0.0"
   resolved "https://registry.npmjs.org/is-number/-/is-number-7.0.0.tgz"
+
+is-path-inside@^3.0.3:
+  version "3.0.3"
+  resolved "https://registry.yarnpkg.com/is-path-inside/-/is-path-inside-3.0.3.tgz#d231362e53a07ff2b0e0ea7fed049161ffd16283"
 
 is-regex@^1.1.4:
   version "1.1.4"
