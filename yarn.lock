@@ -892,9 +892,9 @@
   dependencies:
     tslib "^2.4.0"
 
-"@tabler/icons@^1.106.0":
-  version "1.106.0"
-  resolved "https://registry.yarnpkg.com/@tabler/icons/-/icons-1.106.0.tgz#adde7692da6114ae803e6cb2ff9e51181e941a55"
+"@tabler/icons@^1.109.0":
+  version "1.109.0"
+  resolved "https://registry.yarnpkg.com/@tabler/icons/-/icons-1.109.0.tgz#11626c3fc097f2f70c4c197e4b9909fb05380752"
 
 "@tootallnate/once@2":
   version "2.0.0"
