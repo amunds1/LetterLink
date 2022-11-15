@@ -15,7 +15,7 @@
     "@mantine/ds": "^5.5.4",
     "@mantine/form": "^5.6.4",
     "@mantine/hooks": "^5.3.3",
-    "@mantine/next": "^5.6.2",
+    "@mantine/next": "^5.7.2",
     "@tabler/icons": "^1.109.0",
     "firebase": "^9.12.1",
     "firebase-admin": "^11.2.0",
