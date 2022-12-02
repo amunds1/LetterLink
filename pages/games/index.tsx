@@ -17,6 +17,13 @@ const useStyles = createStyles(() => ({
 
 export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
   try {
+    // Set cache header
+    // https://nextjs.org/docs/basic-features/data-fetching/get-server-side-props#caching-with-server-side-rendering-ssr
+    ctx.res.setHeader(
+      'Cache-Control',
+      'public, s-maxage=10, stale-while-revalidate=59'
+    )
+
     let activeGames: Game[] | null = null
     let proposedGames: Game[] | null = null
 
