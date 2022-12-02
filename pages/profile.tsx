@@ -1,5 +1,6 @@
-import { Center, createStyles, Text } from '@mantine/core'
+import { Center, createStyles, Stack, Text } from '@mantine/core'
 import { GetServerSidePropsContext } from 'next'
+import ExperiencePointsBar from '../components/profile/ExperiencePointsBar'
 import { fetchUserData } from '../components/profile/firebase/fetchUserData'
 import Statistics from '../components/profile/Statistics'
 import fetchUID from '../firebase/fetchUID'
@@ -40,10 +41,11 @@ const Profile = (props: IProfile) => {
 
   return (
     <>
-      <Center>
+      <Stack style={{ height: '100%' }} align="center" justify={'space-around'}>
         <Text size="lg">{userData.name}</Text>
-      </Center>
-      <Statistics />
+        <ExperiencePointsBar />
+        <Statistics />
+      </Stack>
     </>
   )
 }
