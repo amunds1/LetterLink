@@ -105,6 +105,22 @@ export function PageHeader() {
               {PageLinks.PROFILE.label}
             </a>
           </Link>
+          {/* LEADERBOARD LINK */}
+          <Link
+            href={PageLinks.LEADERBOARD.link}
+            key={PageLinks.LEADERBOARD.label}
+          >
+            <a
+              className={cx(classes.link, {
+                [classes.linkActive]: active === PageLinks.LEADERBOARD.link,
+              })}
+              onClick={() => {
+                setActive(PageLinks.LEADERBOARD.link)
+              }}
+            >
+              {PageLinks.LEADERBOARD.label}
+            </a>
+          </Link>
           {/* SIGN IN LINK */}
           <Link href={PageLinks.SIGNIN.link} key={PageLinks.SIGNIN.label}>
             <a
