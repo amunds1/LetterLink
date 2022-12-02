@@ -105,6 +105,22 @@ export function PageHeader() {
               {PageLinks.PROFILE.label}
             </a>
           </Link>
+          {/* ACHIEVEMENTS LINK */}
+          <Link
+            href={PageLinks.ACHIEVEMENTS.link}
+            key={PageLinks.ACHIEVEMENTS.label}
+          >
+            <a
+              className={cx(classes.link, {
+                [classes.linkActive]: active === PageLinks.ACHIEVEMENTS.link,
+              })}
+              onClick={() => {
+                setActive(PageLinks.ACHIEVEMENTS.link)
+              }}
+            >
+              {PageLinks.ACHIEVEMENTS.label}
+            </a>
+          </Link>
           {/* LEADERBOARD LINK */}
           <Link
             href={PageLinks.LEADERBOARD.link}

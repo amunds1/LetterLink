@@ -8,6 +8,7 @@ const PageLinks: IPageLinks = {
   SIGNOUT: { label: 'Sign out', link: '/signout' },
   PROFILE: { label: 'Profile', link: '/profile' },
   LEADERBOARD: { label: 'Leaderboard', link: '/leaderboard' },
+  ACHIEVEMENTS: { label: 'Achievements', link: '/achievements' },
 }
 
 export default PageLinks
