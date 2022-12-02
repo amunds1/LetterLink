@@ -18,7 +18,7 @@
     "@mantine/next": "^5.8.4",
     "@tabler/icons": "^1.109.0",
     "firebase": "^9.14.0",
-    "firebase-admin": "^11.2.0",
+    "firebase-admin": "^11.3.0",
     "firebaseui": "^6.0.2",
     "next": "12.3.1",
     "nookies": "^2.5.2",
