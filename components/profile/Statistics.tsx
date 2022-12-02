@@ -9,7 +9,8 @@ import {
 } from '@mantine/core'
 
 const useStyles = createStyles(() => ({
-  center: { height: '100%' },
+  //center: { height: '100%' },
+  center: {},
 }))
 
 const Statistics = () => {
