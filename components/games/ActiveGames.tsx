@@ -24,7 +24,10 @@ const ActiveGames = ({ games, userUID }: IActiveGames) => {
                 Boardsize {game.boardSize}
               </Text>
 
-              <Link href={`/game/${game.id}`}>
+              <Link
+                href={`/game/${game.id}`}
+                style={{ color: 'inherit', textDecoration: 'none' }}
+              >
                 <Button
                   variant="light"
                   color="blue"
