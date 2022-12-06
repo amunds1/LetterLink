@@ -16,25 +16,31 @@ const Podium = () => {
     <Grid className={classes.grid}>
       <Grid.Col span={4} className={classes.cell}></Grid.Col>
       <Grid.Col span={4}>
-        <Text align="center">Player 1</Text>
+        <Text align="center">Herman</Text>
       </Grid.Col>
       <Grid.Col span={4}></Grid.Col>
       <Grid.Col span={4}>
-        <Text align="center">Player 2</Text>
+        <Text align="center">Elise</Text>
       </Grid.Col>
       <Grid.Col span={4} className={classes.first}></Grid.Col>
       <Grid.Col span={4}></Grid.Col>
       <Grid.Col span={4} className={classes.secondth}></Grid.Col>
-      <Grid.Col span={4} className={classes.first}></Grid.Col>
-      <Grid.Col span={4}>
-        <Text align="center">Player 3</Text>
+      <Grid.Col span={4} className={classes.first}>
+        <Text align="center">300 points</Text>
       </Grid.Col>
-      <Grid.Col span={4} className={classes.secondth}></Grid.Col>
+      <Grid.Col span={4}>
+        <Text align="center">Johan</Text>
+      </Grid.Col>
+      <Grid.Col span={4} className={classes.secondth}>
+        <Text align="center">400 points</Text>
+      </Grid.Col>
       <Grid.Col span={4} className={classes.first}></Grid.Col>
       <Grid.Col span={4} className={classes.third}></Grid.Col>
       <Grid.Col span={4} className={classes.secondth}></Grid.Col>
       <Grid.Col span={4} className={classes.first}></Grid.Col>
-      <Grid.Col span={4} className={classes.third}></Grid.Col>
+      <Grid.Col span={4} className={classes.third}>
+        <Text align="center">200 points</Text>
+      </Grid.Col>
       <Grid.Col span={4} className={classes.secondth}></Grid.Col>
       <Grid.Col span={4} className={classes.first}></Grid.Col>
       <Grid.Col span={4} className={classes.third}></Grid.Col>
