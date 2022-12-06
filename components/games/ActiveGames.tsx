@@ -1,6 +1,5 @@
 import Link from 'next/link'
 import { Card, Group, Button, Text } from '@mantine/core'
-import { QuerySnapshot } from 'firebase/firestore'
 import Game from '../../types/Game'
 import Oponent from './Oponent'
 
@@ -24,7 +23,10 @@ const ActiveGames = ({ games, userUID }: IActiveGames) => {
                 Boardsize {game.boardSize}
               </Text>
 
-              <Link href={`/game/${game.id}`}>
+              <Link
+                href={`/game/${game.id}`}
+                style={{ color: 'inherit', textDecoration: 'none' }}
+              >
                 <Button
                   variant="light"
                   color="blue"
