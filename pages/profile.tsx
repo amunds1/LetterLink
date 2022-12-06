@@ -43,7 +43,7 @@ const Profile = (props: IProfile) => {
     <>
       <Stack style={{ height: '100%' }} align="center" justify={'space-around'}>
         <Text size="lg">{userData.name}</Text>
-        <ExperiencePointsBar />
+        <ExperiencePointsBar experiencePoints={userData.experiencePoints} />
         <Statistics />
       </Stack>
     </>
