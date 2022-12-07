@@ -1,9 +1,10 @@
 import { Button, Text, Input, Stack } from '@mantine/core'
+import { useDebouncedState } from '@mantine/hooks'
 import React, { useState } from 'react'
 import updateUsername from './firebase/updateUsername'
 
 const ChangeUsername = ({ uid }: { uid: string }) => {
-  const [newUsername, setNewUsername] = useState('')
+  const [newUsername, setNewUsername] = useDebouncedState('', 200)
   const [isLoading, setIsLoading] = useState(false)
 
   const onClick = async () => {
@@ -16,15 +17,17 @@ const ChangeUsername = ({ uid }: { uid: string }) => {
     }
   }
 
+  console.log(newUsername)
+
   return (
     <Stack>
       <Text>Update username</Text>
       <Input
         placeholder="New username"
-        value={newUsername}
-        onChange={(event: {
-          currentTarget: { value: React.SetStateAction<string> }
-        }) => setNewUsername(event.currentTarget.value)}
+        defaultValue={newUsername}
+        onChange={(event: { currentTarget: { value: string } }) =>
+          setNewUsername(event.currentTarget.value)
+        }
       />
 
       <Button loading={isLoading} onClick={() => onClick()}>
