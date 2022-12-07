@@ -8,24 +8,36 @@ import { IconCheck, IconX } from '@tabler/icons'
   https://mantine.dev/core/notification/
 */
 
-export const SuccessNotification = (contentMessage: string, title?: string) => (
+interface INotification {
+  contentMessage: string
+  title?: string
+}
+
+export const SuccessNotification = ({
+  contentMessage,
+  title,
+}: INotification) => (
   <Notification icon={<IconCheck size={18} />} color="teal" title={title}>
     {contentMessage}
   </Notification>
 )
 
-export const ErrorNotification = (contentMessage: string, title?: string) => (
+export const ErrorNotification = ({ contentMessage, title }: INotification) => (
   <Notification icon={<IconX size={18} />} color="red" title={title}>
     {contentMessage}
   </Notification>
 )
 
-export const LoadingNotification = (contentMessage: string, title?: string) => (
+export const LoadingNotification = ({
+  contentMessage,
+  title,
+}: INotification) => (
   <Notification loading title={title} disallowClose>
     {contentMessage}
   </Notification>
 )
 
-export const DefaultNotification = (contentMessage: string, title?: string) => (
-  <Notification title={title}>{contentMessage}</Notification>
-)
+export const DefaultNotification = ({
+  contentMessage,
+  title,
+}: INotification) => <Notification title={title}>{contentMessage}</Notification>
