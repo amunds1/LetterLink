@@ -17,7 +17,7 @@
     "@mantine/form": "^5.9.2",
     "@mantine/hooks": "^5.3.3",
     "@mantine/next": "^5.9.2",
-    "@tabler/icons": "^1.115.0",
+    "@tabler/icons": "^1.116.1",
     "@tanstack/react-table": "^8.7.0",
     "firebase": "^9.14.0",
     "firebase-admin": "^11.3.0",
