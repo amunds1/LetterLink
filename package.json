@@ -14,7 +14,7 @@
     "@faker-js/faker": "^7.6.0",
     "@mantine/core": "^5.3.3",
     "@mantine/ds": "^5.5.4",
-    "@mantine/form": "^5.9.5",
+    "@mantine/form": "^5.10.0",
     "@mantine/hooks": "^5.3.3",
     "@mantine/next": "^5.9.5",
     "@tabler/icons": "^1.116.1",
