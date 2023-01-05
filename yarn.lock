@@ -998,9 +998,9 @@
   dependencies:
     tslib "^2.4.0"
 
-"@tabler/icons@^1.116.1":
-  version "1.116.1"
-  resolved "https://registry.yarnpkg.com/@tabler/icons/-/icons-1.116.1.tgz#3841846e6fd07122444cafcf12de02a7c082dab4"
+"@tabler/icons@^1.119.0":
+  version "1.119.0"
+  resolved "https://registry.yarnpkg.com/@tabler/icons/-/icons-1.119.0.tgz#8c590bc5a563c8673a78ccd451bedabd584b376e"
 
 "@tanstack/react-table@^8.7.4":
   version "8.7.4"
