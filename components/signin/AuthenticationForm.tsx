@@ -25,7 +25,9 @@ export default function AuthenticationForm(props: PaperProps) {
   const [type, toggle] = useToggle(['login', 'register'])
 
   const [signInWithGithub] = useSignInWithGithub(getAuth(firebase))
-  const [signInWithFacebook] = useSignInWithFacebook(getAuth(firebase))
+  const [signInWithFacebook, user, loading, error] = useSignInWithFacebook(
+    getAuth(firebase)
+  )
 
   const form = useForm({
     initialValues: {
