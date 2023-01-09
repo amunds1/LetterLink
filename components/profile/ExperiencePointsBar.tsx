@@ -6,7 +6,7 @@ const ExperiencePointsBar = ({
   experiencePoints: number
 }) => {
   return (
-    <Stack style={{ width: '60%' }}>
+    <Stack>
       <Text align="center">Level 2</Text>
       <Progress
         color="green"
