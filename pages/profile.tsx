@@ -1,12 +1,4 @@
-import {
-  Avatar,
-  Button,
-  Card,
-  createStyles,
-  Group,
-  Stack,
-  Text,
-} from '@mantine/core'
+import { Avatar, Button, Card, Group, Stack, Text } from '@mantine/core'
 import { GetServerSidePropsContext } from 'next'
 import Link from 'next/link'
 import ExperiencePointsBar from '../components/profile/ExperiencePointsBar'
