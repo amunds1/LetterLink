@@ -13,14 +13,20 @@ import {
   Anchor,
   Stack,
 } from '@mantine/core'
-import { GithubButton } from './SocialButtons'
+import { FacebookButton, GithubButton } from './SocialButtons'
 import { getAuth } from 'firebase/auth'
-import { useSignInWithGithub } from 'react-firebase-hooks/auth'
+import {
+  useSignInWithFacebook,
+  useSignInWithGithub,
+} from 'react-firebase-hooks/auth'
 import firebase from '../../firebase/clientApp'
 
 export default function AuthenticationForm(props: PaperProps) {
   const [type, toggle] = useToggle(['login', 'register'])
+
   const [signInWithGithub] = useSignInWithGithub(getAuth(firebase))
+  const [signInWithFacebook] = useSignInWithFacebook(getAuth(firebase))
+
   const form = useForm({
     initialValues: {
       email: '',
@@ -46,6 +52,9 @@ export default function AuthenticationForm(props: PaperProps) {
 
       <Group grow mb="md" mt="md" onClick={() => signInWithGithub()}>
         <GithubButton radius="xl">GitHub</GithubButton>
+      </Group>
+      <Group grow mb="md" mt="md" onClick={() => signInWithFacebook()}>
+        <FacebookButton radius="xl">Facebook</FacebookButton>
       </Group>
 
       <Divider label="Or continue with email" labelPosition="center" my="lg" />
