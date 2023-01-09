@@ -1,5 +1,14 @@
-import { Avatar, Card, createStyles, Group, Stack, Text } from '@mantine/core'
+import {
+  Avatar,
+  Button,
+  Card,
+  createStyles,
+  Group,
+  Stack,
+  Text,
+} from '@mantine/core'
 import { GetServerSidePropsContext } from 'next'
+import Link from 'next/link'
 import ExperiencePointsBar from '../components/profile/ExperiencePointsBar'
 import { fetchUserData } from '../components/profile/firebase/fetchUserData'
 import Statistics from '../components/profile/Statistics'
@@ -41,17 +50,25 @@ const Profile = (props: IProfile) => {
   const { userData } = props
 
   return (
-    <Stack style={{ height: '100%' }} align="center" justify={'space-around'}>
+    <Stack style={{ height: '100%' }} align="center" justify="center">
       <Card shadow="sm" p="lg" radius="md" withBorder>
-        <Group pb={'lg'}>
-          <Avatar color="cyan" radius="xl">
-            AA
-          </Avatar>
-          <Text size={30}>{userData.name}</Text>
+        <Group position="apart" pb={'lg'}>
+          <Group>
+            <Avatar color="cyan" radius="xl">
+              AA
+            </Avatar>
+            <Text size={30}>{userData.name}</Text>
+          </Group>
+          <Link href={'/settings'}>
+            <Button variant="outline" size="xs">
+              Edit profile
+            </Button>
+          </Link>
         </Group>
         <ExperiencePointsBar experiencePoints={userData.experiencePoints} />
         <Statistics />
       </Card>
+      <Text size={30}>Previous games</Text>
     </Stack>
   )
 }
