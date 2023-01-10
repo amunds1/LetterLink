@@ -32,11 +32,7 @@ const newCheckRowOrColumn = async (data: string[], differentIndex: number) => {
   // endIndex = 4
   // differentIndex = 3
 
-  console.log('Data', data)
-
   const [startIndex, endIndex] = findStartAndEndIndex(data, differentIndex)
-
-  console.log(startIndex, endIndex)
 
   const tempValidWord = {
     word: '',
@@ -48,16 +44,10 @@ const newCheckRowOrColumn = async (data: string[], differentIndex: number) => {
   let checknum = 0
   // For each cellIndex in input array including up to differentIndex:
   for (let i = startIndex; i <= differentIndex; i++) {
-    console.log('\nYtre løkke  i =', i)
     const maxPossiblePoints = endIndex - i + 1
-    console.log('MaxPossiblePoints', maxPossiblePoints)
 
     for (let k = endIndex; k >= differentIndex; k--) {
-      console.log('Indre løkke  k =', k)
-
       checknum++
-
-      console.log('\nCheck:', checknum)
 
       // Join cells to a word
       const joinedWord = data.slice(i, k + 1).join('')
@@ -67,22 +57,12 @@ const newCheckRowOrColumn = async (data: string[], differentIndex: number) => {
         break
       }
 
-      console.log('joinedWord:', joinedWord, 'with length', joinedWordLength)
-
       const res = await wordIsValid(joinedWord)
 
       if (res) {
         tempValidWord.word = joinedWord
         tempValidWord.points = joinedWordLength
         tempValidWord.position = [i, k]
-
-        console.log(
-          'Valid word:',
-          tempValidWord.word,
-          ' worth',
-          tempValidWord.points,
-          ' points'
-        )
 
         if (joinedWordLength >= maxPossiblePoints - 1) {
           return tempValidWord
