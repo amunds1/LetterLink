@@ -21,6 +21,9 @@ const SelectLetter = () => {
               { value: 'P', label: 'P' },
               { value: 'A', label: 'A' },
               { value: 'I', label: 'I' },
+              { value: 'O', label: 'O' },
+              { value: 'L', label: 'L' },
+              { value: 'E', label: 'E' },
             ]}
           />
           <Button
