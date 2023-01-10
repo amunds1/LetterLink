@@ -8,8 +8,9 @@ import {
 } from '@mantine/core'
 import { useDisclosure } from '@mantine/hooks'
 import Link from 'next/link'
+import { useRouter } from 'next/router'
 import { useState } from 'react'
-import PageLinks, { IPageLinks } from '../constants/PageLinks'
+import PageLinks from '../constants/PageLinks'
 import ColorSchemeToggle from './ColorSchemeToggle'
 
 const useStyles = createStyles((theme) => ({
@@ -67,69 +68,80 @@ const useStyles = createStyles((theme) => ({
 
 export function PageHeader() {
   const [opened, { toggle }] = useDisclosure(false)
-  const [active, setActive] = useState<string>()
   const { classes, cx } = useStyles()
+
+  const router = useRouter()
 
   return (
     <Header height={60} mb={120}>
       <Container className={classes.header}>
-        <Link href={'/'}>
-          <a style={{ color: 'inherit', textDecoration: 'none' }}>
-            <Text>5x5 game</Text>
-          </a>
+        <Link
+          href={'/'}
+          className={classes.link}
+          style={{ color: 'inherit', textDecoration: 'none' }}
+        >
+          <Text>5x5 game</Text>
         </Link>
         <Group spacing={5} className={classes.links}>
           {/* GAMES LINK */}
-          <Link href={PageLinks.GAMES.link} key={PageLinks.GAMES.label}>
-            <a
-              className={cx(classes.link, {
-                [classes.linkActive]: active === PageLinks.GAMES.link,
-              })}
-              onClick={() => {
-                setActive(PageLinks.GAMES.link)
-              }}
-            >
-              {PageLinks.GAMES.label}
-            </a>
+          <Link
+            href={PageLinks.GAMES.link}
+            key={PageLinks.GAMES.label}
+            className={`${classes.link} ${
+              router.pathname === '/games' && classes.linkActive
+            }`}
+          >
+            {PageLinks.GAMES.label}
           </Link>
           {/* PROFILE LINK */}
-          <Link href={PageLinks.PROFILE.link} key={PageLinks.PROFILE.label}>
-            <a
-              className={cx(classes.link, {
-                [classes.linkActive]: active === PageLinks.PROFILE.link,
-              })}
-              onClick={() => {
-                setActive(PageLinks.PROFILE.link)
-              }}
-            >
-              {PageLinks.PROFILE.label}
-            </a>
+          <Link
+            href={PageLinks.PROFILE.link}
+            key={PageLinks.PROFILE.label}
+            className={`${classes.link} ${
+              router.pathname === '/profile' && classes.linkActive
+            }`}
+          >
+            {PageLinks.PROFILE.label}
+          </Link>
+          {/* ACHIEVEMENTS LINK */}
+          <Link
+            href={PageLinks.ACHIEVEMENTS.link}
+            key={PageLinks.ACHIEVEMENTS.label}
+            className={`${classes.link} ${
+              router.pathname === '/achievements' && classes.linkActive
+            }`}
+          >
+            {PageLinks.ACHIEVEMENTS.label}
+          </Link>
+          {/* LEADERBOARD LINK */}
+          <Link
+            href={PageLinks.LEADERBOARD.link}
+            key={PageLinks.LEADERBOARD.label}
+            className={`${classes.link} ${
+              router.pathname === '/leaderboard' && classes.linkActive
+            }`}
+          >
+            {PageLinks.LEADERBOARD.label}
           </Link>
           {/* SIGN IN LINK */}
-          <Link href={PageLinks.SIGNIN.link} key={PageLinks.SIGNIN.label}>
-            <a
-              className={cx(classes.link, {
-                [classes.linkActive]: active === PageLinks.SIGNIN.link,
-              })}
-              onClick={() => {
-                setActive(PageLinks.SIGNIN.link)
-              }}
-            >
-              {PageLinks.SIGNIN.label}
-            </a>
+          <Link
+            href={PageLinks.SIGNIN.link}
+            key={PageLinks.SIGNIN.label}
+            className={`${classes.link} ${
+              router.pathname === '/signin' && classes.linkActive
+            }`}
+          >
+            {PageLinks.SIGNIN.label}
           </Link>
           {/* SIGN OUT LINK */}
-          <Link href={PageLinks.SIGNOUT.link} key={PageLinks.SIGNOUT.label}>
-            <a
-              className={cx(classes.link, {
-                [classes.linkActive]: active === PageLinks.SIGNOUT.link,
-              })}
-              onClick={() => {
-                setActive(PageLinks.SIGNOUT.link)
-              }}
-            >
-              {PageLinks.SIGNOUT.label}
-            </a>
+          <Link
+            href={PageLinks.SIGNOUT.link}
+            key={PageLinks.SIGNOUT.label}
+            className={`${classes.link} ${
+              router.pathname === '/signout' && classes.linkActive
+            }`}
+          >
+            {PageLinks.SIGNOUT.label}
           </Link>
           <ColorSchemeToggle />
         </Group>

@@ -5,6 +5,7 @@ interface User {
   games: DocumentReference<DocumentData>[] | null
   proposedGames: DocumentReference<DocumentData>[] | null
   name: string
+  experiencePoints: number
 }
 
 export default User
