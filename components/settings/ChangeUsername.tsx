@@ -1,6 +1,8 @@
-import { Button, Text, Input, Stack } from '@mantine/core'
+import { Button, Input, Stack, Text } from '@mantine/core'
+import { doc } from 'firebase/firestore'
 import React, { useState } from 'react'
-import updateUsername from './firebase/updateUsername'
+import { db } from '../../firebase/clientApp'
+import updateDocument from '../../firebase/updateDocument'
 
 const ChangeUsername = ({ uid }: { uid: string }) => {
   const [newUsername, setNewUsername] = useState('')
@@ -9,7 +11,9 @@ const ChangeUsername = ({ uid }: { uid: string }) => {
   const onClick = async () => {
     setIsLoading(true)
 
-    const res = await updateUsername(uid, newUsername)
+    const res = await updateDocument(doc(db, 'users', uid), {
+      name: newUsername,
+    })
 
     if (res) {
       setIsLoading(false)
