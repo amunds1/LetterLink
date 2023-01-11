@@ -7,7 +7,7 @@ const findStartAndEndIndex = (data: string[], differentIndex: number) => {
   // differentIndex ->
   for (let i = differentIndex; i < data.length + 1; i++) {
     endIndex = i
-    if (data[i] === '') {
+    if (data[i] === '' || endIndex >= data.length) {
       endIndex = i - 1
       break
     }
@@ -16,6 +16,9 @@ const findStartAndEndIndex = (data: string[], differentIndex: number) => {
   // <- differentIndex
   for (let i = differentIndex; i >= 0; i--) {
     startIndex = i
+    if (startIndex == 0) {
+      break
+    }
     if (data[i] === '') {
       startIndex = i + 1
       break

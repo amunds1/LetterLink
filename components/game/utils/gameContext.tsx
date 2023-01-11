@@ -26,10 +26,10 @@ export interface IGameContext {
     values: string[]
   }
   columnValidWords: {
-    [key: number]: string[]
+    [key: number]: number[]
   }
   rowValidWords: {
-    [key: number]: string[]
+    [key: number]: number[]
   }
   yourTurn: boolean
   opponentID: string

@@ -7,10 +7,10 @@ interface BoardData {
   }
   board: string[]
   columnValidWords: {
-    [key: number]: string[]
+    [key: number]: number[]
   }
   rowValidWords: {
-    [key: number]: string[]
+    [key: number]: number[]
   }
 }
 

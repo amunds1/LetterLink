@@ -4,8 +4,12 @@ import isPartOfValidWord from './isPartOfValidWord'
 const colorCellGreen = (
   index: number,
   boardSize: number,
-  rowValidWords: object,
-  columnValidWords: object
+  rowValidWords: {
+    [key: number]: number[]
+  },
+  columnValidWords: {
+    [key: number]: number[]
+  }
 ) => {
   if (rowValidWords) {
     // rowPosition = { positionIndex, differenceIndex }

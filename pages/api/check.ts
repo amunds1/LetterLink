@@ -40,7 +40,6 @@ export default async function handler(
       word: validWordInRow.word,
     }
 
-    updateRowPoints(boardData, validWordInRow)
     updateValidRowWords(boardData, validWordInRow)
     updateBoard(boardData)
   }
@@ -60,7 +59,6 @@ export default async function handler(
       word: validWordInColumn.word,
     }
 
-    updateColumnPoints(boardData, validWordInColumn)
     updateValidColumnWords(boardData, validWordInColumn)
   }
   updateBoard(boardData)
