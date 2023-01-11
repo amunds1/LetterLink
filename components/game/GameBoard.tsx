@@ -2,7 +2,6 @@ import { Box, Button, Container, createStyles, Grid } from '@mantine/core'
 import { useContext, useEffect, useState } from 'react'
 import { DragDropContext, Droppable, DropResult } from 'react-beautiful-dnd'
 import { AffectedRowOrColumn } from '../../pages/api/types/CheckBoardRequestData'
-import yourTurn from './firebase/yourTurn'
 import LetterBox from './LetterBox'
 import GameStates from './types/gameStates'
 import colorCellGreen from './utils/colorCellGreen'
@@ -16,24 +15,14 @@ import submitMove from './utils/submitMove'
 
 const useStyles = createStyles(() => ({
   grid: {
-    border: '2px solid black',
+    border: '1px solid black',
   },
   col: {
-    backgroundColor: 'white',
     border: '1px solid grey',
     textAlign: 'center',
   },
-  cell: {
-    padding: '10px',
-    overflow: 'auto',
-  },
-  cellValid: {
-    backgroundColor: 'green',
-    padding: '10px',
-    overflow: 'auto',
-  },
   container: {
-    padding: '50px',
+    width: '50%',
   },
 }))
 
@@ -125,8 +114,7 @@ const GameBoard = () => {
           gameContext.gameState,
           gameContext.gameID,
           gameContext.opponentID,
-          gameContext.setYourTurn,
-          gameContext.userUID
+          gameContext.setYourTurn
         ) as GameStates
       )
     } else {
@@ -137,10 +125,6 @@ const GameBoard = () => {
 
   // Re-render board after response from /api/check
   useEffect(() => {}, [board])
-  /* 
-  console.log(
-    `Your turn: ${gameContext?.yourTurn} \nGame state: ${gameContext?.gameState}`
-  ) */
 
   return (
     <>
@@ -152,6 +136,7 @@ const GameBoard = () => {
                 {board.map((cellValue, index) => (
                   <Grid.Col className={classes.col} key={index} span={1}>
                     <>
+                      {/* Empty cells */}
                       {cellValue.length === 0 && (
                         <Droppable droppableId={index.toString()}>
                           {(provided, snapshot) => (
@@ -162,7 +147,7 @@ const GameBoard = () => {
                                 backgroundColor: snapshot.isDraggingOver
                                   ? 'MediumSeaGreen'
                                   : 'white',
-                                maxHeight: '40px',
+                                minHeight: 100,
                               }}
                             >
                               {dropID === index && (
@@ -176,10 +161,12 @@ const GameBoard = () => {
                           )}
                         </Droppable>
                       )}
+
+                      {/* Cells containing letters */}
                       {cellValue.length !== 0 && (
                         <Box
-                          className={classes.cell}
                           style={{
+                            minHeight: 100,
                             backgroundColor: colorCellGreen(
                               index,
                               boardSize,
@@ -200,6 +187,7 @@ const GameBoard = () => {
               gameContext.gameState === GameStates.PLACE_OPPONENTS) &&
               gameContext.yourTurn && (
                 <div style={{ display: 'flex', justifyContent: 'center' }}>
+                  {}
                   <Droppable droppableId="letterStartBox">
                     {(provided) => (
                       <div

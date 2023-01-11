@@ -1,5 +1,5 @@
 import { Button, Select } from '@mantine/core'
-import { useContext } from 'react'
+import { useContext, useState } from 'react'
 import { updateGameState } from '../../pages/api/utils/updateGameState'
 import updateSelectedLetter from '../../pages/api/utils/updateSelectedLetter'
 import GameStates from './types/gameStates'
@@ -8,6 +8,8 @@ import { GameContext } from './utils/gameContext'
 const SelectLetter = () => {
   const gameContext = useContext(GameContext)
 
+  const [selectedLetter, setSelectedLetter] = useState('')
+
   return (
     <>
       {gameContext?.yourTurn && (
@@ -15,8 +17,9 @@ const SelectLetter = () => {
           <Select
             label="Select letter"
             placeholder=""
-            value={gameContext.selectedLetter}
-            onChange={gameContext.setSelectedLetter}
+            onChange={(e: string) => {
+              setSelectedLetter(e)
+            }}
             data={[
               { value: 'P', label: 'P' },
               { value: 'A', label: 'A' },
@@ -29,19 +32,14 @@ const SelectLetter = () => {
           />
           <Button
             onClick={() => {
-              // Set game state to 'PLACE'
+              // Set game state to PLACE_OWN
               gameContext.setGameState(GameStates.PLACE_OWN)
-              updateGameState(
-                gameContext.gameID,
-                gameContext.userUID,
-                GameStates.PLACE_OWN
-              )
 
-              // Update selectedLetter
-              updateSelectedLetter(
-                gameContext.gameID,
-                gameContext.selectedLetter as string
-              )
+              // Update gameState param in Firebase
+              updateGameState(gameContext.gameID, GameStates.PLACE_OWN)
+
+              // Update selectedLetter param in Firebase
+              updateSelectedLetter(gameContext.gameID, selectedLetter)
             }}
           >
             Choose letter

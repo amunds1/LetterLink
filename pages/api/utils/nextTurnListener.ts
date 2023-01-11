@@ -7,10 +7,13 @@ import gamesConverter from '../../../firebase/converters/gamesConverter'
 const nextTurnListener = (
   gameID: string,
   userUID: string,
-  setYourTurn: Dispatch<SetStateAction<boolean>>
+  setYourTurn: Dispatch<SetStateAction<boolean>>,
+  setSelectedLetter: Dispatch<SetStateAction<string | null>>
 ) =>
   onSnapshot(doc(db, 'games', gameID).withConverter(gamesConverter), (doc) => {
     const data = doc.data()
+
+    setSelectedLetter(data?.selectedLetter as string)
 
     // Set value of yourTurn in GameContext to true if nextTurn in Firebase matches uid of authenticated user.
     // False otherwise

@@ -71,7 +71,7 @@ const GameID = (props: IGameID) => {
     gameData.selectedLetter || null
   )
 
-  nextTurnListener(gameData.id as string, uid, setYourTurn)
+  nextTurnListener(gameData.id as string, uid, setYourTurn, setSelectedLetter)
 
   // Re-render component after value of yourTurn changes
   useEffect(() => {}, [yourTurn])
