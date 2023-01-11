@@ -14,7 +14,7 @@ export interface IGameContext {
     >
   >
   gameID: string
-  userID: string
+  userUID: string
   columnPoints: {
     [key: number]: number
   }
@@ -26,13 +26,14 @@ export interface IGameContext {
     values: string[]
   }
   columnValidWords: {
-    [key: number]: string[]
+    [key: number]: number[]
   }
   rowValidWords: {
-    [key: number]: string[]
+    [key: number]: number[]
   }
   yourTurn: boolean
   opponentID: string
+  setYourTurn: Dispatch<SetStateAction<boolean>>
 }
 
 export const GameContext = createContext<IGameContext | null>(null)
