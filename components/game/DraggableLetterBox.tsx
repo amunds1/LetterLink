@@ -10,7 +10,7 @@ const useStyles = createStyles(() => ({
   },
 }))
 
-const LetterBox = (props: { letter: String; index: number }) => {
+const DraggableLetterBox = (props: { letter: String; index: number }) => {
   const { classes } = useStyles()
 
   return (
@@ -34,4 +34,4 @@ const LetterBox = (props: { letter: String; index: number }) => {
   )
 }
 
-export default LetterBox
+export default DraggableLetterBox

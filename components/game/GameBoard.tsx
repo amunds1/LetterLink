@@ -1,8 +1,15 @@
-import { Box, Button, Container, createStyles, Grid } from '@mantine/core'
+import {
+  Box,
+  Button,
+  Container,
+  createStyles,
+  Grid,
+  Center,
+} from '@mantine/core'
 import { useContext, useEffect, useState } from 'react'
 import { DragDropContext, Droppable, DropResult } from 'react-beautiful-dnd'
 import { AffectedRowOrColumn } from '../../pages/api/types/CheckBoardRequestData'
-import LetterBox from './LetterBox'
+import DraggableLetterBox from './DraggableLetterBox'
 import GameStates from './types/gameStates'
 import colorCellGreen from './utils/colorCellGreen'
 import {
@@ -15,14 +22,16 @@ import submitMove from './utils/submitMove'
 
 const useStyles = createStyles(() => ({
   grid: {
-    border: '1px solid black',
+    border: '2px solid black',
   },
   col: {
     border: '1px solid grey',
-    textAlign: 'center',
+
+    padding: '0px',
+    fontSize: '30px',
   },
   container: {
-    width: '50%',
+    width: '80%',
   },
 }))
 
@@ -43,6 +52,7 @@ const GameBoard = () => {
   const [dropID, setDropID] = useState<number>()
   const [prevLetter, setPrevLetter] = useState<string>('')
   const [tempBoard, setTempBoard] = useState<string[]>([''])
+  const [isLetterPlaced, setisLetterPlaced] = useState<boolean>(false)
 
   const addLetter = (
     board: string[],
@@ -50,16 +60,20 @@ const GameBoard = () => {
     selectedLetter: string | null
   ) => {
     selectedLetter ? selectedLetter : (selectedLetter = prevLetter)
-    console.log('AddLetter ', selectedLetter)
-
     const newBoard = Array.from(board)
     newBoard[endIndex] = selectedLetter
     setPrevLetter(selectedLetter)
+    setisLetterPlaced(true)
     gameContext!.setSelectedLetter(null)
     return newBoard
   }
 
+  const onDragStart = () => {
+    setisLetterPlaced(false)
+  }
+
   const onDragEnd = (result: DropResult) => {
+    console.log('Drag end: ', result)
     if (
       !result.destination ||
       result.destination.droppableId === 'letterStartBox' ||
@@ -95,6 +109,7 @@ const GameBoard = () => {
   }
 
   const submit = () => {
+    setisLetterPlaced(false)
     if (tempBoard.length === boardSize ** 2 && gameContext) {
       affectedRow &&
         affectedColumn &&
@@ -129,9 +144,12 @@ const GameBoard = () => {
   return (
     <>
       {gameContext && (
-        <Container className={classes.container}>
-          <DragDropContext onDragEnd={onDragEnd}>
-            <div style={{ padding: '0 0 20px 0' }}>
+        <Container
+          className={classes.container}
+          style={{ padding: '0 0 20px 0' }}
+        >
+          <DragDropContext onDragEnd={onDragEnd} onDragStart={onDragStart}>
+            <div>
               <Grid className={classes.grid} columns={gameContext.grid.size}>
                 {board.map((cellValue, index) => (
                   <Grid.Col className={classes.col} key={index} span={1}>
@@ -150,11 +168,14 @@ const GameBoard = () => {
                                 minHeight: 100,
                               }}
                             >
+                              {/* DraggableLetterBox when its placed on the board */}
                               {dropID === index && (
-                                <LetterBox
-                                  letter={prevLetter}
-                                  index={1}
-                                ></LetterBox>
+                                <Center>
+                                  <DraggableLetterBox
+                                    letter={prevLetter}
+                                    index={1}
+                                  ></DraggableLetterBox>
+                                </Center>
                               )}
                               {provided.placeholder}
                             </div>
@@ -175,7 +196,7 @@ const GameBoard = () => {
                             ),
                           }}
                         >
-                          {cellValue}
+                          <Center>{cellValue}</Center>
                         </Box>
                       )}
                     </>
@@ -198,12 +219,14 @@ const GameBoard = () => {
                           width: 'fit-content',
                         }}
                       >
+                        {/* Letterbox that is ready to be dragged to the board */}
                         {gameContext.selectedLetter &&
-                          gameContext.selectedLetter.length > 0 && (
-                            <LetterBox
+                          gameContext.selectedLetter.length > 0 &&
+                          !isLetterPlaced && (
+                            <DraggableLetterBox
                               letter={gameContext.selectedLetter}
                               index={-1}
-                            ></LetterBox>
+                            ></DraggableLetterBox>
                           )}
                         {provided.placeholder}
                       </div>
