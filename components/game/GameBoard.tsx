@@ -73,7 +73,6 @@ const GameBoard = () => {
   }
 
   const onDragEnd = (result: DropResult) => {
-    console.log('Drag end: ', result)
     if (
       !result.destination ||
       result.destination.droppableId === 'letterStartBox' ||
@@ -188,6 +187,8 @@ const GameBoard = () => {
                         <Box
                           style={{
                             minHeight: 100,
+                            display: 'flex',
+                            alignItems: 'center',
                             backgroundColor: colorCellGreen(
                               index,
                               boardSize,
@@ -196,7 +197,9 @@ const GameBoard = () => {
                             ),
                           }}
                         >
-                          <Center>{cellValue}</Center>
+                          <p style={{ textAlign: 'center', width: '100%' }}>
+                            {cellValue}
+                          </p>
                         </Box>
                       )}
                     </>
