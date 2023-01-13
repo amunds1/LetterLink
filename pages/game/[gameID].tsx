@@ -1,4 +1,4 @@
-import { Button } from '@mantine/core'
+import { Button, Center } from '@mantine/core'
 import { GetServerSideProps, GetServerSidePropsContext } from 'next'
 import Link from 'next/link'
 import { useEffect, useState } from 'react'
@@ -117,7 +117,9 @@ const GameID = (props: IGameID) => {
       </GameContext.Provider>
 
       <Link href="/games">
-        <Button>Back to games</Button>
+        <Center>
+          <Button>Back to games</Button>
+        </Center>
       </Link>
     </>
   )

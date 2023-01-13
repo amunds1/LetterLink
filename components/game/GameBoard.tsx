@@ -242,7 +242,15 @@ const GameBoard = () => {
           {(gameContext.gameState === GameStates.PLACE_OWN ||
             gameContext.gameState === GameStates.PLACE_OPPONENTS) &&
             gameContext.yourTurn && (
-              <Button onClick={() => submit()}>Submit</Button>
+              <Center>
+                <Button
+                  color="green"
+                  disabled={!isLetterPlaced}
+                  onClick={() => submit()}
+                >
+                  Submit
+                </Button>
+              </Center>
             )}
         </Container>
       )}
