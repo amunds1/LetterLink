@@ -26,7 +26,6 @@ const useStyles = createStyles(() => ({
   },
   col: {
     border: '1px solid grey',
-
     padding: '0px',
     fontSize: '30px',
   },
@@ -164,17 +163,18 @@ const GameBoard = () => {
                                 backgroundColor: snapshot.isDraggingOver
                                   ? 'MediumSeaGreen'
                                   : 'white',
-                                minHeight: 100,
+                                aspectRatio: '1',
+                                display: 'flex',
+                                alignItems: 'center',
+                                justifyContent: 'center',
                               }}
                             >
                               {/* DraggableLetterBox when its placed on the board */}
                               {dropID === index && (
-                                <Center>
-                                  <DraggableLetterBox
-                                    letter={prevLetter}
-                                    index={1}
-                                  ></DraggableLetterBox>
-                                </Center>
+                                <DraggableLetterBox
+                                  letter={prevLetter}
+                                  index={1}
+                                ></DraggableLetterBox>
                               )}
                               {provided.placeholder}
                             </div>
@@ -186,7 +186,8 @@ const GameBoard = () => {
                       {cellValue.length !== 0 && (
                         <Box
                           style={{
-                            minHeight: 100,
+                            aspectRatio: '1',
+                            width: '100%',
                             display: 'flex',
                             alignItems: 'center',
                             backgroundColor: colorCellGreen(
@@ -197,9 +198,14 @@ const GameBoard = () => {
                             ),
                           }}
                         >
-                          <p style={{ textAlign: 'center', width: '100%' }}>
+                          <div
+                            style={{
+                              textAlign: 'center',
+                              width: '100%',
+                            }}
+                          >
                             {cellValue}
-                          </p>
+                          </div>
                         </Box>
                       )}
                     </>
@@ -210,7 +216,12 @@ const GameBoard = () => {
             {(gameContext.gameState === GameStates.PLACE_OWN ||
               gameContext.gameState === GameStates.PLACE_OPPONENTS) &&
               gameContext.yourTurn && (
-                <div style={{ display: 'flex', justifyContent: 'center' }}>
+                <div
+                  style={{
+                    display: 'flex',
+                    justifyContent: 'center',
+                  }}
+                >
                   {}
                   <Droppable droppableId="letterStartBox">
                     {(provided) => (
@@ -219,7 +230,7 @@ const GameBoard = () => {
                         {...provided.droppableProps}
                         style={{
                           padding: '10px',
-                          width: 'fit-content',
+                          fontSize: '30px',
                         }}
                       >
                         {/* Letterbox that is ready to be dragged to the board */}
