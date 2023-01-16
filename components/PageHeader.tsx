@@ -1,9 +1,14 @@
 import {
+  ActionIcon,
+  Avatar,
   Burger,
+  Button,
   Container,
   createStyles,
+  Divider,
   Group,
   Header,
+  Popover,
   Text,
 } from '@mantine/core'
 import { useDisclosure } from '@mantine/hooks'
@@ -11,7 +16,6 @@ import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { useState } from 'react'
 import PageLinks from '../constants/PageLinks'
-import ColorSchemeToggle from './ColorSchemeToggle'
 
 const useStyles = createStyles((theme) => ({
   header: {
@@ -28,6 +32,12 @@ const useStyles = createStyles((theme) => ({
   },
 
   burger: {
+    [theme.fn.largerThan('xs')]: {
+      display: 'none',
+    },
+  },
+
+  leftSigninButton: {
     [theme.fn.largerThan('xs')]: {
       display: 'none',
     },
@@ -72,6 +82,8 @@ export function PageHeader() {
 
   const router = useRouter()
 
+  const [authenticated, setAuthenticated] = useState(true)
+
   return (
     <Header height={60} mb={120}>
       <Container className={classes.header}>
@@ -82,69 +94,109 @@ export function PageHeader() {
         >
           <Text>5x5 game</Text>
         </Link>
+
         <Group spacing={5} className={classes.links}>
-          {/* GAMES LINK */}
-          <Link
-            href={PageLinks.GAMES.link}
-            key={PageLinks.GAMES.label}
-            className={`${classes.link} ${
-              router.pathname === '/games' && classes.linkActive
-            }`}
-          >
-            {PageLinks.GAMES.label}
-          </Link>
-          {/* PROFILE LINK */}
-          <Link
-            href={PageLinks.PROFILE.link}
-            key={PageLinks.PROFILE.label}
-            className={`${classes.link} ${
-              router.pathname === '/profile' && classes.linkActive
-            }`}
-          >
-            {PageLinks.PROFILE.label}
-          </Link>
-          {/* ACHIEVEMENTS LINK */}
-          <Link
-            href={PageLinks.ACHIEVEMENTS.link}
-            key={PageLinks.ACHIEVEMENTS.label}
-            className={`${classes.link} ${
-              router.pathname === '/achievements' && classes.linkActive
-            }`}
-          >
-            {PageLinks.ACHIEVEMENTS.label}
-          </Link>
-          {/* LEADERBOARD LINK */}
-          <Link
-            href={PageLinks.LEADERBOARD.link}
-            key={PageLinks.LEADERBOARD.label}
-            className={`${classes.link} ${
-              router.pathname === '/leaderboard' && classes.linkActive
-            }`}
-          >
-            {PageLinks.LEADERBOARD.label}
-          </Link>
-          {/* SIGN IN LINK */}
-          <Link
-            href={PageLinks.SIGNIN.link}
-            key={PageLinks.SIGNIN.label}
-            className={`${classes.link} ${
-              router.pathname === '/signin' && classes.linkActive
-            }`}
-          >
-            {PageLinks.SIGNIN.label}
-          </Link>
-          {/* SIGN OUT LINK */}
-          <Link
-            href={PageLinks.SIGNOUT.link}
-            key={PageLinks.SIGNOUT.label}
-            className={`${classes.link} ${
-              router.pathname === '/signout' && classes.linkActive
-            }`}
-          >
-            {PageLinks.SIGNOUT.label}
-          </Link>
-          <ColorSchemeToggle />
+          {authenticated && (
+            <>
+              {/* GAMES LINK */}
+              <Link
+                href={PageLinks.GAMES.link}
+                key={PageLinks.GAMES.label}
+                className={`${classes.link} ${
+                  router.pathname === '/games' && classes.linkActive
+                }`}
+              >
+                {PageLinks.GAMES.label}
+              </Link>
+              {/* ACHIEVEMENTS LINK */}
+              <Link
+                href={PageLinks.ACHIEVEMENTS.link}
+                key={PageLinks.ACHIEVEMENTS.label}
+                className={`${classes.link} ${
+                  router.pathname === '/achievements' && classes.linkActive
+                }`}
+              >
+                {PageLinks.ACHIEVEMENTS.label}
+              </Link>
+              {/* LEADERBOARD LINK */}
+              <Link
+                href={PageLinks.LEADERBOARD.link}
+                key={PageLinks.LEADERBOARD.label}
+                className={`${classes.link} ${
+                  router.pathname === '/leaderboard' && classes.linkActive
+                }`}
+              >
+                {PageLinks.LEADERBOARD.label}
+              </Link>
+              <Popover width={200} position="bottom" withArrow shadow="md">
+                <Popover.Target>
+                  <ActionIcon>
+                    <Avatar color="cyan" radius="xl">
+                      AA
+                    </Avatar>
+                  </ActionIcon>
+                </Popover.Target>
+                <Popover.Dropdown>
+                  {/* PROFILE LINK */}
+                  <Link
+                    href={PageLinks.PROFILE.link}
+                    key={PageLinks.PROFILE.label}
+                  >
+                    <Button variant="white" style={{ width: '100%' }}>
+                      Profile
+                    </Button>
+                  </Link>
+
+                  <Divider my="sm" />
+
+                  {/* SIGN OUT LINK */}
+                  <Link
+                    href={PageLinks.SIGNOUT.link}
+                    key={PageLinks.SIGNOUT.label}
+                  >
+                    <Button
+                      variant="white"
+                      color={'red'}
+                      style={{ width: '100%' }}
+                    >
+                      Sign out
+                    </Button>
+                  </Link>
+                </Popover.Dropdown>
+              </Popover>
+            </>
+          )}
+
+          {!authenticated && (
+            <>
+              {/* SIGN IN LINK */}
+              <Link
+                href={PageLinks.SIGNIN.link}
+                key={PageLinks.SIGNIN.label}
+                className={`${classes.link}`}
+              >
+                <Button variant="outline" color={'green'}>
+                  {PageLinks.SIGNIN.label}
+                </Button>
+              </Link>
+            </>
+          )}
+
+          {/* <ColorSchemeToggle /> */}
         </Group>
+
+        {/* SIGN IN LINK */}
+        <Link
+          href={PageLinks.SIGNIN.link}
+          key={PageLinks.SIGNIN.label}
+          className={`${classes.leftSigninButton} ${
+            router.pathname === '/signin' && classes.linkActive
+          }`}
+        >
+          <Button variant="outline" color={'green'}>
+            {PageLinks.SIGNIN.label}
+          </Button>
+        </Link>
 
         <Burger
           opened={opened}
