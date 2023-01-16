@@ -152,7 +152,7 @@ export function PageHeader() {
           className={classes.link}
           style={{ color: 'inherit', textDecoration: 'none' }}
         >
-          <Text>5x5 game</Text>
+          <Text>LetterLink</Text>
         </Link>
 
         <Group spacing={5} className={classes.links}>
