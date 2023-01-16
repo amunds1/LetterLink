@@ -8,16 +8,39 @@ import {
   Divider,
   Group,
   Header,
+  Paper,
   Popover,
   Text,
+  Transition,
 } from '@mantine/core'
 import { useDisclosure } from '@mantine/hooks'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import PageLinks from '../constants/PageLinks'
 
 const useStyles = createStyles((theme) => ({
+  root: {
+    position: 'relative',
+    zIndex: 1,
+  },
+
+  dropdown: {
+    position: 'absolute',
+    top: 60,
+    left: 0,
+    right: 0,
+    zIndex: 0,
+    borderTopRightRadius: 0,
+    borderTopLeftRadius: 0,
+    borderTopWidth: 0,
+    overflow: 'hidden',
+
+    [theme.fn.largerThan('sm')]: {
+      display: 'none',
+    },
+  },
+
   header: {
     display: 'flex',
     justifyContent: 'space-between',
@@ -26,19 +49,13 @@ const useStyles = createStyles((theme) => ({
   },
 
   links: {
-    [theme.fn.smallerThan('xs')]: {
+    [theme.fn.smallerThan('sm')]: {
       display: 'none',
     },
   },
 
   burger: {
-    [theme.fn.largerThan('xs')]: {
-      display: 'none',
-    },
-  },
-
-  leftSigninButton: {
-    [theme.fn.largerThan('xs')]: {
+    [theme.fn.largerThan('sm')]: {
       display: 'none',
     },
   },
@@ -62,6 +79,11 @@ const useStyles = createStyles((theme) => ({
           ? theme.colors.dark[6]
           : theme.colors.gray[0],
     },
+
+    [theme.fn.smallerThan('sm')]: {
+      borderRadius: 0,
+      padding: theme.spacing.md,
+    },
   },
 
   linkActive: {
@@ -77,12 +99,50 @@ const useStyles = createStyles((theme) => ({
 }))
 
 export function PageHeader() {
+  // Toggle Burger menu
   const [opened, { toggle }] = useDisclosure(false)
-  const { classes, cx } = useStyles()
+
+  const { classes } = useStyles()
 
   const router = useRouter()
 
   const [authenticated, setAuthenticated] = useState(true)
+
+  useEffect(() => {}, [authenticated])
+
+  // Renders Link-components for routes which does not require authentication
+  const baseLinks = [PageLinks.LEADERBOARD].map((link) => (
+    <Link
+      href={link.link}
+      key={link.label}
+      className={`${classes.link} ${
+        router.pathname === link.link && classes.linkActive
+      }`}
+      onClick={(event) => {
+        toggle()
+      }}
+    >
+      {link.label}
+    </Link>
+  ))
+
+  // Renders Link-components for routes which require authentication
+  const authenticatedLinks = [PageLinks.GAMES, PageLinks.ACHIEVEMENTS].map(
+    (link) => (
+      <Link
+        href={link.link}
+        key={link.label}
+        className={`${classes.link} ${
+          router.pathname === link.link && classes.linkActive
+        }`}
+        onClick={(event) => {
+          toggle()
+        }}
+      >
+        {link.label}
+      </Link>
+    )
+  )
 
   return (
     <Header height={60} mb={120}>
@@ -96,38 +156,24 @@ export function PageHeader() {
         </Link>
 
         <Group spacing={5} className={classes.links}>
+          {baseLinks}
+
+          {!authenticated && (
+            <>
+              {/* SIGN IN LINK */}
+              <Link href={PageLinks.SIGNIN.link} key={PageLinks.SIGNIN.label}>
+                <Button variant="outline" color={'green'}>
+                  {PageLinks.SIGNIN.label}
+                </Button>
+              </Link>
+            </>
+          )}
+
           {authenticated && (
             <>
-              {/* GAMES LINK */}
-              <Link
-                href={PageLinks.GAMES.link}
-                key={PageLinks.GAMES.label}
-                className={`${classes.link} ${
-                  router.pathname === '/games' && classes.linkActive
-                }`}
-              >
-                {PageLinks.GAMES.label}
-              </Link>
-              {/* ACHIEVEMENTS LINK */}
-              <Link
-                href={PageLinks.ACHIEVEMENTS.link}
-                key={PageLinks.ACHIEVEMENTS.label}
-                className={`${classes.link} ${
-                  router.pathname === '/achievements' && classes.linkActive
-                }`}
-              >
-                {PageLinks.ACHIEVEMENTS.label}
-              </Link>
-              {/* LEADERBOARD LINK */}
-              <Link
-                href={PageLinks.LEADERBOARD.link}
-                key={PageLinks.LEADERBOARD.label}
-                className={`${classes.link} ${
-                  router.pathname === '/leaderboard' && classes.linkActive
-                }`}
-              >
-                {PageLinks.LEADERBOARD.label}
-              </Link>
+              {authenticatedLinks}
+
+              {/* AVATAR BUTTON */}
               <Popover width={200} position="bottom" withArrow shadow="md">
                 <Popover.Target>
                   <ActionIcon>
@@ -167,43 +213,79 @@ export function PageHeader() {
             </>
           )}
 
-          {!authenticated && (
-            <>
-              {/* SIGN IN LINK */}
-              <Link
-                href={PageLinks.SIGNIN.link}
-                key={PageLinks.SIGNIN.label}
-                className={`${classes.link}`}
-              >
-                <Button variant="outline" color={'green'}>
-                  {PageLinks.SIGNIN.label}
-                </Button>
-              </Link>
-            </>
-          )}
-
           {/* <ColorSchemeToggle /> */}
         </Group>
 
-        {/* SIGN IN LINK */}
-        <Link
-          href={PageLinks.SIGNIN.link}
-          key={PageLinks.SIGNIN.label}
-          className={`${classes.leftSigninButton} ${
-            router.pathname === '/signin' && classes.linkActive
-          }`}
-        >
-          <Button variant="outline" color={'green'}>
-            {PageLinks.SIGNIN.label}
-          </Button>
-        </Link>
+        <>
+          <Burger
+            opened={opened}
+            onClick={toggle}
+            className={classes.burger}
+            size="sm"
+          />
+          <Transition transition="pop-top-right" duration={50} mounted={opened}>
+            {(styles) => (
+              <Paper className={classes.dropdown} withBorder style={styles}>
+                {authenticated && authenticatedLinks}
 
-        <Burger
-          opened={opened}
-          onClick={toggle}
-          className={classes.burger}
-          size="sm"
-        />
+                {baseLinks}
+
+                <Link
+                  href={PageLinks.PROFILE.link}
+                  key={PageLinks.PROFILE.label}
+                  className={`${classes.link} ${
+                    router.pathname === '/profile' && classes.linkActive
+                  }`}
+                  onClick={() => {
+                    toggle()
+                  }}
+                >
+                  {PageLinks.PROFILE.label}
+                </Link>
+
+                <Divider my="sm" style={{ margin: 0 }} />
+
+                {/* SIGN OUT LINK */}
+                {authenticated && (
+                  <Link
+                    href={PageLinks.SIGNOUT.link}
+                    key={PageLinks.SIGNOUT.label}
+                    className={`${classes.link} ${
+                      router.pathname === '/profile' && classes.linkActive
+                    }`}
+                    style={{
+                      color: 'red',
+                    }}
+                    onClick={() => setAuthenticated(false)}
+                  >
+                    {PageLinks.SIGNOUT.label}
+                  </Link>
+                )}
+
+                {!authenticated && (
+                  <>
+                    {/* SIGN IN LINK */}
+                    <Link
+                      href={PageLinks.SIGNIN.link}
+                      key={PageLinks.SIGNIN.label}
+                      style={{
+                        color: 'green',
+                      }}
+                      className={`${classes.link} ${
+                        router.pathname === '/signin' && classes.linkActive
+                      }`}
+                      onClick={() => {
+                        toggle()
+                      }}
+                    >
+                      {PageLinks.SIGNIN.label}
+                    </Link>
+                  </>
+                )}
+              </Paper>
+            )}
+          </Transition>
+        </>
       </Container>
     </Header>
   )
