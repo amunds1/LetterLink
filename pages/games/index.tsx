@@ -1,11 +1,14 @@
 import { Button, createStyles, Stack } from '@mantine/core'
 import { GetServerSidePropsContext } from 'next'
 import Link from 'next/link'
+import { useRouter } from 'next/router'
+import { useEffect } from 'react'
 import ActiveGames from '../../components/games/ActiveGames'
 import {
   fetchActiveGames,
   fetchProposedGames,
 } from '../../components/games/firebase/fetchGames'
+import gamesListChangedListener from '../../components/games/firebase/gamesListChangedListener'
 import ProposedGames from '../../components/games/ProposedGames'
 import { fetchUserData } from '../../components/profile/firebase/fetchUserData'
 import fetchUID from '../../firebase/fetchUID'
@@ -68,6 +71,18 @@ interface IGames {
 const Games = (props: IGames) => {
   const { classes } = useStyles()
   const { uid, activeGames, proposedGames } = props
+  const router = useRouter()
+
+  const refreshGamesList = () => {
+    router.replace(router.asPath)
+  }
+
+  useEffect(() => {
+    const unsubscribe = gamesListChangedListener(uid, refreshGamesList)
+
+    //remember to unsubscribe from your realtime listener on unmount or you will create a memory leak
+    return () => unsubscribe()
+  }, [])
 
   return (
     <>
