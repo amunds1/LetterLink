@@ -73,6 +73,7 @@ const Games = (props: IGames) => {
   const { uid, activeGames, proposedGames } = props
   const router = useRouter()
 
+  // FIXME Error when pressing accept on a proposed game
   const refreshGamesList = () => {
     router.replace(router.asPath)
   }
