@@ -4,6 +4,10 @@ import { Button, Checkbox, Stack } from '@mantine/core'
 const Concent = () => {
   const [checked, setChecked] = useState(false)
 
+  const agreeToParticipate = () => {
+    console.log('Agreed')
+  }
+
   return (
     <>
       <p>Letterlink is a ...</p>
@@ -13,7 +17,11 @@ const Concent = () => {
           onChange={(event) => setChecked(event.currentTarget.checked)}
           label={'I agree to participate'}
         />
-        <Button color={'green'} disabled={!checked}>
+        <Button
+          color={'green'}
+          disabled={!checked}
+          onClick={() => agreeToParticipate()}
+        >
           Continue
         </Button>
       </Stack>
