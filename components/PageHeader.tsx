@@ -14,10 +14,12 @@ import {
   Transition,
 } from '@mantine/core'
 import { useDisclosure } from '@mantine/hooks'
+import { getAuth } from 'firebase/auth'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
-import { useEffect, useState } from 'react'
+import { Dispatch, SetStateAction, useEffect, useState } from 'react'
 import PageLinks from '../constants/PageLinks'
+import firebase from '../firebase/clientApp'
 
 const useStyles = createStyles((theme) => ({
   root: {
@@ -98,6 +100,16 @@ const useStyles = createStyles((theme) => ({
   },
 }))
 
+function onAuthStateChange(callback: Dispatch<SetStateAction<boolean>>) {
+  return getAuth(firebase).onAuthStateChanged((user) => {
+    if (user) {
+      callback(true)
+    } else {
+      callback(false)
+    }
+  })
+}
+
 export function PageHeader() {
   // Toggle Burger menu
   const [opened, { toggle }] = useDisclosure(false)
@@ -106,9 +118,15 @@ export function PageHeader() {
 
   const router = useRouter()
 
-  const [authenticated, setAuthenticated] = useState(true)
-
-  useEffect(() => {}, [authenticated])
+  // Change style of PageHeader depending on wether user is authenticated or not
+  // https://johnwcassidy.medium.com/firebase-authentication-hooks-and-context-d0e47395f402
+  const [authenticated, setAuthenticated] = useState(false)
+  useEffect(() => {
+    const unsubscribe = onAuthStateChange(setAuthenticated)
+    return () => {
+      unsubscribe()
+    }
+  }, [])
 
   // Renders Link-components for routes which does not require authentication
   const baseLinks = [PageLinks.LEADERBOARD].map((link) => (
