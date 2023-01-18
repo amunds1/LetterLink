@@ -166,7 +166,7 @@ export function PageHeader() {
     <Header height={60} mb={120}>
       <Container className={classes.header}>
         <Link
-          href={'/'}
+          href="/"
           className={classes.link}
           style={{ color: 'inherit', textDecoration: 'none' }}
         >
@@ -180,7 +180,7 @@ export function PageHeader() {
             <>
               {/* SIGN IN LINK */}
               <Link href={PageLinks.SIGNIN.link} key={PageLinks.SIGNIN.label}>
-                <Button variant="outline" color={'green'}>
+                <Button variant="outline" color="green">
                   {PageLinks.SIGNIN.label}
                 </Button>
               </Link>
@@ -220,7 +220,7 @@ export function PageHeader() {
                   >
                     <Button
                       variant="white"
-                      color={'red'}
+                      color="red"
                       style={{ width: '100%' }}
                     >
                       Sign out
