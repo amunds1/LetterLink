@@ -61,9 +61,9 @@ const NewGame = (props: INewGame) => {
         description=""
         withAsterisk
       >
-        <Radio value={'3'} label="3 x 3" />
-        <Radio value={'6'} label="6 x 6" />
-        <Radio value={'9'} label="9 x 9" />
+        <Radio value="3" label="3 x 3" />
+        <Radio value="6" label="6 x 6" />
+        <Radio value="9" label="9 x 9" />
       </Radio.Group>
 
       <Button

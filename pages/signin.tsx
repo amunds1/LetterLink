@@ -17,7 +17,7 @@ const SignIn = () => {
     <>
       {user && !loading && (
         <Center className={classes.center}>
-          <Text size={'xl'}>Signed in as {user.displayName}</Text>
+          <Text size="xl">Signed in as {user.displayName}</Text>
         </Center>
       )}
 

@@ -40,7 +40,7 @@ const GameProposal = ({ game, userUID }: IGameProposal) => {
         </Badge>
       </Group>
       <Center>
-        <Avatar color="cyan" radius="xl" size={'lg'}>
+        <Avatar color="cyan" radius="xl" size="lg">
           AB
         </Avatar>
       </Center>
