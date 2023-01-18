@@ -29,7 +29,7 @@ const Statistics = () => {
             </Center>
           }
         />
-        <Text size={'md'}>Games played</Text>
+        <Text size="md">Games played</Text>
       </Stack>
 
       <Stack align="center">
@@ -43,17 +43,17 @@ const Statistics = () => {
             </Text>
           }
         />
-        <Text size={'md'}>Win rate</Text>
+        <Text size="md">Win rate</Text>
       </Stack>
 
       <Stack align="center">
         <Avatar size={ringSize} color="blue" variant="outline" />
-        <Text size={'sm'}>Most wins against</Text>
+        <Text size="sm">Most wins against</Text>
       </Stack>
 
       <Stack align="center">
         <Avatar size={ringSize} color="blue" variant="outline" />
-        <Text size={'sm'}>Most defeats against</Text>
+        <Text size="sm">Most defeats against</Text>
       </Stack>
     </div>
   )

@@ -20,7 +20,7 @@ const SignOut = () => {
 
   return (
     <Center className={classes.center}>
-      {signedOut && <Text size={'xl'}>Successfully signed out</Text>}
+      {signedOut && <Text size="xl">Successfully signed out</Text>}
     </Center>
   )
 }
