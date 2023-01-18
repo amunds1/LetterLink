@@ -4,7 +4,7 @@ import { IconMedal } from '@tabler/icons'
 
 const Acheviement = ({ unlocked }: { unlocked: boolean }) => {
   return (
-    <Stack align={'center'}>
+    <Stack align="center">
       <IconMedal color={unlocked ? 'gold' : 'gray'} size={80} />
       <Text align="center">Play 10 games</Text>
     </Stack>
