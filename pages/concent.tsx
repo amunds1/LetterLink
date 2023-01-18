@@ -11,14 +11,14 @@ const Concent = () => {
   return (
     <>
       <p>Letterlink is a ...</p>
-      <Stack justify={'center'} align={'center'}>
+      <Stack justify="center" align="center">
         <Checkbox
           checked={checked}
           onChange={(event) => setChecked(event.currentTarget.checked)}
-          label={'I agree to participate'}
+          label="I agree to participate"
         />
         <Button
-          color={'green'}
+          color="green"
           disabled={!checked}
           onClick={() => agreeToParticipate()}
         >
