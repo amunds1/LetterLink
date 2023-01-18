@@ -1689,10 +1689,10 @@
   dependencies:
     "@mantine/utils" "5.5.4"
 
-"@mantine/form@^5.10.0":
-  version "5.10.0"
-  resolved "https://registry.npmjs.org/@mantine/form/-/form-5.10.0.tgz"
-  integrity sha512-4X9RR75Aaq0fxu+kJ/mL/CAOPlgHNhbUY657hGJlfwqWJFwibnhyCe1s5lpZ7Sm8F3hNsSMpWzdA687gvhw4Lw==
+"@mantine/form@^5.10.1":
+  version "5.10.1"
+  resolved "https://registry.yarnpkg.com/@mantine/form/-/form-5.10.1.tgz#672d5d3a09592d9ef7612d797a209ac265a3d3b9"
+  integrity sha512-KGKAcVURVAHVr+KbNyqvt0L8ROdpyFxCR8fh2TCIkGeFgQXWLcXF4JOeNSx2KCXf0wbEEXgp49BXV+tmeLHoiA==
   dependencies:
     fast-deep-equal "^3.1.3"
     klona "^2.0.5"
@@ -1702,26 +1702,26 @@
   resolved "https://registry.npmjs.org/@mantine/hooks/-/hooks-5.5.4.tgz"
   integrity sha512-4lPIcZgoMkq+GCILN8CDTVxYzsE/Gfi6ICjHhPZU1Ufmw0mftpjTQhLx3+TFMtBlqnamgBia2ZS1o2BpvTLazA==
 
-"@mantine/next@^5.10.0":
-  version "5.10.0"
-  resolved "https://registry.npmjs.org/@mantine/next/-/next-5.10.0.tgz"
-  integrity sha512-ImsY1JcA3h8ojPCVDGjKvTnLqpFEecPcgwYNTIUeYGP9FHB9NXhIDLS2aeeKPrgw2dNO8vtRY5aXTPqt2spLag==
+"@mantine/next@^5.10.1":
+  version "5.10.1"
+  resolved "https://registry.yarnpkg.com/@mantine/next/-/next-5.10.1.tgz#1506ab342516f0b0aee0dd1f2940fef3f4280fd3"
+  integrity sha512-Tc8FrJfEAG8IYnhm1yHFFz0O1qti+hRo71TTZ76bLmYjGcDwhScqysOu8hmahlslkJ8R83fbcksU8AL7Y6/goA==
   dependencies:
-    "@mantine/ssr" "5.10.0"
-    "@mantine/styles" "5.10.0"
+    "@mantine/ssr" "5.10.1"
+    "@mantine/styles" "5.10.1"
 
-"@mantine/ssr@5.10.0":
-  version "5.10.0"
-  resolved "https://registry.npmjs.org/@mantine/ssr/-/ssr-5.10.0.tgz"
-  integrity sha512-nkSaSH/wJlZHuBswBCRwXKuTXEH5b/cBxca54dK/8qFB3/LtVDibmEg+yAE5RDfw/0W+N+37+0G64TRysE1ZHA==
+"@mantine/ssr@5.10.1":
+  version "5.10.1"
+  resolved "https://registry.yarnpkg.com/@mantine/ssr/-/ssr-5.10.1.tgz#6a3b68f098269588efa226df1a8e37b28b149bf5"
+  integrity sha512-vOSP98oGDEUZ97jTBhoJOBLwQV/ZLhI0O7u5AB7EPASGjxoWo15u6FN6IMbJUQXN8d/It7KRY3OwPG5iM30Z3g==
   dependencies:
-    "@mantine/styles" "5.10.0"
+    "@mantine/styles" "5.10.1"
     html-react-parser "1.4.12"
 
-"@mantine/styles@5.10.0":
-  version "5.10.0"
-  resolved "https://registry.npmjs.org/@mantine/styles/-/styles-5.10.0.tgz"
-  integrity sha512-3JBM5LWJHb4Yk7jymPiSuaBJRoe2CgA7KoyYWgabwBP115GlHPb1rQCcavJsobHV4U+wFfZEEUnVBpaAaXqgmw==
+"@mantine/styles@5.10.1":
+  version "5.10.1"
+  resolved "https://registry.yarnpkg.com/@mantine/styles/-/styles-5.10.1.tgz#84915938349117be04ccc725aa73f1b1c947e95c"
+  integrity sha512-sKJG+shOJMEYlnpLuRd1Qlu0kK9GHpYd85+q+3Wa5/IZ9jLkOeYVxLV1vnhSnhVrIxbQzrti2klSKHZBg3KpIw==
   dependencies:
     clsx "1.1.1"
     csstype "3.0.9"
