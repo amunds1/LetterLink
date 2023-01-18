@@ -14,7 +14,7 @@ const ExperiencePointsBar = ({
         value={experiencePoints}
         label={`${experiencePoints} XP`}
       />
-      <Text align="center" size={'sm'}>
+      <Text align="center" size="sm">
         Earn just {100 - experiencePoints} more XP points to reach level 3!
       </Text>
     </Stack>
