@@ -2,13 +2,13 @@ import { Card, Center, Group, RingProgress, Stack, Text } from '@mantine/core'
 import { IconFlame } from '@tabler/icons'
 
 const streakData = {
-  1: ['M', true],
-  2: ['T', true],
-  3: ['W', true],
-  4: ['T', true],
-  5: ['F', true],
-  6: ['S', false],
-  7: ['S', false],
+  1: ['Mo', true],
+  2: ['Tu', true],
+  3: ['We', true],
+  4: ['Th', true],
+  5: ['Fr', true],
+  6: ['Sa', false],
+  7: ['Su', false],
 }
 
 const Streak = () => {
@@ -20,14 +20,14 @@ const Streak = () => {
       <Stack justify="center" align="center">
         <RingProgress
           sections={[{ value: 100, color: 'orange' }]}
-          size={200}
+          size={150}
           thickness={7}
           label={
             <Stack>
-              <Text weight="bold" size={35} align="center" color="orange">
+              <Text size={25} align="center" color="orange">
                 5
               </Text>
-              <Text weight="bold" size="xl" align="center" color="orange">
+              <Text size={15} align="center" color="orange">
                 days
               </Text>
             </Stack>
@@ -38,8 +38,8 @@ const Streak = () => {
           {Object.values(streakData).map((value, key) => (
             <Stack key={key} align="center" justify="center">
               <IconFlame
-                width="50px"
-                height="50px"
+                width="30px"
+                height="30px"
                 color={value[1] ? 'orange' : 'grey'}
               />
               <Text weight="500">{value[0]}</Text>
