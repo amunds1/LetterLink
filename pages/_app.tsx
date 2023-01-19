@@ -1,7 +1,9 @@
 import {
   AppShell,
+  Center,
   ColorScheme,
   ColorSchemeProvider,
+  LoadingOverlay,
   MantineProvider,
 } from '@mantine/core'
 import { AppProps } from 'next/app'
@@ -11,6 +13,7 @@ import Script from 'next/script'
 import { useEffect, useState } from 'react'
 import { PageHeader } from '../components/PageHeader'
 import { AuthProvider } from '../firebase/AuthProvider'
+import { usePageLoading } from '../hooks/usePageLoading'
 import * as gtag from '../lib/gtag'
 
 export default function App(props: AppProps) {
@@ -23,6 +26,8 @@ export default function App(props: AppProps) {
   const [opened, setOpened] = useState(false)
 
   const router = useRouter()
+
+  const { isPageLoading } = usePageLoading()
 
   useEffect(() => {
     const handleRouteChange = (url: string) => {
@@ -91,7 +96,13 @@ export default function App(props: AppProps) {
                 },
               })}
             >
-              <Component {...pageProps} />
+              {isPageLoading ? (
+                <Center>
+                  <LoadingOverlay visible={true} overlayBlur={2} />
+                </Center>
+              ) : (
+                <Component {...pageProps} />
+              )}
             </AppShell>
           </AuthProvider>
         </MantineProvider>
