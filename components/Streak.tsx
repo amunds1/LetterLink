@@ -17,7 +17,7 @@ const Streak = () => {
   })
   return (
     <Card>
-      <Center>
+      <Stack justify="center" align="center">
         <RingProgress
           sections={[{ value: 100, color: 'orange' }]}
           size={200}
@@ -33,20 +33,20 @@ const Streak = () => {
             </Stack>
           }
         />
-      </Center>
 
-      <Group>
-        {Object.values(streakData).map((value, key) => (
-          <Stack key={key} align="center" justify="center">
-            <IconFlame
-              width="50px"
-              height="50px"
-              color={value[1] ? 'orange' : 'grey'}
-            />
-            <Text weight="500">{value[0]}</Text>
-          </Stack>
-        ))}
-      </Group>
+        <Group>
+          {Object.values(streakData).map((value, key) => (
+            <Stack key={key} align="center" justify="center">
+              <IconFlame
+                width="50px"
+                height="50px"
+                color={value[1] ? 'orange' : 'grey'}
+              />
+              <Text weight="500">{value[0]}</Text>
+            </Stack>
+          ))}
+        </Group>
+      </Stack>
     </Card>
   )
 }
