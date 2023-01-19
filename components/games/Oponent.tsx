@@ -27,7 +27,7 @@ const Oponent = ({ userUID, game }: IOponent) => {
     fetchData()
   }, [game.playerOne, game.playerTwo, userUID])
 
-  return <Text weight={500}>Game against {opponentName}</Text>
+  return <Text>Against {opponentName}</Text>
 }
 
 export default Oponent
