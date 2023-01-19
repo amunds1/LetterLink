@@ -1,11 +1,10 @@
-import { Center, createStyles, Stack, Text } from '@mantine/core'
+import { createStyles, Stack } from '@mantine/core'
 import { GetServerSidePropsContext } from 'next'
 import ActiveGames from '../components/games/ActiveGames'
 import {
   fetchActiveGames,
   fetchProposedGames,
 } from '../components/games/firebase/fetchGames'
-import ActiveGamesSummary from '../components/index/ActiveGamesSummary'
 import { fetchUserData } from '../components/profile/firebase/fetchUserData'
 import Streak from '../components/Streak'
 import fetchUID from '../firebase/fetchUID'
