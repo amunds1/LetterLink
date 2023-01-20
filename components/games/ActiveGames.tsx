@@ -1,7 +1,6 @@
+import { Avatar, Button, Card, Group, Stack, Text } from '@mantine/core'
 import Link from 'next/link'
-import { Card, Group, Button, Text, Avatar, Stack } from '@mantine/core'
 import Game from '../../types/Game'
-import Oponent from './Oponent'
 
 interface IActiveGames {
   userUID: string
@@ -28,7 +27,7 @@ const ActiveGame = ({ game, uid }: IActiveGame) => {
       >
         <Stack>
           <Group spacing="xl">
-            <Oponent game={game} userUID={uid} />
+            <Text>Against {game.opponentName}</Text>
             <Avatar color="orange" radius="xl">
               KL
             </Avatar>

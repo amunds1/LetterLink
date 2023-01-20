@@ -69,8 +69,6 @@ const Games = (props: IGames) => {
   const { classes } = useStyles()
   const { uid, activeGames, proposedGames } = props
 
-  console.log('ActiveGames', activeGames)
-
   return (
     <>
       <Stack style={{ width: '100%' }}>

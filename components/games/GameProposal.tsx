@@ -1,10 +1,9 @@
-import { Avatar, Badge, Button, Card, Center, Group } from '@mantine/core'
+import { Avatar, Badge, Button, Card, Center, Group, Text } from '@mantine/core'
 import { useEffect, useState } from 'react'
 import Game from '../../types/Game'
 import acceptProposedGame from './firebase/acceptProposedGame'
 import rejectProposedGame from './firebase/rejectProposedGame'
 import withdrawGameProposal from './firebase/withdrawGameProposal'
-import Oponent from './Oponent'
 
 interface IGameProposal {
   game: Game
@@ -34,7 +33,7 @@ const GameProposal = ({ game, userUID }: IGameProposal) => {
   return (
     <Card>
       <Group position="apart" mt="md" mb="xs">
-        <Oponent game={game} userUID={userUID} />
+        <Text>Against {game.opponentName}</Text>
         <Badge color="orange" variant="light">
           {gameProposedTimeDelta.value} {gameProposedTimeDelta.label} ago
         </Badge>
