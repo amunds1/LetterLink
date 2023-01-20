@@ -29,7 +29,9 @@ const ActiveGame = ({ game, yourTurn }: IActiveGame) => {
         <Stack>
           <Group spacing="xl">
             <Text color="black">Against {game.opponentName}</Text>
-            <Avatar radius="xl">KL</Avatar>
+            <Avatar color="orange" radius="xl">
+              KL
+            </Avatar>
           </Group>
           <Group spacing="xl">
             <Text color="gray.7">Rounds left: 8</Text>
