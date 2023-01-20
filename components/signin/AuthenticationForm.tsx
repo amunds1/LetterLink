@@ -14,12 +14,15 @@ import {
   Stack,
 } from '@mantine/core'
 import { FacebookButton, GithubButton } from './SocialButtons'
-import { getAuth } from 'firebase/auth'
+import { getAuth, sendPasswordResetEmail } from 'firebase/auth'
 import {
+  useCreateUserWithEmailAndPassword,
+  useSignInWithEmailAndPassword,
   useSignInWithFacebook,
   useSignInWithGithub,
 } from 'react-firebase-hooks/auth'
 import firebase from '../../firebase/clientApp'
+import Link from 'next/link'
 
 export default function AuthenticationForm(props: PaperProps) {
   const [type, toggle] = useToggle(['login', 'register'])
@@ -28,6 +31,19 @@ export default function AuthenticationForm(props: PaperProps) {
   const [signInWithFacebook, user, loading, error] = useSignInWithFacebook(
     getAuth(firebase)
   )
+  const [
+    createUserWithEmailAndPassword,
+    userRegisterEmail,
+    loadingRegisterEmail,
+    errorRegisterEmail,
+  ] = useCreateUserWithEmailAndPassword(getAuth(firebase))
+
+  const [
+    signInWithEmailAndPassword,
+    userLoginEmail,
+    loadingLoginEmail,
+    errorLoadingEmail,
+  ] = useSignInWithEmailAndPassword(getAuth(firebase))
 
   const form = useForm({
     initialValues: {
@@ -39,24 +55,38 @@ export default function AuthenticationForm(props: PaperProps) {
 
     validate: {
       email: (val) => (/^\S+@\S+$/.test(val) ? null : 'Invalid email'),
-      password: (val) =>
-        val.length <= 6
-          ? 'Password should include at least 6 characters'
-          : null,
+      password: (val) => {
+        if (val.length <= 6) {
+          return 'Password should include at least 6 characters'
+        }
+
+        return null
+      },
     },
   })
 
+  const onClickLogin = () => {
+    signInWithEmailAndPassword(form.values.email, form.values.password)
+  }
+
+  const onClickRegister = () => {
+    createUserWithEmailAndPassword(form.values.email, form.values.password)
+  }
+
   return (
     <Paper radius="md" p="xl" withBorder {...props}>
-      <Text size="lg" weight={500}>
-        Welcome to the 5x5 game, sign in with
+      <Text size="xl" weight={500}>
+        Welcome to LetterLink
       </Text>
 
-      <Group grow mb="md" mt="md" onClick={() => signInWithGithub()}>
-        <GithubButton radius="xl">GitHub</GithubButton>
-      </Group>
+      <Text size="lg" pt="sm">
+        Sign in with
+      </Text>
       <Group grow mb="md" mt="md" onClick={() => signInWithFacebook()}>
         <FacebookButton radius="xl">Facebook</FacebookButton>
+      </Group>
+      <Group grow mb="md" mt="md" onClick={() => signInWithGithub()}>
+        <GithubButton radius="xl">GitHub</GithubButton>
       </Group>
 
       <Divider label="Or continue with email" labelPosition="center" my="lg" />
@@ -66,7 +96,6 @@ export default function AuthenticationForm(props: PaperProps) {
           {type === 'register' && (
             <TextInput
               label="Name"
-              disabled
               placeholder="Your name"
               value={form.values.name}
               onChange={(event) =>
@@ -76,7 +105,6 @@ export default function AuthenticationForm(props: PaperProps) {
           )}
 
           <TextInput
-            disabled
             required
             label="Email"
             placeholder="hello@mantine.dev"
@@ -88,7 +116,6 @@ export default function AuthenticationForm(props: PaperProps) {
           />
 
           <PasswordInput
-            disabled
             required
             label="Password"
             placeholder="Your password"
@@ -101,6 +128,11 @@ export default function AuthenticationForm(props: PaperProps) {
               'Password should include at least 6 characters'
             }
           />
+          <Link href="/resetpassword">
+            <Anchor size="sm" color="red.6">
+              Forgot password?
+            </Anchor>
+          </Link>
 
           {type === 'register' && (
             <Checkbox
@@ -125,7 +157,13 @@ export default function AuthenticationForm(props: PaperProps) {
               ? 'Already have an account? Login'
               : "Don't have an account? Register"}
           </Anchor>
-          <Button type="submit" disabled>
+          <Button
+            type="submit"
+            onClick={() => {
+              type === 'register' && onClickRegister()
+              type === 'login' && onClickLogin()
+            }}
+          >
             {upperFirst(type)}
           </Button>
         </Group>
