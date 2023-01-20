@@ -15,7 +15,6 @@ interface IActiveGame {
 const ActiveGame = ({ game, yourTurn }: IActiveGame) => {
   return (
     <>
-      <ColorSchemeToggle />
       <Group
         position="apart"
         mb="sm"
