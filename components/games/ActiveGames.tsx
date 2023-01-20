@@ -9,9 +9,9 @@ interface IActiveGames {
 
 interface IActiveGame {
   game: Game
-  uid: string
+  yourTurn: boolean
 }
-const ActiveGame = ({ game, uid }: IActiveGame) => {
+const ActiveGame = ({ game, yourTurn }: IActiveGame) => {
   return (
     <>
       <Group
@@ -19,8 +19,8 @@ const ActiveGame = ({ game, uid }: IActiveGame) => {
         mb="sm"
         key={game.id}
         style={{
-          border: '2px solid green',
-          backgroundColor: '#ebfbee',
+          border: yourTurn ? '2px solid green' : '2px solid gray',
+          backgroundColor: yourTurn ? '#ebfbee' : '#dee2e6',
           borderRadius: '5px',
           padding: '0.5rem',
         }}
@@ -58,21 +58,26 @@ const ActiveGames = ({ games, userUID }: IActiveGames) => {
       <Text align="left" size="lg" pb="xl">
         Active games
       </Text>
-      {games &&
-        games.map((game) => {
-          return (
-            <>
-              <Text size="lg" pb="sm">
-                Your turn
-              </Text>
-              <ActiveGame game={game} uid={userUID} />
 
-              <Text size="lg" pb="sm">
-                Their turn
-              </Text>
-            </>
-          )
-        })}
+      <Text size="lg" pb="sm">
+        Your turn
+      </Text>
+      {games &&
+        games
+          .filter((game) => game.nextTurn === userUID)
+          .map((game) => (
+            <ActiveGame key={game.id} game={game} yourTurn={true} />
+          ))}
+
+      <Text size="lg" pb="sm">
+        Their turn
+      </Text>
+      {games &&
+        games
+          .filter((game) => game.nextTurn != userUID)
+          .map((game) => (
+            <ActiveGame key={game.id} game={game} yourTurn={false} />
+          ))}
     </Card>
   )
 }
