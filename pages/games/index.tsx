@@ -34,12 +34,12 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
 
     // Fetch active games
     if (userData?.games?.length) {
-      activeGames = await fetchActiveGames(userData.games)
+      activeGames = await fetchActiveGames(userData.games, uid)
     }
 
     // Fetch proposed games
     if (userData?.proposedGames?.length) {
-      proposedGames = await fetchProposedGames(userData.proposedGames)
+      proposedGames = await fetchProposedGames(userData.proposedGames, uid)
     }
 
     return {
@@ -68,6 +68,8 @@ interface IGames {
 const Games = (props: IGames) => {
   const { classes } = useStyles()
   const { uid, activeGames, proposedGames } = props
+
+  console.log('ActiveGames', activeGames)
 
   return (
     <>
