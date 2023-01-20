@@ -12,6 +12,7 @@ interface Game {
   nextTurn: DocumentReference<DocumentData> | string
   selectedLetter: string | null
   gameState: GameStates
+  opponentName?: string | ''
 }
 
 export default Game
