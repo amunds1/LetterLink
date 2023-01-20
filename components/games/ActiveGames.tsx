@@ -1,6 +1,7 @@
 import { Avatar, Button, Card, Group, Stack, Text } from '@mantine/core'
 import Link from 'next/link'
 import Game from '../../types/Game'
+import ColorSchemeToggle from '../ColorSchemeToggle'
 
 interface IActiveGames {
   userUID: string
@@ -14,6 +15,7 @@ interface IActiveGame {
 const ActiveGame = ({ game, yourTurn }: IActiveGame) => {
   return (
     <>
+      <ColorSchemeToggle />
       <Group
         position="apart"
         mb="sm"
@@ -27,14 +29,12 @@ const ActiveGame = ({ game, yourTurn }: IActiveGame) => {
       >
         <Stack>
           <Group spacing="xl">
-            <Text>Against {game.opponentName}</Text>
-            <Avatar color="orange" radius="xl">
-              KL
-            </Avatar>
+            <Text color="black">Against {game.opponentName}</Text>
+            <Avatar radius="xl">KL</Avatar>
           </Group>
           <Group spacing="xl">
-            <Text color="#495057">Rounds left: 8</Text>
-            <Text color="#495057">
+            <Text color="gray.7">Rounds left: 8</Text>
+            <Text color="gray.7">
               Boardsize: {game.boardSize}x{game.boardSize}
             </Text>
           </Group>
