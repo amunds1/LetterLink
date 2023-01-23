@@ -5,6 +5,7 @@ import { useEffect, useState } from 'react'
 import { resetServerContext } from 'react-beautiful-dnd'
 import { fetchBoardData } from '../../components/game/firebase/fetchBoardData'
 import fetchGameData from '../../components/game/firebase/fetchGameData'
+import getName from '../../components/game/firebase/getName'
 import yourTurn from '../../components/game/firebase/yourTurn'
 import GameBoard from '../../components/game/GameBoard'
 import Points from '../../components/game/Points'
@@ -39,6 +40,16 @@ export const getServerSideProps: GetServerSideProps = async (
 
   const itsYourTurn = yourTurn(gameData?.nextTurn as string, uid)
 
+  // Used to display Points and Usernames
+  const userName = await getName(uid)
+  const opponentID = selectUserID(
+    uid,
+    gameData?.playerOne as string,
+    gameData?.playerTwo as string
+  )
+  const opponentName = await getName(opponentID)
+  const opponentBoardData = await fetchBoardData(gameID, opponentID)
+
   return {
     props: {
       uid: uid,
@@ -46,6 +57,10 @@ export const getServerSideProps: GetServerSideProps = async (
       gameData: gameData,
       initialGameState: initialGameState,
       itsYourTurn: itsYourTurn,
+      opponentName: opponentName,
+      userName: userName,
+      opponentID: opponentID,
+      opponentBoardData: opponentBoardData,
     },
   }
 }
@@ -56,10 +71,24 @@ interface IGameID {
   initialGameState: GameStates
   gameData: Game
   itsYourTurn: boolean
+  opponentName: string
+  opponentID: string
+  userName: string
+  opponentBoardData: BoardData
 }
 
 const GameID = (props: IGameID) => {
-  const { uid, boardData, initialGameState, gameData, itsYourTurn } = props
+  const {
+    uid,
+    boardData,
+    initialGameState,
+    gameData,
+    itsYourTurn,
+    opponentID,
+    opponentName,
+    userName,
+    opponentBoardData,
+  } = props
 
   // https://github.com/atlassian/react-beautiful-dnd/issues/1756#issuecomment-599388505
   resetServerContext()
@@ -98,11 +127,11 @@ const GameID = (props: IGameID) => {
     rowValidWords: boardData.rowValidWords,
     yourTurn: yourTurn,
     setYourTurn: setYourTurn,
-    opponentID: selectUserID(
-      uid,
-      gameData.playerOne as string,
-      gameData.playerTwo as string
-    ),
+    opponentID: opponentID,
+    opponentName: opponentName,
+    userName: userName,
+    userPoints: boardData.totalPoints,
+    opponentPoints: opponentBoardData.totalPoints,
   }
 
   return (

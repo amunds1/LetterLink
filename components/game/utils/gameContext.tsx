@@ -34,6 +34,10 @@ export interface IGameContext {
   yourTurn: boolean
   opponentID: string
   setYourTurn: Dispatch<SetStateAction<boolean>>
+  opponentName: string
+  userName: string
+  opponentPoints: number
+  userPoints: number
 }
 
 export const GameContext = createContext<IGameContext | null>(null)

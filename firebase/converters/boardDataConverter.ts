@@ -25,6 +25,7 @@ const boardDataConverter: FirestoreDataConverter<BoardData> = {
       board: data.board,
       rowValidWords: data.rowValidWords || null,
       columnValidWords: data.columnValidWords || null,
+      totalPoints: data.totalPoints,
     }
   },
 }

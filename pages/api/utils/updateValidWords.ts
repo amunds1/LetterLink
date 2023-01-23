@@ -44,9 +44,14 @@ export const updateValidColumnWords = async (
     const points = validWordsMask.filter((x) => x == 1).length
     updateColumnPoints(boardData, points)
 
+    // Update totalPoints
+    const prevPointScore = tempBoardData.totalPoints
+    const newPointScore = prevPointScore + points
+
     // Update columnValidWords with new updated array for given column
     await updateDoc(generateGameRef(boardData), {
       [`columnValidWords.${boardData.column.positionIndex}`]: validWordsMask,
+      totalPoints: newPointScore,
     })
   }
 }
@@ -76,9 +81,14 @@ export const updateValidRowWords = async (
     const points = validWordsMask.filter((x) => x == 1).length
     updateRowPoints(boardData, points)
 
+    // Update totalPoints
+    const prevPointScore = tempBoardData.totalPoints
+    const newPointScore = prevPointScore + points
+
     // Update rowValidWords with new updated array for given row
     await updateDoc(generateGameRef(boardData), {
       [`rowValidWords.${boardData.row.positionIndex}`]: validWordsMask,
+      totalPoints: newPointScore,
     })
   }
 }
