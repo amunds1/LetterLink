@@ -8,9 +8,13 @@ export interface IGameContext {
     | GameStates.PLACE_OWN
     | GameStates.CHOOSE
     | GameStates.PLACE_OPPONENTS
+    | GameStates.END
   setGameState: Dispatch<
     SetStateAction<
-      GameStates.PLACE_OWN | GameStates.CHOOSE | GameStates.PLACE_OPPONENTS
+      | GameStates.PLACE_OWN
+      | GameStates.CHOOSE
+      | GameStates.PLACE_OPPONENTS
+      | GameStates.END
     >
   >
   gameID: string
@@ -38,6 +42,8 @@ export interface IGameContext {
   userName: string
   opponentPoints: number
   userPoints: number
+  setRoundsLeft: Dispatch<number>
+  roundsLeft: number
 }
 
 export const GameContext = createContext<IGameContext | null>(null)

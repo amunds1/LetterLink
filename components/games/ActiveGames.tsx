@@ -34,7 +34,7 @@ const ActiveGame = ({ game, yourTurn }: IActiveGame) => {
             </Avatar>
           </Group>
           <Group spacing="xl">
-            <Text color="gray.7">Rounds left: 8</Text>
+            <Text color="gray.7">Rounds left: {game.roundsLeft}</Text>
             <Text color="gray.7">
               Boardsize: {game.boardSize}x{game.boardSize}
             </Text>

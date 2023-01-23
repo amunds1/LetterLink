@@ -13,6 +13,7 @@ interface Game {
   selectedLetter: string | null
   gameState: GameStates
   opponentName?: string | ''
+  roundsLeft: number
 }
 
 export default Game

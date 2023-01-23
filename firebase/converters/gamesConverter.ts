@@ -30,6 +30,7 @@ const gamesConverter: FirestoreDataConverter<Game> = {
       nextTurn: data.nextTurn.id,
       selectedLetter: data.selectedLetter,
       gameState: data.gameState,
+      roundsLeft: data.roundsLeft,
     }
   },
 }

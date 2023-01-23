@@ -1,5 +1,7 @@
 import { Dispatch, SetStateAction, useContext } from 'react'
 import { updateGameState } from '../../../pages/api/utils/updateGameState'
+import { updateIsActiveToFalse } from '../../../pages/api/utils/updateIsActiveToFalse'
+import { updateRoundsLeft } from '../../../pages/api/utils/updateRoundsLeft'
 import { updateTurn } from '../../../pages/api/utils/updateTurn'
 import GameStates from '../types/gameStates'
 
@@ -7,7 +9,9 @@ const getNextState = (
   prevState: GameStates,
   gameID: string,
   opponentID: string,
-  setYourTurn: Dispatch<SetStateAction<boolean>>
+  roundsLeft: number,
+  setYourTurn: Dispatch<SetStateAction<boolean>>,
+  setRoundsLeft: Dispatch<number>
 ) => {
   // State change from choosing a letter (CHOOSE) to placing own chosen letter (PLACE_OWN)
   if (prevState === GameStates.CHOOSE) {
@@ -30,6 +34,14 @@ const getNextState = (
     // Set yourTurn param in gameContext to false
     setYourTurn(false)
 
+    // Count down numbers left in Firebase
+    const newRoundsLeft = roundsLeft - 1
+
+    updateRoundsLeft(gameID, newRoundsLeft)
+
+    // Cound down numbersLeft param in gameContex
+    setRoundsLeft(newRoundsLeft)
+
     // Return new state
     return GameStates.PLACE_OPPONENTS
   }
@@ -37,6 +49,12 @@ const getNextState = (
   // State change from cplacing opponents chosen letter (PLACE_OPPONENTS) to choosing a letter (CHOOSE)
   if (prevState === GameStates.PLACE_OPPONENTS) {
     // Update state in Firebase and return new state
+    if (roundsLeft === 1) {
+      updateGameState(gameID, GameStates.END)
+      updateRoundsLeft(gameID, 0)
+      updateIsActiveToFalse(gameID)
+      return GameStates.END
+    }
     updateGameState(gameID, GameStates.CHOOSE)
     return GameStates.CHOOSE
   }

@@ -25,6 +25,7 @@ const addGameToCollection = async (
     collection(db, 'games').withConverter(gamesConverter),
     {
       boardSize: boardSizeAsNumber,
+      roundsLeft: boardSizeAsNumber ** 2 + 1,
       playerOne: userDocRef,
       playerTwo: oponentDocRef,
       isActive: false,

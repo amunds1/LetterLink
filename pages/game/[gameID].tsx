@@ -3,6 +3,7 @@ import { GetServerSideProps, GetServerSidePropsContext } from 'next'
 import Link from 'next/link'
 import { useEffect, useState } from 'react'
 import { resetServerContext } from 'react-beautiful-dnd'
+import { EndedGame } from '../../components/game/EndedGame'
 import { fetchBoardData } from '../../components/game/firebase/fetchBoardData'
 import fetchGameData from '../../components/game/firebase/fetchGameData'
 import getName from '../../components/game/firebase/getName'
@@ -40,6 +41,8 @@ export const getServerSideProps: GetServerSideProps = async (
 
   const itsYourTurn = yourTurn(gameData?.nextTurn as string, uid)
 
+  const roundsIsLeft = gameData?.roundsLeft
+
   // Used to display Points and Usernames
   const userName = await getName(uid)
   const opponentID = selectUserID(
@@ -61,6 +64,7 @@ export const getServerSideProps: GetServerSideProps = async (
       userName: userName,
       opponentID: opponentID,
       opponentBoardData: opponentBoardData,
+      roundsIsLeft: roundsIsLeft,
     },
   }
 }
@@ -75,6 +79,7 @@ interface IGameID {
   opponentID: string
   userName: string
   opponentBoardData: BoardData
+  roundsIsLeft: number
 }
 
 const GameID = (props: IGameID) => {
@@ -88,6 +93,7 @@ const GameID = (props: IGameID) => {
     opponentName,
     userName,
     opponentBoardData,
+    roundsIsLeft,
   } = props
 
   // https://github.com/atlassian/react-beautiful-dnd/issues/1756#issuecomment-599388505
@@ -100,13 +106,18 @@ const GameID = (props: IGameID) => {
     gameData.selectedLetter || null
   )
 
+  const [roundsLeft, setRoundsLeft] = useState<number>(roundsIsLeft)
+
   nextTurnListener(gameData.id as string, uid, setYourTurn, setSelectedLetter)
 
   // Re-render component after value of yourTurn changes
   useEffect(() => {}, [yourTurn])
 
   const [gameState, setGameState] = useState<
-    GameStates.PLACE_OWN | GameStates.CHOOSE | GameStates.PLACE_OPPONENTS
+    | GameStates.PLACE_OWN
+    | GameStates.CHOOSE
+    | GameStates.PLACE_OPPONENTS
+    | GameStates.END
   >(initialGameState)
 
   // Populate GameContext
@@ -132,6 +143,8 @@ const GameID = (props: IGameID) => {
     userName: userName,
     userPoints: boardData.totalPoints,
     opponentPoints: opponentBoardData.totalPoints,
+    roundsLeft: roundsLeft,
+    setRoundsLeft: setRoundsLeft,
   }
 
   return (
@@ -143,6 +156,7 @@ const GameID = (props: IGameID) => {
         <Points />
         <GameBoard />
         {gameState === GameStates.CHOOSE && <SelectLetter />}
+        {gameState === GameStates.END && <EndedGame />}
       </GameContext.Provider>
 
       <Link href="/games">

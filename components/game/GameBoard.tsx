@@ -127,7 +127,9 @@ const GameBoard = () => {
           gameContext.gameState,
           gameContext.gameID,
           gameContext.opponentID,
-          gameContext.setYourTurn
+          gameContext.roundsLeft,
+          gameContext.setYourTurn,
+          gameContext.setRoundsLeft
         ) as GameStates
       )
     } else {
