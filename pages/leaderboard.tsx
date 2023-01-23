@@ -4,7 +4,7 @@ import Podium from '../components/leaderboard/Podium'
 
 const Leaderboard = () => {
   return (
-    <Stack align={'center'}>
+    <Stack align="center">
       <Podium />
       <LeaderboardTable />
     </Stack>

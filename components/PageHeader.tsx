@@ -1,19 +1,48 @@
 import {
+  ActionIcon,
+  Avatar,
   Burger,
+  Button,
   Container,
   createStyles,
+  Divider,
   Group,
   Header,
+  Paper,
+  Popover,
   Text,
+  Transition,
 } from '@mantine/core'
 import { useDisclosure } from '@mantine/hooks'
+import { getAuth } from 'firebase/auth'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
-import { useState } from 'react'
+import { Dispatch, SetStateAction, useEffect, useState } from 'react'
 import PageLinks from '../constants/PageLinks'
-import ColorSchemeToggle from './ColorSchemeToggle'
+import firebase from '../firebase/clientApp'
 
 const useStyles = createStyles((theme) => ({
+  root: {
+    position: 'relative',
+    zIndex: 1,
+  },
+
+  dropdown: {
+    position: 'absolute',
+    top: 60,
+    left: 0,
+    right: 0,
+    zIndex: 0,
+    borderTopRightRadius: 0,
+    borderTopLeftRadius: 0,
+    borderTopWidth: 0,
+    overflow: 'hidden',
+
+    [theme.fn.largerThan('sm')]: {
+      display: 'none',
+    },
+  },
+
   header: {
     display: 'flex',
     justifyContent: 'space-between',
@@ -22,13 +51,13 @@ const useStyles = createStyles((theme) => ({
   },
 
   links: {
-    [theme.fn.smallerThan('xs')]: {
+    [theme.fn.smallerThan('sm')]: {
       display: 'none',
     },
   },
 
   burger: {
-    [theme.fn.largerThan('xs')]: {
+    [theme.fn.largerThan('sm')]: {
       display: 'none',
     },
   },
@@ -52,6 +81,11 @@ const useStyles = createStyles((theme) => ({
           ? theme.colors.dark[6]
           : theme.colors.gray[0],
     },
+
+    [theme.fn.smallerThan('sm')]: {
+      borderRadius: 0,
+      padding: theme.spacing.md,
+    },
   },
 
   linkActive: {
@@ -66,92 +100,210 @@ const useStyles = createStyles((theme) => ({
   },
 }))
 
+function onAuthStateChange(callback: Dispatch<SetStateAction<boolean>>) {
+  return getAuth(firebase).onAuthStateChanged((user) => {
+    if (user) {
+      callback(true)
+    } else {
+      callback(false)
+    }
+  })
+}
+
 export function PageHeader() {
+  // Toggle Burger menu
   const [opened, { toggle }] = useDisclosure(false)
-  const { classes, cx } = useStyles()
+
+  const { classes } = useStyles()
 
   const router = useRouter()
+
+  // Change style of PageHeader depending on wether user is authenticated or not
+  // https://johnwcassidy.medium.com/firebase-authentication-hooks-and-context-d0e47395f402
+  const [authenticated, setAuthenticated] = useState(false)
+  useEffect(() => {
+    const unsubscribe = onAuthStateChange(setAuthenticated)
+    return () => {
+      unsubscribe()
+    }
+  }, [])
+
+  // Renders Link-components for routes which does not require authentication
+  const baseLinks = [PageLinks.LEADERBOARD].map((link) => (
+    <Link
+      href={link.link}
+      key={link.label}
+      className={`${classes.link} ${
+        router.pathname === link.link && classes.linkActive
+      }`}
+      onClick={(event) => {
+        toggle()
+      }}
+    >
+      {link.label}
+    </Link>
+  ))
+
+  // Renders Link-components for routes which require authentication
+  const authenticatedLinks = [PageLinks.GAMES, PageLinks.ACHIEVEMENTS].map(
+    (link) => (
+      <Link
+        href={link.link}
+        key={link.label}
+        className={`${classes.link} ${
+          router.pathname === link.link && classes.linkActive
+        }`}
+        onClick={(event) => {
+          toggle()
+        }}
+      >
+        {link.label}
+      </Link>
+    )
+  )
 
   return (
     <Header height={60} mb={120}>
       <Container className={classes.header}>
         <Link
-          href={'/'}
+          href="/"
           className={classes.link}
           style={{ color: 'inherit', textDecoration: 'none' }}
         >
-          <Text>5x5 game</Text>
+          <Text>LetterLink</Text>
         </Link>
+
         <Group spacing={5} className={classes.links}>
-          {/* GAMES LINK */}
-          <Link
-            href={PageLinks.GAMES.link}
-            key={PageLinks.GAMES.label}
-            className={`${classes.link} ${
-              router.pathname === '/games' && classes.linkActive
-            }`}
-          >
-            {PageLinks.GAMES.label}
-          </Link>
-          {/* PROFILE LINK */}
-          <Link
-            href={PageLinks.PROFILE.link}
-            key={PageLinks.PROFILE.label}
-            className={`${classes.link} ${
-              router.pathname === '/profile' && classes.linkActive
-            }`}
-          >
-            {PageLinks.PROFILE.label}
-          </Link>
-          {/* ACHIEVEMENTS LINK */}
-          <Link
-            href={PageLinks.ACHIEVEMENTS.link}
-            key={PageLinks.ACHIEVEMENTS.label}
-            className={`${classes.link} ${
-              router.pathname === '/achievements' && classes.linkActive
-            }`}
-          >
-            {PageLinks.ACHIEVEMENTS.label}
-          </Link>
-          {/* LEADERBOARD LINK */}
-          <Link
-            href={PageLinks.LEADERBOARD.link}
-            key={PageLinks.LEADERBOARD.label}
-            className={`${classes.link} ${
-              router.pathname === '/leaderboard' && classes.linkActive
-            }`}
-          >
-            {PageLinks.LEADERBOARD.label}
-          </Link>
-          {/* SIGN IN LINK */}
-          <Link
-            href={PageLinks.SIGNIN.link}
-            key={PageLinks.SIGNIN.label}
-            className={`${classes.link} ${
-              router.pathname === '/signin' && classes.linkActive
-            }`}
-          >
-            {PageLinks.SIGNIN.label}
-          </Link>
-          {/* SIGN OUT LINK */}
-          <Link
-            href={PageLinks.SIGNOUT.link}
-            key={PageLinks.SIGNOUT.label}
-            className={`${classes.link} ${
-              router.pathname === '/signout' && classes.linkActive
-            }`}
-          >
-            {PageLinks.SIGNOUT.label}
-          </Link>
-          <ColorSchemeToggle />
+          {baseLinks}
+
+          {!authenticated && (
+            <>
+              {/* SIGN IN LINK */}
+              <Link href={PageLinks.SIGNIN.link} key={PageLinks.SIGNIN.label}>
+                <Button variant="outline" color="green">
+                  {PageLinks.SIGNIN.label}
+                </Button>
+              </Link>
+            </>
+          )}
+
+          {authenticated && (
+            <>
+              {authenticatedLinks}
+
+              {/* AVATAR BUTTON */}
+              <Popover width={200} position="bottom" withArrow shadow="md">
+                <Popover.Target>
+                  <ActionIcon>
+                    <Avatar color="cyan" radius="xl">
+                      AA
+                    </Avatar>
+                  </ActionIcon>
+                </Popover.Target>
+                <Popover.Dropdown>
+                  {/* PROFILE LINK */}
+                  <Link
+                    href={PageLinks.PROFILE.link}
+                    key={PageLinks.PROFILE.label}
+                  >
+                    <Button variant="white" style={{ width: '100%' }}>
+                      Profile
+                    </Button>
+                  </Link>
+
+                  <Divider my="sm" />
+
+                  {/* SIGN OUT LINK */}
+                  <Link
+                    href={PageLinks.SIGNOUT.link}
+                    key={PageLinks.SIGNOUT.label}
+                  >
+                    <Button
+                      variant="white"
+                      color="red"
+                      style={{ width: '100%' }}
+                    >
+                      Sign out
+                    </Button>
+                  </Link>
+                </Popover.Dropdown>
+              </Popover>
+            </>
+          )}
+
+          {/* <ColorSchemeToggle /> */}
         </Group>
 
-        <Burger
-          opened={opened}
-          onClick={toggle}
-          className={classes.burger}
-          size="sm"
-        />
+        <>
+          <Burger
+            opened={opened}
+            onClick={toggle}
+            className={classes.burger}
+            size="sm"
+          />
+          <Transition transition="pop-top-right" duration={50} mounted={opened}>
+            {(styles) => (
+              <Paper className={classes.dropdown} withBorder style={styles}>
+                {authenticated && authenticatedLinks}
+
+                {baseLinks}
+
+                <Link
+                  href={PageLinks.PROFILE.link}
+                  key={PageLinks.PROFILE.label}
+                  className={`${classes.link} ${
+                    router.pathname === '/profile' && classes.linkActive
+                  }`}
+                  onClick={() => {
+                    toggle()
+                  }}
+                >
+                  {PageLinks.PROFILE.label}
+                </Link>
+
+                <Divider my="sm" style={{ margin: 0 }} />
+
+                {/* SIGN OUT LINK */}
+                {authenticated && (
+                  <Link
+                    href={PageLinks.SIGNOUT.link}
+                    key={PageLinks.SIGNOUT.label}
+                    className={`${classes.link} ${
+                      router.pathname === '/profile' && classes.linkActive
+                    }`}
+                    style={{
+                      color: 'red',
+                    }}
+                    onClick={() => setAuthenticated(false)}
+                  >
+                    {PageLinks.SIGNOUT.label}
+                  </Link>
+                )}
+
+                {!authenticated && (
+                  <>
+                    {/* SIGN IN LINK */}
+                    <Link
+                      href={PageLinks.SIGNIN.link}
+                      key={PageLinks.SIGNIN.label}
+                      style={{
+                        color: 'green',
+                      }}
+                      className={`${classes.link} ${
+                        router.pathname === '/signin' && classes.linkActive
+                      }`}
+                      onClick={() => {
+                        toggle()
+                      }}
+                    >
+                      {PageLinks.SIGNIN.label}
+                    </Link>
+                  </>
+                )}
+              </Paper>
+            )}
+          </Transition>
+        </>
       </Container>
     </Header>
   )

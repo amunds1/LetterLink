@@ -44,14 +44,14 @@ const Profile = (props: IProfile) => {
   return (
     <Stack style={{ height: '100%' }} align="center" justify="center">
       <Card shadow="sm" p="lg" radius="md" withBorder>
-        <Group position="apart" pb={'lg'}>
+        <Group position="apart" pb="lg">
           <Group>
             <Avatar color="cyan" radius="xl">
               AA
             </Avatar>
             <Text size={30}>{userData.name}</Text>
           </Group>
-          <Link href={'/settings'}>
+          <Link href="/settings">
             <Button variant="outline" size="xs">
               Edit profile
             </Button>

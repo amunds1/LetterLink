@@ -13,7 +13,19 @@ export default class _Document extends Document {
   render() {
     return (
       <Html>
-        <Head />
+        <Head>
+          <link rel="manifest" href="/manifest.json" />
+          {/* Global Site Tag (gtag.js) - Google Analytics */}
+          <script
+            dangerouslySetInnerHTML={{
+              __html: `
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+          `,
+            }}
+          />
+        </Head>
         <body>
           <Main />
           <NextScript />
