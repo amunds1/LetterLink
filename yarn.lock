@@ -1728,22 +1728,22 @@
     prop-types "^15.7.2"
     react-is "^16.8.0 || ^17.0.0"
 
-"@next/env@13.1.3":
-  version "13.1.3"
-  resolved "https://registry.npmjs.org/@next/env/-/env-13.1.3.tgz"
-  integrity sha512-ye0yvGmlzQQJnzNC7tC/ZhgRMd0s54msgrDOft1SjEG1Fbb+RBxGsalPqG3tUGuchA25z3npAtkFoAP8d2wPnw==
+"@next/env@13.1.5":
+  version "13.1.5"
+  resolved "https://registry.npmjs.org/@next/env/-/env-13.1.5.tgz"
+  integrity sha512-0Ry4NhJy6qLbXhvxPRUQ1H6RzgtryGdUto7hfgAK0Iw/bScgeVjwLZdfhm2iT7qsOS32apo9cWzLCxjc6iGPsA==
 
-"@next/eslint-plugin-next@13.1.3":
-  version "13.1.3"
-  resolved "https://registry.npmjs.org/@next/eslint-plugin-next/-/eslint-plugin-next-13.1.3.tgz"
-  integrity sha512-9IF2euUtOdXoQMHB9x1Afsw19si71oIj8Oqp40I7vcoG758LMZJZePG8sjhGh1dMJv+JtkIjiLu+ENVMGKAMJQ==
+"@next/eslint-plugin-next@13.1.5":
+  version "13.1.5"
+  resolved "https://registry.npmjs.org/@next/eslint-plugin-next/-/eslint-plugin-next-13.1.5.tgz"
+  integrity sha512-3kvLTX35bOWOCKU8KY74Ygczc55Qk/kB2TQy0tH7Rti6hzZ6Aij7WQ8zHdIVjmnlD0n/zXWXrIf5y56RKcLQkQ==
   dependencies:
     glob "7.1.7"
 
-"@next/swc-darwin-x64@13.1.3":
-  version "13.1.3"
-  resolved "https://registry.npmjs.org/@next/swc-darwin-x64/-/swc-darwin-x64-13.1.3.tgz"
-  integrity sha512-SCXf0JA3tR9FcsFA53a3LWDaxoIWFoLSbN3m88cYQYQMluObxwo6SBeUD9E3F4pM0bXEeIGOh8Y6u8w0GmmGoQ==
+"@next/swc-darwin-x64@13.1.5":
+  version "13.1.5"
+  resolved "https://registry.npmjs.org/@next/swc-darwin-x64/-/swc-darwin-x64-13.1.5.tgz"
+  integrity sha512-6mPX0GNRg8NzjV70at8I8pD9YBnPHDpxJCoMuIqysdTjtQhd09Xk6GUhquNhp1kEJzzVk7OW5l2ch4XIJjtY3A==
 
 "@nodelib/fs.scandir@2.1.5":
   version "2.1.5"
@@ -3193,12 +3193,12 @@ escodegen@^1.13.0:
   optionalDependencies:
     source-map "~0.6.1"
 
-eslint-config-next@^13.1.3:
-  version "13.1.3"
-  resolved "https://registry.npmjs.org/eslint-config-next/-/eslint-config-next-13.1.3.tgz"
-  integrity sha512-KaQA3D/rHBlGg3wGMSLl7lg3O0RNibeaS6SY85zLmQFIgk1OLXs6JOSRV8Y2euVvb90oLyR87+kP151gNTvKNw==
+eslint-config-next@^13.1.5:
+  version "13.1.5"
+  resolved "https://registry.npmjs.org/eslint-config-next/-/eslint-config-next-13.1.5.tgz"
+  integrity sha512-7FqkjkvGCQfvYUiPTFRiRYPR1uI6Ew+4f4mVp16lLSWcaChtWoZxQCZHM5n0yxzKKVmuEg1aM4uvDQfSXSjTww==
   dependencies:
-    "@next/eslint-plugin-next" "13.1.3"
+    "@next/eslint-plugin-next" "13.1.5"
     "@rushstack/eslint-patch" "^1.1.3"
     "@typescript-eslint/parser" "^5.42.0"
     eslint-import-resolver-node "^0.3.6"
@@ -4852,30 +4852,30 @@ next-pwa@^5.6.0:
     workbox-webpack-plugin "^6.5.4"
     workbox-window "^6.5.4"
 
-next@*, next@^13.1.3, next@>=9.0.0:
-  version "13.1.3"
-  resolved "https://registry.npmjs.org/next/-/next-13.1.3.tgz"
-  integrity sha512-ig7m7Po/F+Wp0xl+9RKYZq+PYfgVmONH6hBPVT2+jrdUmZkrqsN5ioSe4oQbCAb9tMtVr07agVdK2HFjD15Yug==
+next@*, next@^13.1.5, next@>=9.0.0:
+  version "13.1.5"
+  resolved "https://registry.npmjs.org/next/-/next-13.1.5.tgz"
+  integrity sha512-rmpYZFCxxWAi2nJCT9sSqMLGC3cu+Pf689hx9clcyP0KbVIhh/7Dus5QcKrVd/PrAd6AjsuogSRR1mCP7BoYRw==
   dependencies:
-    "@next/env" "13.1.3"
+    "@next/env" "13.1.5"
     "@swc/helpers" "0.4.14"
     caniuse-lite "^1.0.30001406"
     postcss "8.4.14"
     styled-jsx "5.1.1"
   optionalDependencies:
-    "@next/swc-android-arm-eabi" "13.1.3"
-    "@next/swc-android-arm64" "13.1.3"
-    "@next/swc-darwin-arm64" "13.1.3"
-    "@next/swc-darwin-x64" "13.1.3"
-    "@next/swc-freebsd-x64" "13.1.3"
-    "@next/swc-linux-arm-gnueabihf" "13.1.3"
-    "@next/swc-linux-arm64-gnu" "13.1.3"
-    "@next/swc-linux-arm64-musl" "13.1.3"
-    "@next/swc-linux-x64-gnu" "13.1.3"
-    "@next/swc-linux-x64-musl" "13.1.3"
-    "@next/swc-win32-arm64-msvc" "13.1.3"
-    "@next/swc-win32-ia32-msvc" "13.1.3"
-    "@next/swc-win32-x64-msvc" "13.1.3"
+    "@next/swc-android-arm-eabi" "13.1.5"
+    "@next/swc-android-arm64" "13.1.5"
+    "@next/swc-darwin-arm64" "13.1.5"
+    "@next/swc-darwin-x64" "13.1.5"
+    "@next/swc-freebsd-x64" "13.1.5"
+    "@next/swc-linux-arm-gnueabihf" "13.1.5"
+    "@next/swc-linux-arm64-gnu" "13.1.5"
+    "@next/swc-linux-arm64-musl" "13.1.5"
+    "@next/swc-linux-x64-gnu" "13.1.5"
+    "@next/swc-linux-x64-musl" "13.1.5"
+    "@next/swc-win32-arm64-msvc" "13.1.5"
+    "@next/swc-win32-ia32-msvc" "13.1.5"
+    "@next/swc-win32-x64-msvc" "13.1.5"
 
 node-fetch@^2.6.1, node-fetch@^2.6.7, node-fetch@2.6.7:
   version "2.6.7"
