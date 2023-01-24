@@ -26,6 +26,7 @@ const DraggableLetterBox = (props: { letter: String; index: number }) => {
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
+            minWidth: '50px',
             border: snapshot.isDragging
               ? '2px solid black'
               : props.index === 1

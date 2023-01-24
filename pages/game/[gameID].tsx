@@ -1,4 +1,4 @@
-import { Button, Center } from '@mantine/core'
+import { Button, Center, Container } from '@mantine/core'
 import { GetServerSideProps, GetServerSidePropsContext } from 'next'
 import Link from 'next/link'
 import { useEffect, useState } from 'react'
@@ -153,7 +153,7 @@ const GameID = (props: IGameID) => {
   gameDataListener(GameContextValues)
 
   return (
-    <>
+    <Container>
       {/* Display who turn it is */}
       {yourTurn ? <YourTurnStatusMessage /> : <OpponentTurnStatusMessage />}
 
@@ -169,7 +169,7 @@ const GameID = (props: IGameID) => {
           <Button>Back to games</Button>
         </Center>
       </Link>
-    </>
+    </Container>
   )
 }
 

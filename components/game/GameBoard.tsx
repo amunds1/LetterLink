@@ -226,7 +226,7 @@ const GameBoard = () => {
                           fontSize: '30px',
                         }}
                       >
-                        {/* Letterbox that is ready to be dragged to the board */}
+                        {/* DraggableLetterBox that is not placed at the board */}
                         {gameContext.selectedLetter &&
                           gameContext.selectedLetter.length > 0 &&
                           !isLetterPlaced && (
