@@ -5,12 +5,12 @@ import { Draggable } from 'react-beautiful-dnd'
 const useStyles = createStyles(() => ({
   cell: {
     textAlign: 'center',
-    width: 'fit-content',
-    padding: '10px 20px 10px 20px',
+    width: '100%',
+    aspectRatio: '1',
   },
 }))
 
-const LetterBox = (props: { letter: String; index: number }) => {
+const DraggableLetterBox = (props: { letter: String; index: number }) => {
   const { classes } = useStyles()
 
   return (
@@ -23,15 +23,23 @@ const LetterBox = (props: { letter: String; index: number }) => {
           className={classes.cell}
           style={{
             backgroundColor: 'white',
-            border: snapshot.isDragging ? '2px solid black' : '2px solid grey',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            minWidth: '50px',
+            border: snapshot.isDragging
+              ? '2px solid black'
+              : props.index === 1
+              ? '3px solid green'
+              : '2px solid grey',
             ...provided.draggableProps.style,
           }}
         >
-          {props.letter}
+          <div>{props.letter}</div>
         </Box>
       )}
     </Draggable>
   )
 }
 
-export default LetterBox
+export default DraggableLetterBox
