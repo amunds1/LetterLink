@@ -24,7 +24,7 @@ import selectUserID from '../../components/games/utils/selectUserID'
 import fetchUID from '../../firebase/fetchUID'
 import BoardData from '../../types/BoardData'
 import Game from '../../types/Game'
-import nextTurnListener from '../api/utils/nextTurnListener'
+import gameDataListener from '../api/utils/gameDataListener'
 
 export const getServerSideProps: GetServerSideProps = async (
   ctx: GetServerSidePropsContext
@@ -51,7 +51,6 @@ export const getServerSideProps: GetServerSideProps = async (
     gameData?.playerTwo as string
   )
   const opponentName = await getName(opponentID)
-  const opponentBoardData = await fetchBoardData(gameID, opponentID)
 
   return {
     props: {
@@ -63,7 +62,6 @@ export const getServerSideProps: GetServerSideProps = async (
       opponentName: opponentName,
       userName: userName,
       opponentID: opponentID,
-      opponentBoardData: opponentBoardData,
       roundsIsLeft: roundsIsLeft,
     },
   }
@@ -78,7 +76,6 @@ interface IGameID {
   opponentName: string
   opponentID: string
   userName: string
-  opponentBoardData: BoardData
   roundsIsLeft: number
 }
 
@@ -92,7 +89,6 @@ const GameID = (props: IGameID) => {
     opponentID,
     opponentName,
     userName,
-    opponentBoardData,
     roundsIsLeft,
   } = props
 
@@ -106,9 +102,14 @@ const GameID = (props: IGameID) => {
     gameData.selectedLetter || null
   )
 
-  const [roundsLeft, setRoundsLeft] = useState<number>(roundsIsLeft)
+  console.log(gameData)
 
-  nextTurnListener(gameData.id as string, uid, setYourTurn, setSelectedLetter)
+  const [userPoints, setUserPoints] = useState(gameData.totalPoints[uid])
+  const [opponentPoints, setOpponentPoints] = useState(
+    gameData.totalPoints[opponentID]
+  )
+
+  const [roundsLeft, setRoundsLeft] = useState<number>(roundsIsLeft)
 
   // Re-render component after value of yourTurn changes
   useEffect(() => {}, [yourTurn])
@@ -141,11 +142,15 @@ const GameID = (props: IGameID) => {
     opponentID: opponentID,
     opponentName: opponentName,
     userName: userName,
-    userPoints: boardData.totalPoints,
-    opponentPoints: opponentBoardData.totalPoints,
+    userPoints: userPoints,
+    setUserPoints: setUserPoints,
+    opponentPoints: opponentPoints,
+    setOpponentPoints: setOpponentPoints,
     roundsLeft: roundsLeft,
     setRoundsLeft: setRoundsLeft,
   }
+
+  gameDataListener(GameContextValues)
 
   return (
     <>

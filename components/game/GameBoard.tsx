@@ -17,7 +17,7 @@ import {
   findAffectedRow,
 } from './utils/findAffectedRowOrColumn'
 import { GameContext } from './utils/gameContext'
-import getNextState from './utils/getNextState'
+import updateGameState from './utils/updateGameState'
 import submitMove from './utils/submitMove'
 
 const useStyles = createStyles(() => ({
@@ -117,21 +117,12 @@ const GameBoard = () => {
           board: tempBoard,
           row: affectedRow,
           column: affectedColumn,
+          userPoints: gameContext.userPoints,
         })
       setBoard(tempBoard)
       setTempBoard([''])
 
-      // Set gameState in GameContext using getNextState
-      gameContext.setGameState(
-        getNextState(
-          gameContext.gameState,
-          gameContext.gameID,
-          gameContext.opponentID,
-          gameContext.roundsLeft,
-          gameContext.setYourTurn,
-          gameContext.setRoundsLeft
-        ) as GameStates
-      )
+      updateGameState(gameContext)
     } else {
       // TODO: add as feeback messeage
       console.log('You have to place the letter')

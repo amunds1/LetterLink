@@ -12,7 +12,6 @@ interface BoardData {
   rowValidWords: {
     [key: number]: number[]
   }
-  totalPoints: number
 }
 
 export default BoardData

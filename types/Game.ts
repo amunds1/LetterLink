@@ -14,6 +14,9 @@ interface Game {
   gameState: GameStates
   opponentName?: string | ''
   roundsLeft: number
+  totalPoints: {
+    [key: string]: number
+  }
 }
 
 export default Game

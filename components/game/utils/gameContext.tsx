@@ -41,7 +41,9 @@ export interface IGameContext {
   opponentName: string
   userName: string
   opponentPoints: number
+  setOpponentPoints: Dispatch<SetStateAction<number>>
   userPoints: number
+  setUserPoints: Dispatch<SetStateAction<number>>
   setRoundsLeft: Dispatch<number>
   roundsLeft: number
 }

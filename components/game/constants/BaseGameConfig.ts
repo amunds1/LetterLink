@@ -2,7 +2,6 @@ interface IBaseGameConfig {
   board: string[]
   rowPoints: {}
   columnPoints: {}
-  totalPoints: number
   columnValidWords: {
     [key: number]: number[]
   }
@@ -24,7 +23,6 @@ const generateGameConfig = (boardSize: number): IBaseGameConfig => {
     board: Array(boardSize * boardSize).fill(''),
     rowPoints: {},
     columnPoints: {},
-    totalPoints: 0,
     columnValidWords: tempColumnValidWords,
     rowValidWords: tempRowValidWords,
   }

@@ -1,7 +1,7 @@
 import { Button, Select, Center } from '@mantine/core'
+import { updateDoc, doc } from 'firebase/firestore'
 import { useContext, useState } from 'react'
-import { updateGameState } from '../../pages/api/utils/updateGameState'
-import updateSelectedLetter from '../../pages/api/utils/updateSelectedLetter'
+import { db } from '../../firebase/clientApp'
 import GameStates from './types/gameStates'
 import { GameContext } from './utils/gameContext'
 
@@ -38,15 +38,12 @@ const SelectLetter = () => {
               color="green"
               style={{ margin: '10px' }}
               disabled={!selectedLetter}
-              onClick={() => {
-                // Set game state to PLACE_OWN
-                gameContext.setGameState(GameStates.PLACE_OWN)
-
-                // Update gameState param in Firebase
-                updateGameState(gameContext.gameID, GameStates.PLACE_OWN)
-
-                // Update selectedLetter param in Firebase
-                updateSelectedLetter(gameContext.gameID, selectedLetter)
+              onClick={async () => {
+                // Set new gameState and selectedLetter in game document
+                await updateDoc(doc(db, 'games', gameContext.gameID), {
+                  gameState: GameStates.PLACE_OWN,
+                  selectedLetter: selectedLetter,
+                })
               }}
             >
               Choose letter

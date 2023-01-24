@@ -1,5 +1,6 @@
 import { Card } from '@mantine/core'
 import Game from '../../types/Game'
+import GameProposal from './GameProposal'
 import GameProposalCompact from './GameProposalCompact'
 
 interface IProposedGames {

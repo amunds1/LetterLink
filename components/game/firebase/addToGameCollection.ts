@@ -34,6 +34,10 @@ const addGameToCollection = async (
       nextTurn: oponentDocRef,
       selectedLetter: null,
       gameState: GameStates.CHOOSE,
+      totalPoints: {
+        [`${userDocID}`]: 0,
+        [`${oponentDocID}`]: 0,
+      },
     }
   )
 
