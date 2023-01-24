@@ -4,6 +4,7 @@ type CheckBoardRequestData = {
   board: string[]
   row: AffectedRowOrColumn
   column: AffectedRowOrColumn
+  userPoints: number
 }
 
 export type AffectedRowOrColumn = {

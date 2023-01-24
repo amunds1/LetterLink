@@ -7,6 +7,7 @@ const submitMove = async ({
   board,
   row,
   column,
+  userPoints,
 }: CheckBoardRequestData) => {
   const boardData: CheckBoardRequestData = {
     gameID: gameID,
@@ -22,6 +23,7 @@ const submitMove = async ({
       positionIndex: column.positionIndex,
       differentIndex: column.differentIndex,
     },
+    userPoints: userPoints,
   }
 
   await validateBoard(boardData)

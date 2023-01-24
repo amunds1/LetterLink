@@ -1,10 +1,12 @@
-import { Button } from '@mantine/core'
+import { Button, Center, Container } from '@mantine/core'
 import { GetServerSideProps, GetServerSidePropsContext } from 'next'
 import Link from 'next/link'
 import { useEffect, useState } from 'react'
 import { resetServerContext } from 'react-beautiful-dnd'
+import { EndedGame } from '../../components/game/EndedGame'
 import { fetchBoardData } from '../../components/game/firebase/fetchBoardData'
 import fetchGameData from '../../components/game/firebase/fetchGameData'
+import getName from '../../components/game/firebase/getName'
 import yourTurn from '../../components/game/firebase/yourTurn'
 import GameBoard from '../../components/game/GameBoard'
 import Points from '../../components/game/Points'
@@ -22,7 +24,7 @@ import selectUserID from '../../components/games/utils/selectUserID'
 import fetchUID from '../../firebase/fetchUID'
 import BoardData from '../../types/BoardData'
 import Game from '../../types/Game'
-import nextTurnListener from '../api/utils/nextTurnListener'
+import gameDataListener from '../api/utils/gameDataListener'
 
 export const getServerSideProps: GetServerSideProps = async (
   ctx: GetServerSidePropsContext
@@ -39,6 +41,17 @@ export const getServerSideProps: GetServerSideProps = async (
 
   const itsYourTurn = yourTurn(gameData?.nextTurn as string, uid)
 
+  const roundsIsLeft = gameData?.roundsLeft
+
+  // Used to display Points and Usernames
+  const userName = await getName(uid)
+  const opponentID = selectUserID(
+    uid,
+    gameData?.playerOne as string,
+    gameData?.playerTwo as string
+  )
+  const opponentName = await getName(opponentID)
+
   return {
     props: {
       uid: uid,
@@ -46,6 +59,10 @@ export const getServerSideProps: GetServerSideProps = async (
       gameData: gameData,
       initialGameState: initialGameState,
       itsYourTurn: itsYourTurn,
+      opponentName: opponentName,
+      userName: userName,
+      opponentID: opponentID,
+      roundsIsLeft: roundsIsLeft,
     },
   }
 }
@@ -56,10 +73,24 @@ interface IGameID {
   initialGameState: GameStates
   gameData: Game
   itsYourTurn: boolean
+  opponentName: string
+  opponentID: string
+  userName: string
+  roundsIsLeft: number
 }
 
 const GameID = (props: IGameID) => {
-  const { uid, boardData, initialGameState, gameData, itsYourTurn } = props
+  const {
+    uid,
+    boardData,
+    initialGameState,
+    gameData,
+    itsYourTurn,
+    opponentID,
+    opponentName,
+    userName,
+    roundsIsLeft,
+  } = props
 
   // https://github.com/atlassian/react-beautiful-dnd/issues/1756#issuecomment-599388505
   resetServerContext()
@@ -71,13 +102,23 @@ const GameID = (props: IGameID) => {
     gameData.selectedLetter || null
   )
 
-  nextTurnListener(gameData.id as string, uid, setYourTurn, setSelectedLetter)
+  console.log(gameData)
+
+  const [userPoints, setUserPoints] = useState(gameData.totalPoints[uid])
+  const [opponentPoints, setOpponentPoints] = useState(
+    gameData.totalPoints[opponentID]
+  )
+
+  const [roundsLeft, setRoundsLeft] = useState<number>(roundsIsLeft)
 
   // Re-render component after value of yourTurn changes
   useEffect(() => {}, [yourTurn])
 
   const [gameState, setGameState] = useState<
-    GameStates.PLACE_OWN | GameStates.CHOOSE | GameStates.PLACE_OPPONENTS
+    | GameStates.PLACE_OWN
+    | GameStates.CHOOSE
+    | GameStates.PLACE_OPPONENTS
+    | GameStates.END
   >(initialGameState)
 
   // Populate GameContext
@@ -98,15 +139,21 @@ const GameID = (props: IGameID) => {
     rowValidWords: boardData.rowValidWords,
     yourTurn: yourTurn,
     setYourTurn: setYourTurn,
-    opponentID: selectUserID(
-      uid,
-      gameData.playerOne as string,
-      gameData.playerTwo as string
-    ),
+    opponentID: opponentID,
+    opponentName: opponentName,
+    userName: userName,
+    userPoints: userPoints,
+    setUserPoints: setUserPoints,
+    opponentPoints: opponentPoints,
+    setOpponentPoints: setOpponentPoints,
+    roundsLeft: roundsLeft,
+    setRoundsLeft: setRoundsLeft,
   }
 
+  gameDataListener(GameContextValues)
+
   return (
-    <>
+    <Container>
       {/* Display who turn it is */}
       {yourTurn ? <YourTurnStatusMessage /> : <OpponentTurnStatusMessage />}
 
@@ -114,12 +161,15 @@ const GameID = (props: IGameID) => {
         <Points />
         <GameBoard />
         {gameState === GameStates.CHOOSE && <SelectLetter />}
+        {gameState === GameStates.END && <EndedGame />}
       </GameContext.Provider>
 
       <Link href="/games">
-        <Button>Back to games</Button>
+        <Center>
+          <Button>Back to games</Button>
+        </Center>
       </Link>
-    </>
+    </Container>
   )
 }
 

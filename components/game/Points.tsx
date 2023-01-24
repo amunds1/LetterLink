@@ -1,29 +1,63 @@
-import { useEffect, useState, useContext } from 'react'
+import { useContext } from 'react'
 import { GameContext } from './utils/gameContext'
+import { Box, Center, Avatar, Text, createStyles } from '@mantine/core'
+
+const useStyles = createStyles(() => ({
+  playerBox: {
+    padding: '0 3% 0 3%',
+  },
+  seperatorBox: {
+    padding: '0 6% 0 6%',
+  },
+  pointsText: {
+    fontSize: '30px',
+    fontWeight: 'bold',
+  },
+}))
 
 const Points = () => {
-  const [points, setPoints] = useState<number>(0)
+  const { classes } = useStyles()
 
   const gameContext = useContext(GameContext)
 
-  useEffect(() => {
-    let sumPoints = 0
-    if (gameContext) {
-      for (const [key, value] of Object.entries(gameContext.columnPoints)) {
-        sumPoints += value
-      }
-      for (const [key, value] of Object.entries(gameContext.rowPoints)) {
-        sumPoints += value
-      }
-    }
-
-    setPoints(sumPoints)
-  }, [gameContext])
-
   return (
-    <div>
-      <p>Your points: {points}</p>
-    </div>
+    <Box
+      sx={(theme) => ({
+        textAlign: 'center',
+        padding: theme.spacing.lg,
+      })}
+    >
+      <Center>
+        {/* User points */}
+        <Box className={classes.playerBox}>
+          <Center>
+            <Avatar variant="filled" color="teal" radius="xl"></Avatar>
+          </Center>
+          <Center>
+            <Text size="md">{gameContext?.userName}</Text>
+          </Center>
+        </Box>
+        <Text className={classes.pointsText}>{gameContext?.userPoints}</Text>
+
+        {/* Seperator*/}
+        <Box className={classes.seperatorBox}>
+          <Text size="xl">vs</Text>
+        </Box>
+
+        {/* Opponents points */}
+        <Text className={classes.pointsText}>
+          {gameContext?.opponentPoints}
+        </Text>
+        <Box className={classes.playerBox}>
+          <Center>
+            <Avatar variant="filled" color="indigo" radius="xl"></Avatar>
+          </Center>
+          <Center>
+            <Text size="md">{gameContext?.opponentName}</Text>
+          </Center>
+        </Box>
+      </Center>
+    </Box>
   )
 }
 
