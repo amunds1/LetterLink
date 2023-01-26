@@ -1,4 +1,4 @@
-import { Avatar, Grid, Group, Stack, Text, Flex } from '@mantine/core'
+import { Avatar, Grid, Group, Stack, Text, Card } from '@mantine/core'
 import { IconChevronRight } from '@tabler/icons'
 import { doc } from 'firebase/firestore'
 import Link from 'next/link'
@@ -8,17 +8,17 @@ import usersConverter from '../../firebase/converters/userConverter'
 import Game from '../../types/Game'
 import selectUserID from './utils/selectUserID'
 
-interface IActiveGames {
+interface IFinishedGames {
   userUID: string
   games: Game[] | null
 }
 
-interface IActiveGame {
+interface IFinishedGame {
   game: Game
-  yourTurn: boolean
   userUID: string
 }
-const ActiveGame = ({ game, yourTurn, userUID }: IActiveGame) => {
+
+const FinishedGame = ({ game, userUID }: IFinishedGame) => {
   // Fetch opponent data to get name
   const [opponent, loading, error] = useDocumentDataOnce(
     doc(
@@ -28,14 +28,18 @@ const ActiveGame = ({ game, yourTurn, userUID }: IActiveGame) => {
     ).withConverter(usersConverter)
   )
 
+  /* TODO: 
+        [ ] gjøre dette om til eget komponent
+        [ ] legge til hvem som vant på finished games 
+  */
   return (
     <>
       <Group
         position="apart"
         key={game.id}
         style={{
-          border: yourTurn ? '2px solid green' : '2px solid yellow',
-          backgroundColor: yourTurn ? '#ebfbee' : '#FFFFF0',
+          border: '2px solid gray',
+          backgroundColor: '#dee2e6',
           borderRadius: '5px',
           padding: '0.5rem',
         }}
@@ -75,53 +79,25 @@ const ActiveGame = ({ game, yourTurn, userUID }: IActiveGame) => {
   )
 }
 
-const ActiveGames = ({ games, userUID }: IActiveGames) => {
+const FinishedGames = ({ games, userUID }: IFinishedGames) => {
   if (!games) return <></>
 
   return (
     <Stack>
-      {/* YOUR TURN */}
-      {games?.filter((game) => game.nextTurn === userUID).length > 0 && (
-        <Stack>
+      {games.length > 0 && (
+        <>
           <Text align="left" size="xl" weight="bold" mt="sm">
-            Your turn
+            Finished games
           </Text>
           {games &&
-            games
-              .filter((game) => game.nextTurn === userUID)
-              .map((game) => (
-                <ActiveGame
-                  key={game.id}
-                  game={game}
-                  yourTurn={true}
-                  userUID={userUID}
-                />
-              ))}
-        </Stack>
-      )}
-
-      {/* THEIR TURN */}
-      {games?.filter((game) => game.nextTurn != userUID).length > 0 && (
-        <Stack>
-          <Text align="left" size="xl" weight="bold" mt="sm">
-            Their turn
-          </Text>
-
-          {games &&
-            games
-              .filter((game) => game.nextTurn != userUID)
-              .map((game) => (
-                <ActiveGame
-                  key={game.id}
-                  game={game}
-                  yourTurn={false}
-                  userUID={userUID}
-                />
-              ))}
-        </Stack>
+            userUID &&
+            games.map((game) => (
+              <FinishedGame key={game.id} game={game} userUID={userUID} />
+            ))}
+        </>
       )}
     </Stack>
   )
 }
 
-export default ActiveGames
+export default FinishedGames
