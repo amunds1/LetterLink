@@ -6,7 +6,6 @@ import { resetServerContext } from 'react-beautiful-dnd'
 import { EndedGame } from '../../components/game/EndedGame'
 import { fetchBoardData } from '../../components/game/firebase/fetchBoardData'
 import fetchGameData from '../../components/game/firebase/fetchGameData'
-import getName from '../../components/game/firebase/getName'
 import yourTurn from '../../components/game/firebase/yourTurn'
 import GameBoard from '../../components/game/GameBoard'
 import Points from '../../components/game/Points'
@@ -21,9 +20,11 @@ import {
   IGameContext,
 } from '../../components/game/utils/gameContext'
 import selectUserID from '../../components/games/utils/selectUserID'
+import { fetchUserData } from '../../components/profile/firebase/fetchUserData'
 import fetchUID from '../../firebase/fetchUID'
 import BoardData from '../../types/BoardData'
 import Game from '../../types/Game'
+import User from '../../types/User'
 import gameDataListener from '../api/utils/gameDataListener'
 
 export const getServerSideProps: GetServerSideProps = async (
@@ -44,13 +45,15 @@ export const getServerSideProps: GetServerSideProps = async (
   const roundsIsLeft = gameData?.roundsLeft
 
   // Used to display Points and Usernames
-  const userName = await getName(uid)
+  const userData = JSON.parse(JSON.stringify(await fetchUserData(uid)))
   const opponentID = selectUserID(
     uid,
     gameData?.playerOne as string,
     gameData?.playerTwo as string
   )
-  const opponentName = await getName(opponentID)
+  const opponentData = JSON.parse(
+    JSON.stringify(await fetchUserData(opponentID))
+  )
 
   return {
     props: {
@@ -59,8 +62,8 @@ export const getServerSideProps: GetServerSideProps = async (
       gameData: gameData,
       initialGameState: initialGameState,
       itsYourTurn: itsYourTurn,
-      opponentName: opponentName,
-      userName: userName,
+      opponentData: opponentData,
+      userData: userData,
       opponentID: opponentID,
       roundsIsLeft: roundsIsLeft,
     },
@@ -73,9 +76,9 @@ interface IGameID {
   initialGameState: GameStates
   gameData: Game
   itsYourTurn: boolean
-  opponentName: string
+  opponentData: User
   opponentID: string
-  userName: string
+  userData: User
   roundsIsLeft: number
 }
 
@@ -87,8 +90,8 @@ const GameID = (props: IGameID) => {
     gameData,
     itsYourTurn,
     opponentID,
-    opponentName,
-    userName,
+    opponentData,
+    userData,
     roundsIsLeft,
   } = props
 
@@ -101,8 +104,6 @@ const GameID = (props: IGameID) => {
   const [selectedLetter, setSelectedLetter] = useState<string | null>(
     gameData.selectedLetter || null
   )
-
-  console.log(gameData)
 
   const [userPoints, setUserPoints] = useState(gameData.totalPoints[uid])
   const [opponentPoints, setOpponentPoints] = useState(
@@ -140,8 +141,8 @@ const GameID = (props: IGameID) => {
     yourTurn: yourTurn,
     setYourTurn: setYourTurn,
     opponentID: opponentID,
-    opponentName: opponentName,
-    userName: userName,
+    opponentData: opponentData,
+    userData: userData,
     userPoints: userPoints,
     setUserPoints: setUserPoints,
     opponentPoints: opponentPoints,

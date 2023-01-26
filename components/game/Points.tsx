@@ -34,7 +34,7 @@ const Points = () => {
             <Avatar variant="filled" color="teal" radius="xl"></Avatar>
           </Center>
           <Center>
-            <Text size="md">{gameContext?.userName}</Text>
+            <Text size="md">{gameContext?.userData.name}</Text>
           </Center>
         </Box>
         <Text className={classes.pointsText}>{gameContext?.userPoints}</Text>
@@ -53,7 +53,7 @@ const Points = () => {
             <Avatar variant="filled" color="indigo" radius="xl"></Avatar>
           </Center>
           <Center>
-            <Text size="md">{gameContext?.opponentName}</Text>
+            <Text size="md">{gameContext?.opponentData.name}</Text>
           </Center>
         </Box>
       </Center>

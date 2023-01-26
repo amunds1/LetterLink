@@ -1,5 +1,6 @@
 import { doc, updateDoc } from 'firebase/firestore'
 import { db } from '../../../firebase/clientApp'
+import updateDocument from '../../../firebase/updateDocument'
 import GameStates from '../types/gameStates'
 import { IGameContext } from './gameContext'
 
@@ -33,6 +34,15 @@ const updateGameState = async (gameContext: IGameContext) => {
         gameState: GameStates.END,
         roundsLeft: 0,
         isActive: false,
+      })
+
+      // Update XP after the game is completed
+      await updateDoc(doc(db, 'users', gameContext.userUID), {
+        experiencePoints: gameContext.userData.experiencePoints + 100,
+      })
+
+      await updateDoc(doc(db, 'users', gameContext.opponentID), {
+        experiencePoints: gameContext.opponentData.experiencePoints + 100,
       })
     } else {
       await updateDoc(doc(db, 'games', gameContext.gameID), {

@@ -1,4 +1,5 @@
 import { createContext, Dispatch, SetStateAction } from 'react'
+import User from '../../../types/User'
 import GameStates from '../types/gameStates'
 
 export interface IGameContext {
@@ -38,14 +39,14 @@ export interface IGameContext {
   yourTurn: boolean
   opponentID: string
   setYourTurn: Dispatch<SetStateAction<boolean>>
-  opponentName: string
-  userName: string
   opponentPoints: number
   setOpponentPoints: Dispatch<SetStateAction<number>>
   userPoints: number
   setUserPoints: Dispatch<SetStateAction<number>>
   setRoundsLeft: Dispatch<number>
   roundsLeft: number
+  userData: User
+  opponentData: User
 }
 
 export const GameContext = createContext<IGameContext | null>(null)
