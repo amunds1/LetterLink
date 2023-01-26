@@ -1,9 +1,14 @@
 import { Avatar, Badge, Button, Card, Center, Group, Text } from '@mantine/core'
+import { doc } from 'firebase/firestore'
 import { useEffect, useState } from 'react'
+import { useDocumentDataOnce } from 'react-firebase-hooks/firestore'
+import { db } from '../../firebase/clientApp'
+import usersConverter from '../../firebase/converters/userConverter'
 import Game from '../../types/Game'
 import acceptProposedGame from './firebase/acceptProposedGame'
 import rejectProposedGame from './firebase/rejectProposedGame'
 import withdrawGameProposal from './firebase/withdrawGameProposal'
+import selectUserID from './utils/selectUserID'
 
 interface IGameProposal {
   game: Game
@@ -30,10 +35,19 @@ const GameProposal = ({ game, userUID }: IGameProposal) => {
     })
   }, [game])
 
+  // Fetch opponent data to get name
+  const [opponent, loading, error] = useDocumentDataOnce(
+    doc(
+      db,
+      'users',
+      selectUserID(userUID, game.playerOne as string, game.playerTwo as string)
+    ).withConverter(usersConverter)
+  )
+
   return (
     <Card>
       <Group position="apart" mt="md" mb="xs">
-        <Text>Against {game.opponentName}</Text>
+        <Text>Against {opponent?.name}</Text>
         <Badge color="orange" variant="light">
           {gameProposedTimeDelta.value} {gameProposedTimeDelta.label} ago
         </Badge>

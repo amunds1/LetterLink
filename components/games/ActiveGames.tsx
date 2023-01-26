@@ -1,7 +1,11 @@
 import { Avatar, Button, Card, Group, Stack, Text } from '@mantine/core'
+import { doc } from 'firebase/firestore'
 import Link from 'next/link'
+import { useDocumentDataOnce } from 'react-firebase-hooks/firestore'
+import { db } from '../../firebase/clientApp'
+import usersConverter from '../../firebase/converters/userConverter'
 import Game from '../../types/Game'
-import ColorSchemeToggle from '../ColorSchemeToggle'
+import selectUserID from './utils/selectUserID'
 
 interface IActiveGames {
   userUID: string
@@ -11,8 +15,18 @@ interface IActiveGames {
 interface IActiveGame {
   game: Game
   yourTurn: boolean
+  userUID: string
 }
-const ActiveGame = ({ game, yourTurn }: IActiveGame) => {
+const ActiveGame = ({ game, yourTurn, userUID }: IActiveGame) => {
+  // Fetch opponent data to get name
+  const [opponent, loading, error] = useDocumentDataOnce(
+    doc(
+      db,
+      'users',
+      selectUserID(userUID, game.playerOne as string, game.playerTwo as string)
+    ).withConverter(usersConverter)
+  )
+
   return (
     <>
       <Group
@@ -28,7 +42,7 @@ const ActiveGame = ({ game, yourTurn }: IActiveGame) => {
       >
         <Stack>
           <Group spacing="xl">
-            <Text color="black">Against {game.opponentName}</Text>
+            <Text color="black">Against {opponent?.name}</Text>
             <Avatar color="orange" radius="xl">
               KL
             </Avatar>
@@ -69,7 +83,12 @@ const ActiveGames = ({ games, userUID }: IActiveGames) => {
         games
           .filter((game) => game.nextTurn === userUID)
           .map((game) => (
-            <ActiveGame key={game.id} game={game} yourTurn={true} />
+            <ActiveGame
+              key={game.id}
+              game={game}
+              yourTurn={true}
+              userUID={userUID}
+            />
           ))}
 
       <Text size="lg" pb="sm">
@@ -79,7 +98,12 @@ const ActiveGames = ({ games, userUID }: IActiveGames) => {
         games
           .filter((game) => game.nextTurn != userUID)
           .map((game) => (
-            <ActiveGame key={game.id} game={game} yourTurn={false} />
+            <ActiveGame
+              key={game.id}
+              game={game}
+              yourTurn={false}
+              userUID={userUID}
+            />
           ))}
     </Card>
   )
