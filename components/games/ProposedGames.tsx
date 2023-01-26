@@ -16,7 +16,7 @@ const ProposedGames = (props: IProposedGames) => {
       {games &&
         userUID &&
         games.map((game) => (
-          <GameProposalCompact key={game.id} game={game} userUID={userUID} />
+          <GameProposal key={game.id} game={game} userUID={userUID} />
         ))}
     </Card>
   )

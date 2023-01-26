@@ -1,6 +1,9 @@
 import { Button, createStyles, Stack } from '@mantine/core'
+import { collection, doc, query, where } from 'firebase/firestore'
 import { GetServerSidePropsContext } from 'next'
 import Link from 'next/link'
+import { useEffect, useState } from 'react'
+import { useCollectionData } from 'react-firebase-hooks/firestore'
 import ActiveGames from '../../components/games/ActiveGames'
 import {
   fetchActiveGames,
@@ -8,6 +11,8 @@ import {
 } from '../../components/games/firebase/fetchGames'
 import ProposedGames from '../../components/games/ProposedGames'
 import { fetchUserData } from '../../components/profile/firebase/fetchUserData'
+import { db } from '../../firebase/clientApp'
+import gamesConverter from '../../firebase/converters/gamesConverter'
 import fetchUID from '../../firebase/fetchUID'
 import Game from '../../types/Game'
 
@@ -24,8 +29,8 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
       'public, s-maxage=10, stale-while-revalidate=59'
     )
 
-    let activeGames: Game[] | null = null
-    let proposedGames: Game[] | null = null
+    let activeGames: Game[] = []
+    let proposedGames: Game[] = []
 
     const uid = await fetchUID(ctx)
 
@@ -62,20 +67,72 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
 
 interface IGames {
   uid: string
-  activeGames: Game[] | null
-  proposedGames: Game[] | null
+  activeGames: Game[]
+  proposedGames: Game[]
 }
 
 const Games = (props: IGames) => {
   const { classes } = useStyles()
-  const { uid, activeGames, proposedGames } = props
+  const { uid } = props
+
+  const [games, setGames] = useState<Game[]>(
+    props.proposedGames.concat(props.activeGames)
+  )
+
+  /* 
+    Listen for changes on documents where the DocumentReference value of playerOne matches
+    the authenticated user
+  */
+  const [gamesPlayerOneField, loadingPlayerOne, errorPlayerOe] =
+    useCollectionData(
+      query(
+        collection(db, 'games').withConverter(gamesConverter),
+        where('playerOne', '==', doc(db, 'users', uid))
+      ),
+      {
+        snapshotListenOptions: { includeMetadataChanges: true },
+      }
+    )
+
+  /* 
+    Listen for changes on documents where the DocumentReference value of playerTwo matches
+    the authenticated user
+  */
+  const [gamesPlayerTwoField, loadingPlayerTwo, errorPlayerTwo] =
+    useCollectionData(
+      query(
+        collection(db, 'games').withConverter(gamesConverter),
+        where('playerTwo', '==', doc(db, 'users', uid))
+      ),
+      {
+        snapshotListenOptions: { includeMetadataChanges: true },
+      }
+    )
+
+  /*
+    When either gamesPlayerOneField or gamesPlayerTwoField changes, combine them and
+    add them to the games array
+  */
+  useEffect(() => {
+    if (gamesPlayerOneField && gamesPlayerTwoField) {
+      setGames(gamesPlayerOneField.concat(gamesPlayerTwoField))
+    }
+  }, [gamesPlayerOneField, gamesPlayerTwoField])
 
   return (
     <>
       <Stack style={{ width: '100%' }}>
         <Stack className={classes.center} style={{ width: '100%' }}>
-          <ProposedGames userUID={uid} games={proposedGames} />
-          <ActiveGames userUID={uid} games={activeGames} />
+          {/* Display proposed games (isActive = false) using filter */}
+          <ProposedGames
+            userUID={uid}
+            games={games.filter((game) => game.isActive == false)}
+          />
+          {/* Display active games (isActive = true) using filter */}
+          <ActiveGames
+            userUID={uid}
+            games={games.filter((game) => game.isActive == true)}
+          />
         </Stack>
 
         <Link href="/game/new">

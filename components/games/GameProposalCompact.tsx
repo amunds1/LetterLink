@@ -104,7 +104,6 @@ const GameProposalCompact = ({ game, userUID }: IGameProposal) => {
           <>
             {/* ACCEPT PROPOSAL BUTTON */}
             <ActionIcon
-              size="lg"
               onClick={async () => {
                 await acceptProposedGame({
                   gameID: game.id!,
@@ -116,10 +115,9 @@ const GameProposalCompact = ({ game, userUID }: IGameProposal) => {
                 })
               }}
             >
-              <IconCircleCheck color="#40c057" size="lg" />
+              <IconCircleCheck color="#40c057" />
             </ActionIcon>
             <ActionIcon
-              size="lg"
               onClick={async () => {
                 await rejectProposedGame({
                   gameID: game.id!,
@@ -131,7 +129,7 @@ const GameProposalCompact = ({ game, userUID }: IGameProposal) => {
                 })
               }}
             >
-              <IconCircleLetterX color="#fa5252" size="lg" />
+              <IconCircleLetterX color="#fa5252" />
             </ActionIcon>
           </>
         )}
