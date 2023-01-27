@@ -2028,17 +2028,17 @@
   resolved "https://registry.npmjs.org/@tabler/icons/-/icons-1.119.0.tgz"
   integrity sha512-Fk3Qq4w2SXcTjc/n1cuL5bccPkylrOMo7cYpQIf/yw6zP76LQV9dtLcHQUjFiUnaYuswR645CnURIhlafyAh9g==
 
-"@tanstack/react-table@^8.7.6":
-  version "8.7.6"
-  resolved "https://registry.npmjs.org/@tanstack/react-table/-/react-table-8.7.6.tgz"
-  integrity sha512-/QijmMFeP7wDLBnr0MQ/5MlbXePbIL/1nOtkxBC9zvmBu4gDKJEDBqipUyM7Wc/iBpSd0IFyqBlvZvTPD9FYDA==
+"@tanstack/react-table@^8.7.8":
+  version "8.7.8"
+  resolved "https://registry.yarnpkg.com/@tanstack/react-table/-/react-table-8.7.8.tgz#3e655a39f4c19bb9a5346e171f3112b4eeb3b576"
+  integrity sha512-XNfNuY9qJEk5urJWGYPWNj4POtBTuYunQNfmUla/ZUobVSS+ZIWt6wnL6kI12QNpPrf4uSVAYelUVl245nnQjQ==
   dependencies:
-    "@tanstack/table-core" "8.7.6"
+    "@tanstack/table-core" "8.7.8"
 
-"@tanstack/table-core@8.7.6":
-  version "8.7.6"
-  resolved "https://registry.npmjs.org/@tanstack/table-core/-/table-core-8.7.6.tgz"
-  integrity sha512-sqiNTMzB6cpyL8DFH6/VqW48SwiflLqxQqYpo2wNock7rdVGvlm0BLNI8vZUJbr1+fmmWmHwBvi5OMgZw8n1DA==
+"@tanstack/table-core@8.7.8":
+  version "8.7.8"
+  resolved "https://registry.yarnpkg.com/@tanstack/table-core/-/table-core-8.7.8.tgz#20c9bad75981e431ddc666e0dd532eb813e1e451"
+  integrity sha512-OvKx7v0qJTyPkMhqsWzVPZnARiqdGvDvEg8tZ/GSQs7t0Vb2sdtkGg7cdzUZ67sIg9o5/gSwvvT84ouSaP8euA==
 
 "@tootallnate/once@2":
   version "2.0.0"
