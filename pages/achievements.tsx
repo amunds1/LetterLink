@@ -1,6 +1,10 @@
-import { Grid, Progress, Stack, Text } from '@mantine/core'
+import { Button, Grid, Progress, Stack, Text } from '@mantine/core'
 
 import { IconMedal } from '@tabler/icons'
+import { updateDoc, doc, FieldValue, increment } from 'firebase/firestore'
+import { useState } from 'react'
+import GameStates from '../components/game/types/gameStates'
+import firebase, { db } from '../firebase/clientApp'
 
 interface IAchievement {
   title: string
@@ -20,7 +24,7 @@ const mockData: { [key: string]: IAchievement } = {
     title: 'Win 3 games',
     range: 3,
     completionStatus: 2,
-    unlocked: false,
+    unlocked: true,
   },
   'play-three-opponents': {
     title: 'Play three different opponents',
@@ -30,14 +34,15 @@ const mockData: { [key: string]: IAchievement } = {
   },
 }
 
-const updateAchievementStatus = () => {
-  // Play 10 games
+// Interface for gameStatus
+interface IGameStatus {
+  won: boolean
+  opponent: string
+}
 
-  // Win 3 games
-  if (mockData['win-3-games'].unlocked == false) {
-  }
-
-  // Play three different opponents
+const gameStatus: IGameStatus = {
+  won: true,
+  opponent: 'Hikaru Nakamura',
 }
 
 const Acheviement = ({ data }: { data: IAchievement }) => {
@@ -51,15 +56,60 @@ const Acheviement = ({ data }: { data: IAchievement }) => {
 }
 
 const Achievements = () => {
+  const [mock, setMockData] = useState(mockData)
+
+  const userID = 'l7QwyHv2CWWPb2LZPxcnQFtiNLs1'
+
+  const updateAchievementStatus = async (gameData: IGameStatus) => {
+    // Achievement: Play 10 games
+    if (mockData['play-10-games'].unlocked == false) {
+      const achievement = mockData['play-10-games']
+
+      // Temp data to update achievement in firestore
+      const data = {
+        completionStatus: increment(1),
+        unlocked: false,
+      }
+
+      // Set unlocked to true if completionStatus is one less than range
+      // which means the achievement is completed
+      if (achievement.completionStatus == achievement.range - 1) {
+        data.unlocked = true
+      }
+
+      // Update completionStatus of achievement in firestore
+      await updateDoc(doc(db, userID, 'achievements', 'win-10-games'), data)
+    }
+
+    // Win 3 games
+    /* if (mockData['win-3-games'].unlocked == false) {
+      if (gameData.won) {
+        setMockData({
+          ...mockData,
+          'win-3-games': { ...mockData['win-3-games'], completionStatus: +1 },
+        })
+      }
+    }
+
+    // Play three different opponents
+    if (mockData['play-three-opponents'].unlocked == false) {
+      const previousOpponents = ['Magnus Carlsen', 'Fabiano Caruana']
+      if (!previousOpponents.includes(gameData.opponent)) {
+        mockData['play-three-opponents'].completionStatus += 1
+      }
+    } */
+  }
+
   return (
     <>
-      <Grid>
-        {/* {mockData.values().map((achievement) => (
-          <Grid.Col key={achievement.title} span={4}>
-            <Acheviement data={achievement} />
-          </Grid.Col>
-        ))} */}
-      </Grid>
+      <Stack>
+        <Button onClick={() => updateAchievementStatus(gameStatus)}>
+          Completed game
+        </Button>
+        {Object.keys(mockData).map((key) => (
+          <Acheviement key={key} data={mockData[key]} />
+        ))}
+      </Stack>
     </>
   )
 }
