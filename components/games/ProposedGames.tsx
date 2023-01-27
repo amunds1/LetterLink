@@ -21,22 +21,21 @@ const ProposedGames = (props: IProposedGames) => {
     )
 
   return (
-    <Stack>
+    <>
       {games.length > 0 && (
-        <>
+        <Stack>
           <Text align="left" size="xl" weight="bold">
             Game requests
           </Text>
-          <Card shadow="sm" p="sm" radius="md" withBorder>
-            {games &&
-              userUID &&
-              games.map((game) => (
-                <GameProposal key={game.id} game={game} userUID={userUID} />
-              ))}
-          </Card>
-        </>
+
+          {games &&
+            userUID &&
+            games.map((game) => (
+              <GameProposal key={game.id} game={game} userUID={userUID} />
+            ))}
+        </Stack>
       )}
-    </Stack>
+    </>
   )
 }
 

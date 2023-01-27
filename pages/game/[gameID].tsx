@@ -1,4 +1,5 @@
 import { Button, Center, Container } from '@mantine/core'
+import { IconArrowBackUp } from '@tabler/icons'
 import { GetServerSideProps, GetServerSidePropsContext } from 'next'
 import Link from 'next/link'
 import { useEffect, useState } from 'react'
@@ -154,6 +155,16 @@ const GameID = (props: IGameID) => {
 
   return (
     <Container>
+      <Link href="/games">
+        <Button
+          compact
+          variant="light"
+          color="dark"
+          style={{ border: '1px solid #909296' }}
+        >
+          <IconArrowBackUp color="#141517" />
+        </Button>
+      </Link>
       {/* Display who turn it is */}
       {yourTurn ? <YourTurnStatusMessage /> : <OpponentTurnStatusMessage />}
 
@@ -163,12 +174,6 @@ const GameID = (props: IGameID) => {
         {gameState === GameStates.CHOOSE && <SelectLetter />}
         {gameState === GameStates.END && <EndedGame />}
       </GameContext.Provider>
-
-      <Link href="/games">
-        <Center>
-          <Button>Back to games</Button>
-        </Center>
-      </Link>
     </Container>
   )
 }

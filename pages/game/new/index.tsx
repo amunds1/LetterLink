@@ -1,11 +1,12 @@
-import { Button, Radio, Select, SelectItem, Stack } from '@mantine/core'
+import { Button, Radio, Select, SelectItem, Stack, Text } from '@mantine/core'
 import { GetServerSideProps, GetServerSidePropsContext } from 'next'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
-import { useCallback, useState } from 'react'
+import { useState } from 'react'
 import addGameToCollection from '../../../components/game/firebase/addToGameCollection'
 import { fetchUsersAsSelectOptions } from '../../../components/game/firebase/fetchUsersAsSelectOptions'
 import fetchUID from '../../../firebase/fetchUID'
+import { IconArrowBackUp } from '@tabler/icons'
 
 export const getServerSideProps: GetServerSideProps = async (
   ctx: GetServerSidePropsContext
@@ -41,6 +42,16 @@ const NewGame = (props: INewGame) => {
 
   return (
     <Stack>
+      <Link href="/games">
+        <Button
+          compact
+          variant="light"
+          color="dark"
+          style={{ border: '1px solid #909296' }}
+        >
+          <IconArrowBackUp color="#141517" />
+        </Button>
+      </Link>
       {/* SELECT OPONENT */}
       <Select
         label="Select oponent"
@@ -61,21 +72,26 @@ const NewGame = (props: INewGame) => {
         description=""
         withAsterisk
       >
-        <Radio value="3" label="3 x 3" />
-        <Radio value="6" label="6 x 6" />
-        <Radio value="9" label="9 x 9" />
+        <Radio value="3" label="3 x 3" color="cyan" />
+        <Radio value="6" label="6 x 6" color="cyan" />
+        <Radio value="9" label="9 x 9" color="cyan" />
       </Radio.Group>
 
       <Button
+        color="cyan"
+        variant="light"
         disabled={!oponent || !boardSize?.length}
         onClick={() => onClick()}
+        style={
+          oponent && boardSize?.length
+            ? { border: '1px solid #99E9F2' }
+            : { border: '1px solid #CED4DA' }
+        }
       >
-        Propose game
+        <Text color={oponent && boardSize?.length ? 'cyan.8' : 'gray.5'}>
+          Propose game
+        </Text>
       </Button>
-
-      <Link href="/games">
-        <Button>Back to games list</Button>
-      </Link>
     </Stack>
   )
 }

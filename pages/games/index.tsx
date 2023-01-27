@@ -1,4 +1,4 @@
-import { Button, Center, createStyles, Stack } from '@mantine/core'
+import { Button, Center, createStyles, Stack, Text } from '@mantine/core'
 import { collection, doc, query, where } from 'firebase/firestore'
 import { GetServerSidePropsContext } from 'next'
 import Link from 'next/link'
@@ -124,37 +124,41 @@ const Games = (props: IGames) => {
 
   return (
     <>
-      <Stack style={{ width: '100%' }}>
+      <Stack className={classes.center} style={{ width: '100%' }}>
         <Link href="/game/new" style={{ textDecoration: 'none' }}>
           <Center>
-            <Button fullWidth color="green" leftIcon={<IconPlus />}>
-              New game
+            <Button
+              fullWidth
+              variant="light"
+              color="cyan"
+              style={{ border: '1px solid #99E9F2' }}
+              leftIcon={<IconPlus color="#0C8599" />}
+            >
+              <Text color="cyan.8">New game</Text>
             </Button>
           </Center>
         </Link>
-        <Stack className={classes.center} style={{ width: '100%' }}>
-          {/* Display proposed games (isActive = false && gameState = choose) using filter */}
-          <ProposedGames
-            userUID={uid}
-            games={games.filter(
-              (game) =>
-                game.isActive == false && game.gameState === GameStates.CHOOSE
-            )}
-          />
-          {/* Display active games (isActive = true) using filter */}
-          <ActiveGames
-            userUID={uid}
-            games={games.filter((game) => game.isActive == true)}
-          />
-          {/* Displaying finished games (isActive = false && gameSate = end) */}
-          <FinishedGames
-            userUID={uid}
-            games={games.filter(
-              (game) =>
-                game.isActive == false && game.gameState === GameStates.END
-            )}
-          />
-        </Stack>
+        {/* Display proposed games (isActive = false && gameState = choose) using filter */}
+        <ProposedGames
+          userUID={uid}
+          games={games.filter(
+            (game) =>
+              game.isActive == false && game.gameState === GameStates.CHOOSE
+          )}
+        />
+        {/* Display active games (isActive = true) using filter */}
+        <ActiveGames
+          userUID={uid}
+          games={games.filter((game) => game.isActive == true)}
+        />
+        {/* Displaying finished games (isActive = false && gameSate = end) */}
+        <FinishedGames
+          userUID={uid}
+          games={games.filter(
+            (game) =>
+              game.isActive == false && game.gameState === GameStates.END
+          )}
+        />
       </Stack>
     </>
   )

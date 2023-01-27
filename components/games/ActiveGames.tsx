@@ -1,4 +1,13 @@
-import { Avatar, Grid, Group, Stack, Text, Flex } from '@mantine/core'
+import {
+  Avatar,
+  Grid,
+  Group,
+  Stack,
+  Text,
+  Card,
+  Flex,
+  Box,
+} from '@mantine/core'
 import { IconChevronRight } from '@tabler/icons'
 import { doc } from 'firebase/firestore'
 import Link from 'next/link'
@@ -30,14 +39,16 @@ const ActiveGame = ({ game, yourTurn, userUID }: IActiveGame) => {
 
   return (
     <>
-      <Group
-        position="apart"
+      <Card
+        p="sm"
+        shadow="sm"
         key={game.id}
+        radius="md"
         style={{
-          border: yourTurn ? '2px solid green' : '2px solid yellow',
-          backgroundColor: yourTurn ? '#ebfbee' : '#FFFFF0',
-          borderRadius: '5px',
+          // Lime 0 and orange 0
+          backgroundColor: yourTurn ? '#F4FCE3' : '#FFF4E6',
           padding: '0.5rem',
+          border: yourTurn ? '1px solid #D8F5A2' : '1px solid #FFD8A8',
         }}
       >
         <Link
@@ -47,15 +58,19 @@ const ActiveGame = ({ game, yourTurn, userUID }: IActiveGame) => {
           <Grid>
             <Grid.Col span="auto">
               <Stack spacing="xs">
-                <Group spacing="sm">
-                  <Avatar color="orange" radius="xl">
+                <Group spacing="sm" mt="xs" ml="xs">
+                  <Avatar
+                    color="grape"
+                    radius="xl"
+                    style={{ border: '1px solid #EEBEFA' }}
+                  >
                     KL
                   </Avatar>
                   <Text color="black" weight="bold" size="md">
                     {opponent?.name}
                   </Text>
                 </Group>
-                <Group spacing="md">
+                <Group spacing="md" mb="xs" ml="xs">
                   <Text color="gray.7">
                     Rounds left: {Math.ceil(game.roundsLeft / 2)}
                   </Text>
@@ -65,12 +80,23 @@ const ActiveGame = ({ game, yourTurn, userUID }: IActiveGame) => {
                 </Group>
               </Stack>
             </Grid.Col>
-            <Grid.Col span="content">
-              <IconChevronRight />
+            <Grid.Col span="content" mr="xs">
+              <Flex
+                style={{
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  height: '100%',
+                }}
+              >
+                <IconChevronRight
+                  color={yourTurn ? '#66A80F' : '#E8590C'}
+                  size="2rem"
+                />
+              </Flex>
             </Grid.Col>
           </Grid>
         </Link>
-      </Group>
+      </Card>
     </>
   )
 }

@@ -1,4 +1,4 @@
-import { Avatar, Grid, Group, Stack, Text, Card } from '@mantine/core'
+import { Avatar, Grid, Group, Stack, Text, Card, Flex } from '@mantine/core'
 import { IconChevronRight } from '@tabler/icons'
 import { doc } from 'firebase/firestore'
 import Link from 'next/link'
@@ -28,20 +28,16 @@ const FinishedGame = ({ game, userUID }: IFinishedGame) => {
     ).withConverter(usersConverter)
   )
 
-  /* TODO: 
-        [ ] gjøre dette om til eget komponent
-        [ ] legge til hvem som vant på finished games 
-  */
   return (
     <>
-      <Group
-        position="apart"
+      <Card
+        shadow="lg"
         key={game.id}
+        radius="md"
         style={{
-          border: '2px solid gray',
-          backgroundColor: '#dee2e6',
-          borderRadius: '5px',
+          backgroundColor: '#C1C2C5',
           padding: '0.5rem',
+          border: '1px solid #909296',
         }}
       >
         <Link
@@ -51,7 +47,7 @@ const FinishedGame = ({ game, userUID }: IFinishedGame) => {
           <Grid>
             <Grid.Col span="auto">
               <Stack spacing="xs">
-                <Group spacing="sm">
+                <Group spacing="sm" mt="xs" ml="xs">
                   <Avatar color="orange" radius="xl">
                     KL
                   </Avatar>
@@ -59,7 +55,7 @@ const FinishedGame = ({ game, userUID }: IFinishedGame) => {
                     {opponent?.name}
                   </Text>
                 </Group>
-                <Group spacing="md">
+                <Group spacing="md" mb="xs" ml="xs">
                   <Text color="gray.7">
                     Rounds left: {Math.ceil(game.roundsLeft / 2)}
                   </Text>
@@ -69,12 +65,20 @@ const FinishedGame = ({ game, userUID }: IFinishedGame) => {
                 </Group>
               </Stack>
             </Grid.Col>
-            <Grid.Col span="content">
-              <IconChevronRight />
+            <Grid.Col span="content" mr="xs">
+              <Flex
+                style={{
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  height: '100%',
+                }}
+              >
+                <IconChevronRight color="#141517" size="2rem" />
+              </Flex>
             </Grid.Col>
           </Grid>
         </Link>
-      </Group>
+      </Card>
     </>
   )
 }
