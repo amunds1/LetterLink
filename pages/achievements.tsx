@@ -8,13 +8,6 @@ import { db } from '../firebase/clientApp'
 import fetchUID from '../firebase/fetchUID'
 import User from '../types/User'
 
-export interface IAchievement {
-  title: string
-  range: number
-  completionStatus: number
-  unlocked: boolean
-}
-
 export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
   try {
     // Set cache header
@@ -110,9 +103,9 @@ const Achievements = (props: IAchievements) => {
           tempUnlocked = true
         }
 
-        const previousOpponents = ['Magnus Carlsen', 'Fabiano Caruana']
+        const previousOpponents = achievement.previousOpponents
 
-        if (!previousOpponents.includes(gameData.opponent)) {
+        if (!previousOpponents?.includes(gameData.opponent)) {
           await updateDoc(doc(db, 'users', id), {
             'achievements.play-3-different-opponents.completionStatus':
               increment(1),

@@ -1,5 +1,5 @@
 import { DocumentReference, DocumentData } from 'firebase/firestore'
-import { IAchievement } from '../pages/achievements'
+import { IAchievement } from '../components/achievements/types/IAchievement'
 
 interface User {
   id: string

@@ -1,6 +1,6 @@
 import { Stack, Progress, Text } from '@mantine/core'
 import { IconMedal } from '@tabler/icons'
-import { IAchievement } from '../../pages/achievements'
+import { IAchievement } from './types/IAchievement'
 
 const Acheviement = ({ data }: { data: IAchievement }) => {
   return (
