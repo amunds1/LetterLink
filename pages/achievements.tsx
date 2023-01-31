@@ -1,5 +1,5 @@
 import { Button, Stack } from '@mantine/core'
-import { doc, increment, updateDoc } from 'firebase/firestore'
+import { arrayUnion, doc, increment, updateDoc } from 'firebase/firestore'
 import { GetServerSidePropsContext } from 'next/types'
 import Acheviement from '../components/achievements/Achievement'
 import { IGameStatus, gameStatus } from '../components/achievements/mockData'
@@ -110,6 +110,8 @@ const Achievements = (props: IAchievements) => {
             'achievements.play-3-different-opponents.completionStatus':
               increment(1),
             'achievements.play-3-different-opponents.unlocked': tempUnlocked,
+            'achievements.play-3-different-opponents.previousOpponents':
+              arrayUnion(gameData.opponent),
           })
         }
       }
