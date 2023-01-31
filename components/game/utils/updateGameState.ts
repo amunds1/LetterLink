@@ -1,5 +1,6 @@
 import { doc, updateDoc } from 'firebase/firestore'
 import { db } from '../../../firebase/clientApp'
+import { setWinner } from '../../../pages/api/setWinner'
 import GameStates from '../types/gameStates'
 import { IGameContext } from './gameContext'
 
@@ -34,6 +35,7 @@ const updateGameState = async (gameContext: IGameContext) => {
         roundsLeft: 0,
         isActive: false,
       })
+      setWinner(gameContext)
     } else {
       await updateDoc(doc(db, 'games', gameContext.gameID), {
         gameState: GameStates.CHOOSE,

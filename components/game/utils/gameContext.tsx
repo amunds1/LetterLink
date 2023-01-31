@@ -46,6 +46,7 @@ export interface IGameContext {
   setUserPoints: Dispatch<SetStateAction<number>>
   setRoundsLeft: Dispatch<number>
   roundsLeft: number
+  winner: string | null
 }
 
 export const GameContext = createContext<IGameContext | null>(null)

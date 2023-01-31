@@ -17,6 +17,7 @@ interface Game {
   totalPoints: {
     [key: string]: number
   }
+  winner: string | null
 }
 
 export default Game

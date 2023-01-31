@@ -57,7 +57,11 @@ const FinishedGame = ({ game, userUID }: IFinishedGame) => {
                 </Group>
                 <Group spacing="md" mb="xs" ml="xs">
                   <Text color="gray.7">
-                    Rounds left: {Math.ceil(game.roundsLeft / 2)}
+                    {game.winner
+                      ? game.winner === userUID
+                        ? 'You won the game'
+                        : `${game.winner} won the game`
+                      : 'The game has no winner'}
                   </Text>
                   <Text color="gray.7">
                     Boardsize: {game.boardSize}x{game.boardSize}

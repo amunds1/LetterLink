@@ -2,7 +2,6 @@ import { Container } from '@mantine/core'
 import { GetServerSideProps, GetServerSidePropsContext } from 'next'
 import { useEffect, useState } from 'react'
 import { resetServerContext } from 'react-beautiful-dnd'
-import { EndedGame } from '../../components/game/EndedGame'
 import { fetchBoardData } from '../../components/game/firebase/fetchBoardData'
 import fetchGameData from '../../components/game/firebase/fetchGameData'
 import getName from '../../components/game/firebase/getName'
@@ -13,6 +12,7 @@ import SelectLetter from '../../components/game/SelectLetter'
 import {
   OpponentTurnStatusMessage,
   YourTurnStatusMessage,
+  EndTurnStatusMessage,
 } from '../../components/game/TurnStatusMessage'
 import GameStates from '../../components/game/types/gameStates'
 import {
@@ -102,8 +102,6 @@ const GameID = (props: IGameID) => {
     gameData.selectedLetter || null
   )
 
-  console.log(gameData)
-
   const [userPoints, setUserPoints] = useState(gameData.totalPoints[uid])
   const [opponentPoints, setOpponentPoints] = useState(
     gameData.totalPoints[opponentID]
@@ -148,6 +146,7 @@ const GameID = (props: IGameID) => {
     setOpponentPoints: setOpponentPoints,
     roundsLeft: roundsLeft,
     setRoundsLeft: setRoundsLeft,
+    winner: gameData.winner,
   }
 
   gameDataListener(GameContextValues)
@@ -156,14 +155,19 @@ const GameID = (props: IGameID) => {
     <Container>
       {/* Back to games button */}
       <BackToGamesButton />
-      {/* Display who turn it is */}
-      {yourTurn ? <YourTurnStatusMessage /> : <OpponentTurnStatusMessage />}
 
       <GameContext.Provider value={GameContextValues}>
+        {/* Display who turn it is */}
+        {gameState === GameStates.END ? (
+          <EndTurnStatusMessage />
+        ) : yourTurn ? (
+          <YourTurnStatusMessage />
+        ) : (
+          <OpponentTurnStatusMessage />
+        )}
         <Points />
         <GameBoard />
         {gameState === GameStates.CHOOSE && <SelectLetter />}
-        {gameState === GameStates.END && <EndedGame />}
       </GameContext.Provider>
     </Container>
   )
