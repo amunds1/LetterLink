@@ -1,12 +1,11 @@
 import { Button, Radio, Select, SelectItem, Stack, Text } from '@mantine/core'
 import { GetServerSideProps, GetServerSidePropsContext } from 'next'
-import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { useState } from 'react'
 import addGameToCollection from '../../../components/game/firebase/addToGameCollection'
 import { fetchUsersAsSelectOptions } from '../../../components/game/firebase/fetchUsersAsSelectOptions'
 import fetchUID from '../../../firebase/fetchUID'
-import { IconArrowBackUp } from '@tabler/icons'
+import BackToGamesButton from '../../../components/games/BackToGamesButton'
 
 export const getServerSideProps: GetServerSideProps = async (
   ctx: GetServerSidePropsContext
@@ -42,16 +41,8 @@ const NewGame = (props: INewGame) => {
 
   return (
     <Stack>
-      <Link href="/games">
-        <Button
-          compact
-          variant="light"
-          color="dark"
-          style={{ border: '1px solid #909296' }}
-        >
-          <IconArrowBackUp color="#141517" />
-        </Button>
-      </Link>
+      {/* Back to games button */}
+      <BackToGamesButton />
       {/* SELECT OPONENT */}
       <Select
         label="Select oponent"

@@ -1,7 +1,5 @@
-import { Button, Center, Container } from '@mantine/core'
-import { IconArrowBackUp } from '@tabler/icons'
+import { Container } from '@mantine/core'
 import { GetServerSideProps, GetServerSidePropsContext } from 'next'
-import Link from 'next/link'
 import { useEffect, useState } from 'react'
 import { resetServerContext } from 'react-beautiful-dnd'
 import { EndedGame } from '../../components/game/EndedGame'
@@ -21,6 +19,7 @@ import {
   GameContext,
   IGameContext,
 } from '../../components/game/utils/gameContext'
+import BackToGamesButton from '../../components/games/BackToGamesButton'
 import selectUserID from '../../components/games/utils/selectUserID'
 import fetchUID from '../../firebase/fetchUID'
 import BoardData from '../../types/BoardData'
@@ -155,16 +154,8 @@ const GameID = (props: IGameID) => {
 
   return (
     <Container>
-      <Link href="/games">
-        <Button
-          compact
-          variant="light"
-          color="dark"
-          style={{ border: '1px solid #909296' }}
-        >
-          <IconArrowBackUp color="#141517" />
-        </Button>
-      </Link>
+      {/* Back to games button */}
+      <BackToGamesButton />
       {/* Display who turn it is */}
       {yourTurn ? <YourTurnStatusMessage /> : <OpponentTurnStatusMessage />}
 
