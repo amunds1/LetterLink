@@ -1,10 +1,8 @@
-import { Button, Grid, Progress, Stack, Text } from '@mantine/core'
-
+import { Button, Progress, Stack, Text } from '@mantine/core'
 import { IconMedal } from '@tabler/icons'
-import { updateDoc, doc, FieldValue, increment } from 'firebase/firestore'
+import { doc, increment, updateDoc } from 'firebase/firestore'
 import { useState } from 'react'
-import GameStates from '../components/game/types/gameStates'
-import firebase, { db } from '../firebase/clientApp'
+import { db } from '../firebase/clientApp'
 
 interface IAchievement {
   title: string
