@@ -57,14 +57,14 @@ const FinishedGame = ({ game, userUID }: IFinishedGame) => {
                 </Group>
                 <Group spacing="md" mb="xs" ml="xs">
                   <Text color="gray.7">
-                    {game.winner
-                      ? game.winner === userUID
-                        ? 'You won the game'
-                        : `${game.winner} won the game`
-                      : 'The game has no winner'}
+                    {game.boardSize}x{game.boardSize}
                   </Text>
                   <Text color="gray.7">
-                    Boardsize: {game.boardSize}x{game.boardSize}
+                    {game.winner
+                      ? game.winner === opponent?.name
+                        ? `${game.winner} won the game`
+                        : 'You won the game'
+                      : 'The game has no winner'}
                   </Text>
                 </Group>
               </Stack>

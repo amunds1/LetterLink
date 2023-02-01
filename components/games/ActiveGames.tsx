@@ -63,10 +63,10 @@ const ActiveGame = ({ game, yourTurn, userUID }: IActiveGame) => {
                 </Group>
                 <Group spacing="md" mb="xs" ml="xs">
                   <Text color="gray.7">
-                    Rounds left: {Math.ceil(game.roundsLeft / 2)}
+                    {game.boardSize}x{game.boardSize}
                   </Text>
                   <Text color="gray.7">
-                    Boardsize: {game.boardSize}x{game.boardSize}
+                    Rounds left: {Math.ceil(game.roundsLeft / 2)}
                   </Text>
                 </Group>
               </Stack>
