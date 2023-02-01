@@ -1,4 +1,4 @@
-import { Avatar, Grid, Group, Stack, Text, Card, Flex } from '@mantine/core'
+import { Avatar, Grid, Group, Stack, Text, Card } from '@mantine/core'
 import { IconChevronRight } from '@tabler/icons'
 import { doc } from 'firebase/firestore'
 import Link from 'next/link'
