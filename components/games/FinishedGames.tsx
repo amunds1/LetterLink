@@ -70,15 +70,16 @@ const FinishedGame = ({ game, userUID }: IFinishedGame) => {
               </Stack>
             </Grid.Col>
             <Grid.Col span="content" mr="xs">
-              <Flex
+              <div
                 style={{
                   alignItems: 'center',
                   justifyContent: 'center',
                   height: '100%',
+                  display: 'flex',
                 }}
               >
                 <IconChevronRight color="#141517" size="2rem" />
-              </Flex>
+              </div>
             </Grid.Col>
           </Grid>
         </Link>

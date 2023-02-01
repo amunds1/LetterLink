@@ -1,13 +1,4 @@
-import {
-  Avatar,
-  Grid,
-  Group,
-  Stack,
-  Text,
-  Card,
-  Flex,
-  Box,
-} from '@mantine/core'
+import { Avatar, Grid, Group, Stack, Text, Card } from '@mantine/core'
 import { IconChevronRight } from '@tabler/icons'
 import { doc } from 'firebase/firestore'
 import Link from 'next/link'
@@ -81,18 +72,19 @@ const ActiveGame = ({ game, yourTurn, userUID }: IActiveGame) => {
               </Stack>
             </Grid.Col>
             <Grid.Col span="content" mr="xs">
-              <Flex
+              <div
                 style={{
                   alignItems: 'center',
                   justifyContent: 'center',
                   height: '100%',
+                  display: 'flex',
                 }}
               >
                 <IconChevronRight
                   color={yourTurn ? '#66A80F' : '#E8590C'}
                   size="2rem"
                 />
-              </Flex>
+              </div>
             </Grid.Col>
           </Grid>
         </Link>
