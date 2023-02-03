@@ -10,12 +10,15 @@ const clientCredentials = {
   appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID,
 }
 
-let firebase: FirebaseApp
-if (!getApps().length) {
-  firebase = initializeApp(clientCredentials)
-} else {
-  firebase = getApp()
+const initializeAppIfNecessary = () => {
+  try {
+    return getApp()
+  } catch {
+    return initializeApp(clientCredentials)
+  }
 }
+
+let firebase: FirebaseApp = initializeAppIfNecessary()
 
 // Initialize Cloud Firestore and get a reference to the service
 export const db = getFirestore(firebase)

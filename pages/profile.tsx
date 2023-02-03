@@ -3,6 +3,7 @@ import { GetServerSidePropsContext } from 'next'
 import Link from 'next/link'
 import ExperiencePointsBar from '../components/profile/ExperiencePointsBar'
 import { fetchUserData } from '../components/profile/firebase/fetchUserData'
+import NotificationButton from '../components/profile/NotificationButton'
 import Statistics from '../components/profile/Statistics'
 import fetchUID from '../firebase/fetchUID'
 import User from '../types/User'
@@ -43,6 +44,7 @@ const Profile = (props: IProfile) => {
 
   return (
     <Stack style={{ height: '100%' }} align="center" justify="center">
+      <NotificationButton />
       <Card shadow="sm" p="lg" radius="md" withBorder>
         <Group position="apart" pb="lg">
           <Group>
