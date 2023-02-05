@@ -19,6 +19,7 @@ import {
 import { GameContext } from './utils/gameContext'
 import updateGameState from './utils/updateGameState'
 import submitMove from './utils/submitMove'
+import useSound from 'use-sound'
 
 const useStyles = createStyles(() => ({
   grid: {
@@ -53,6 +54,9 @@ const GameBoard = () => {
   const [tempBoard, setTempBoard] = useState<string[]>([''])
   const [isLetterPlaced, setisLetterPlaced] = useState<boolean>(false)
 
+  // Play sound
+  const [play] = useSound('/sounds/placeLetter.mp3')
+
   const addLetter = (
     board: string[],
     endIndex: number,
@@ -79,6 +83,7 @@ const GameBoard = () => {
     ) {
       return
     }
+    play()
     const index = Number(result.destination.droppableId)
     // Used to place the letterbox inside the cell its dropped into
     setDropID(index)

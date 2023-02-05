@@ -29,7 +29,8 @@
     "react-beautiful-dnd": "^13.1.1",
     "react-confetti-explosion": "^1.5.1",
     "react-dom": "18.2.0",
-    "react-firebase-hooks": "^5.1.1"
+    "react-firebase-hooks": "^5.1.1",
+    "use-sound": "^4.0.1"
   },
   "devDependencies": {
     "@types/node": "18.11.18",
