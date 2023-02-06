@@ -1,6 +1,4 @@
 import { onSnapshot, doc } from 'firebase/firestore'
-import { Dispatch, SetStateAction, use } from 'react'
-import { fetchBoardData } from '../../../components/game/firebase/fetchBoardData'
 import yourTurn from '../../../components/game/firebase/yourTurn'
 import GameStates from '../../../components/game/types/gameStates'
 import { IGameContext } from '../../../components/game/utils/gameContext'
@@ -38,9 +36,6 @@ const gameDataListener = (gameContextValues: IGameContext) =>
       gameContextValues.setOpponentPoints(
         data?.totalPoints[gameContextValues.opponentID] as number
       )
-
-      // Set winner
-      gameContextValues.setWinner(data?.winner as string)
     }
   )
 

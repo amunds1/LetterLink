@@ -38,7 +38,6 @@ const addGameToCollection = async (
         [`${userDocID}`]: 0,
         [`${oponentDocID}`]: 0,
       },
-      winner: null,
     }
   )
 
