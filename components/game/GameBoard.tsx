@@ -54,8 +54,11 @@ const GameBoard = () => {
   const [tempBoard, setTempBoard] = useState<string[]>([''])
   const [isLetterPlaced, setisLetterPlaced] = useState<boolean>(false)
 
-  // Play sound
-  const [play] = useSound('/sounds/placeLetter.mp3')
+  // Sound played when a letter is placed
+  const [playPlaced] = useSound('/sounds/placeLetter.mp3')
+
+  // Sound played when a move is submited
+  const [playSubmit] = useSound('/sounds/select.wav', { volume: 0.1 })
 
   const addLetter = (
     board: string[],
@@ -83,7 +86,7 @@ const GameBoard = () => {
     ) {
       return
     }
-    play()
+    playPlaced()
     const index = Number(result.destination.droppableId)
     // Used to place the letterbox inside the cell its dropped into
     setDropID(index)
@@ -112,6 +115,7 @@ const GameBoard = () => {
   }
 
   const submit = () => {
+    playSubmit()
     setisLetterPlaced(false)
     if (tempBoard.length === boardSize ** 2 && gameContext) {
       affectedRow &&

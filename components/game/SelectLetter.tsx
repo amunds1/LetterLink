@@ -4,11 +4,16 @@ import { useContext, useState } from 'react'
 import { db } from '../../firebase/clientApp'
 import GameStates from './types/gameStates'
 import { GameContext } from './utils/gameContext'
+import useSound from 'use-sound'
 
 const SelectLetter = () => {
   const gameContext = useContext(GameContext)
 
   const [selectedLetter, setSelectedLetter] = useState('')
+
+  // TODO: Add suitable sounds
+  const [playSubmit] = useSound('/sounds/confirm.wav')
+  const [playSelect] = useSound('/sounds/click.wav')
 
   return (
     <>
@@ -21,6 +26,7 @@ const SelectLetter = () => {
               placeholder=""
               onChange={(e: string) => {
                 setSelectedLetter(e)
+                playSelect()
               }}
               data={[
                 { value: 'P', label: 'P' },
@@ -39,6 +45,7 @@ const SelectLetter = () => {
               style={{ margin: '10px' }}
               disabled={!selectedLetter}
               onClick={async () => {
+                playSubmit()
                 // Set new gameState and selectedLetter in game document
                 await updateDoc(doc(db, 'games', gameContext.gameID), {
                   gameState: GameStates.PLACE_OWN,
