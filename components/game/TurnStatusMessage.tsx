@@ -50,7 +50,7 @@ export const EndTurnStatusMessage = () => {
           (gameContext?.userPoints > gameContext?.opponentPoints
             ? 'You won the game'
             : gameContext?.userPoints < gameContext?.opponentPoints
-            ? `${gameContext?.opponentName} won the game`
+            ? `${gameContext?.opponentData} won the game`
             : 'The game has no winner')}
       </Alert>
     </Center>
