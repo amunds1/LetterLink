@@ -8,17 +8,17 @@ import usersConverter from '../../firebase/converters/userConverter'
 import Game from '../../types/Game'
 import selectUserID from './utils/selectUserID'
 
-interface IActiveGames {
+interface IFinishedGames {
   userUID: string
   games: Game[] | null
 }
 
-interface IActiveGame {
+interface IFinishedGame {
   game: Game
-  yourTurn: boolean
   userUID: string
 }
-const ActiveGame = ({ game, yourTurn, userUID }: IActiveGame) => {
+
+const FinishedGame = ({ game, userUID }: IFinishedGame) => {
   // Fetch opponent data to get name
   const [opponent, loading, error] = useDocumentDataOnce(
     doc(
@@ -31,15 +31,13 @@ const ActiveGame = ({ game, yourTurn, userUID }: IActiveGame) => {
   return (
     <>
       <Card
-        p="sm"
-        shadow="sm"
+        shadow="lg"
         key={game.id}
         radius="md"
         style={{
-          // Lime 0 and orange 0
-          backgroundColor: yourTurn ? '#F4FCE3' : '#FFF4E6',
+          backgroundColor: '#C1C2C5',
           padding: '0.5rem',
-          border: yourTurn ? '1px solid #D8F5A2' : '1px solid #FFD8A8',
+          border: '1px solid #909296',
         }}
       >
         <Link
@@ -50,11 +48,7 @@ const ActiveGame = ({ game, yourTurn, userUID }: IActiveGame) => {
             <Grid.Col span="auto">
               <Stack spacing="xs">
                 <Group spacing="sm" mt="xs" ml="xs">
-                  <Avatar
-                    color="grape"
-                    radius="xl"
-                    style={{ border: '1px solid #EEBEFA' }}
-                  >
+                  <Avatar color="orange" radius="xl">
                     KL
                   </Avatar>
                   <Text color="black" weight="bold" size="md">
@@ -66,7 +60,14 @@ const ActiveGame = ({ game, yourTurn, userUID }: IActiveGame) => {
                     {game.boardSize}x{game.boardSize}
                   </Text>
                   <Text color="gray.7">
-                    Rounds left: {Math.ceil(game.roundsLeft / 2)}
+                    {opponent &&
+                      (game.totalPoints[userUID] >
+                      game.totalPoints[opponent?.id]
+                        ? 'You won the game'
+                        : game.totalPoints[userUID] <
+                          game.totalPoints[opponent?.id]
+                        ? `${opponent.name} won the game`
+                        : 'The game has no winner')}
                   </Text>
                 </Group>
               </Stack>
@@ -80,10 +81,7 @@ const ActiveGame = ({ game, yourTurn, userUID }: IActiveGame) => {
                   display: 'flex',
                 }}
               >
-                <IconChevronRight
-                  color={yourTurn ? '#66A80F' : '#E8590C'}
-                  size="2rem"
-                />
+                <IconChevronRight color="#141517" size="2rem" />
               </div>
             </Grid.Col>
           </Grid>
@@ -93,53 +91,25 @@ const ActiveGame = ({ game, yourTurn, userUID }: IActiveGame) => {
   )
 }
 
-const ActiveGames = ({ games, userUID }: IActiveGames) => {
+const FinishedGames = ({ games, userUID }: IFinishedGames) => {
   if (!games) return <></>
 
   return (
     <Stack>
-      {/* YOUR TURN */}
-      {games?.filter((game) => game.nextTurn === userUID).length > 0 && (
-        <Stack>
+      {games.length > 0 && (
+        <>
           <Text align="left" size="xl" weight="bold" mt="sm">
-            Your turn
+            Finished games
           </Text>
           {games &&
-            games
-              .filter((game) => game.nextTurn === userUID)
-              .map((game) => (
-                <ActiveGame
-                  key={game.id}
-                  game={game}
-                  yourTurn={true}
-                  userUID={userUID}
-                />
-              ))}
-        </Stack>
-      )}
-
-      {/* THEIR TURN */}
-      {games?.filter((game) => game.nextTurn != userUID).length > 0 && (
-        <Stack>
-          <Text align="left" size="xl" weight="bold" mt="sm">
-            Their turn
-          </Text>
-
-          {games &&
-            games
-              .filter((game) => game.nextTurn != userUID)
-              .map((game) => (
-                <ActiveGame
-                  key={game.id}
-                  game={game}
-                  yourTurn={false}
-                  userUID={userUID}
-                />
-              ))}
-        </Stack>
+            userUID &&
+            games.map((game) => (
+              <FinishedGame key={game.id} game={game} userUID={userUID} />
+            ))}
+        </>
       )}
     </Stack>
   )
 }
 
-export default ActiveGames
+export default FinishedGames
