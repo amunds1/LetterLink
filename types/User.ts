@@ -1,4 +1,5 @@
 import { DocumentReference, DocumentData } from 'firebase/firestore'
+import { IAchievement } from '../components/achievements/types/IAchievement'
 
 interface User {
   id: string
@@ -6,6 +7,7 @@ interface User {
   proposedGames: DocumentReference<DocumentData>[] | null
   name: string
   experiencePoints: number
+  achievements?: { [key: string]: IAchievement }
 }
 
 export default User

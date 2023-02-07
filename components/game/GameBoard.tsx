@@ -5,6 +5,7 @@ import {
   createStyles,
   Grid,
   Center,
+  Text,
 } from '@mantine/core'
 import { useContext, useEffect, useState } from 'react'
 import { DragDropContext, Droppable, DropResult } from 'react-beautiful-dnd'
@@ -163,7 +164,7 @@ const GameBoard = () => {
                               {...provided.droppableProps}
                               style={{
                                 backgroundColor: snapshot.isDraggingOver
-                                  ? 'MediumSeaGreen'
+                                  ? '#C0EB75'
                                   : 'white',
                                 aspectRatio: '1',
                                 display: 'flex',
@@ -233,6 +234,7 @@ const GameBoard = () => {
                         style={{
                           padding: '10px',
                           fontSize: '30px',
+                          minHeight: '100px',
                         }}
                       >
                         {/* DraggableLetterBox that is not placed at the board */}
@@ -257,11 +259,20 @@ const GameBoard = () => {
             gameContext.yourTurn && (
               <Center>
                 <Button
-                  color="green"
+                  color="lime"
                   disabled={!isLetterPlaced}
                   onClick={() => submit()}
+                  fullWidth
+                  variant="light"
+                  style={
+                    isLetterPlaced
+                      ? { border: '1px solid #D8F5A2' }
+                      : { border: '1px solid #CED4DA' }
+                  }
                 >
-                  Submit
+                  <Text color={isLetterPlaced ? 'lime.8' : 'gray.5'}>
+                    Submit
+                  </Text>
                 </Button>
               </Center>
             )}

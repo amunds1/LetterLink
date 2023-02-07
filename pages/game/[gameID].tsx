@@ -1,9 +1,7 @@
-import { Button, Center, Container } from '@mantine/core'
+import { Container } from '@mantine/core'
 import { GetServerSideProps, GetServerSidePropsContext } from 'next'
-import Link from 'next/link'
 import { useEffect, useState } from 'react'
 import { resetServerContext } from 'react-beautiful-dnd'
-import { EndedGame } from '../../components/game/EndedGame'
 import { fetchBoardData } from '../../components/game/firebase/fetchBoardData'
 import fetchGameData from '../../components/game/firebase/fetchGameData'
 import getName from '../../components/game/firebase/getName'
@@ -14,12 +12,14 @@ import SelectLetter from '../../components/game/SelectLetter'
 import {
   OpponentTurnStatusMessage,
   YourTurnStatusMessage,
+  EndTurnStatusMessage,
 } from '../../components/game/TurnStatusMessage'
 import GameStates from '../../components/game/types/gameStates'
 import {
   GameContext,
   IGameContext,
 } from '../../components/game/utils/gameContext'
+import BackToGamesButton from '../../components/games/BackToGamesButton'
 import selectUserID from '../../components/games/utils/selectUserID'
 import fetchUID from '../../firebase/fetchUID'
 import BoardData from '../../types/BoardData'
@@ -102,8 +102,6 @@ const GameID = (props: IGameID) => {
     gameData.selectedLetter || null
   )
 
-  console.log(gameData)
-
   const [userPoints, setUserPoints] = useState(gameData.totalPoints[uid])
   const [opponentPoints, setOpponentPoints] = useState(
     gameData.totalPoints[opponentID]
@@ -154,21 +152,22 @@ const GameID = (props: IGameID) => {
 
   return (
     <Container>
-      {/* Display who turn it is */}
-      {yourTurn ? <YourTurnStatusMessage /> : <OpponentTurnStatusMessage />}
+      {/* Back to games button */}
+      <BackToGamesButton />
 
       <GameContext.Provider value={GameContextValues}>
+        {/* Display who turn it is */}
+        {gameState === GameStates.END ? (
+          <EndTurnStatusMessage />
+        ) : yourTurn ? (
+          <YourTurnStatusMessage />
+        ) : (
+          <OpponentTurnStatusMessage />
+        )}
         <Points />
         <GameBoard />
         {gameState === GameStates.CHOOSE && <SelectLetter />}
-        {gameState === GameStates.END && <EndedGame />}
       </GameContext.Provider>
-
-      <Link href="/games">
-        <Center>
-          <Button>Back to games</Button>
-        </Center>
-      </Link>
     </Container>
   )
 }
