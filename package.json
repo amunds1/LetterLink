@@ -17,6 +17,7 @@
     "@mantine/ds": "^5.5.4",
     "@mantine/form": "^5.10.3",
     "@mantine/hooks": "^5.3.3",
+    "@mantine/prism": "^5.10.3",
     "@mantine/next": "^5.10.3",
     "@tabler/icons": "^1.119.0",
     "@tanstack/react-table": "^8.7.9",

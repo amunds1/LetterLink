@@ -8,8 +8,6 @@ const checkRowOrColumn = async (data: string[], differentIndex: number) => {
 
     const result = await wordIsValid(word)
 
-    console.log(`${word}: ${result}`)
-
     if (result) {
       return {
         word: word,
