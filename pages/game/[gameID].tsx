@@ -1,7 +1,9 @@
 import { Container } from '@mantine/core'
+import { doc } from 'firebase/firestore'
 import { GetServerSideProps, GetServerSidePropsContext } from 'next'
 import { useEffect, useState } from 'react'
 import { resetServerContext } from 'react-beautiful-dnd'
+import { useDocumentData } from 'react-firebase-hooks/firestore'
 import { fetchBoardData } from '../../components/game/firebase/fetchBoardData'
 import fetchGameData from '../../components/game/firebase/fetchGameData'
 import getName from '../../components/game/firebase/getName'
@@ -21,6 +23,8 @@ import {
 } from '../../components/game/utils/gameContext'
 import BackToGamesButton from '../../components/games/BackToGamesButton'
 import selectUserID from '../../components/games/utils/selectUserID'
+import { db } from '../../firebase/clientApp'
+import boardDataConverter from '../../firebase/converters/boardDataConverter'
 import fetchUID from '../../firebase/fetchUID'
 import BoardData from '../../types/BoardData'
 import Game from '../../types/Game'
@@ -102,6 +106,14 @@ const GameID = (props: IGameID) => {
     gameData.selectedLetter || null
   )
 
+  const [columnValidWords, setColumnValidWords] = useState<{
+    [key: number]: number[]
+  }>(boardData.columnValidWords)
+
+  const [rowValidWords, setRowValidWords] = useState<{
+    [key: number]: number[]
+  }>(boardData.rowValidWords)
+
   const [userPoints, setUserPoints] = useState(gameData.totalPoints[uid])
   const [opponentPoints, setOpponentPoints] = useState(
     gameData.totalPoints[opponentID]
@@ -119,6 +131,25 @@ const GameID = (props: IGameID) => {
     | GameStates.END
   >(initialGameState)
 
+  /* 
+    Listen for changes in board data, in order to update columnValidWords and rowValidWords
+    in GameContextValues
+
+    This allows for cells to automatically be coloured green if they are part of a valid word
+  */
+  const [value, loading, error] = useDocumentData(
+    doc(db, 'games', gameData.id as string, uid, 'boardData').withConverter(
+      boardDataConverter
+    )
+  )
+
+  useEffect(() => {
+    if (value) {
+      setColumnValidWords(value.columnValidWords)
+      setRowValidWords(value.rowValidWords)
+    }
+  }, [value])
+
   // Populate GameContext
   const GameContextValues: IGameContext = {
     selectedLetter: selectedLetter,
@@ -133,8 +164,8 @@ const GameID = (props: IGameID) => {
       size: gameData.boardSize,
       values: boardData.board,
     },
-    columnValidWords: boardData.columnValidWords,
-    rowValidWords: boardData.rowValidWords,
+    columnValidWords: columnValidWords,
+    rowValidWords: rowValidWords,
     yourTurn: yourTurn,
     setYourTurn: setYourTurn,
     opponentID: opponentID,
