@@ -1,10 +1,12 @@
-import { Button, createStyles, Stack } from '@mantine/core'
+import { Button, Center, createStyles, Stack, Text } from '@mantine/core'
 import { collection, doc, query, where } from 'firebase/firestore'
 import { GetServerSidePropsContext } from 'next'
 import Link from 'next/link'
 import { useEffect, useState } from 'react'
 import { useCollectionData } from 'react-firebase-hooks/firestore'
+import GameStates from '../../components/game/types/gameStates'
 import ActiveGames from '../../components/games/ActiveGames'
+import FinishedGames from '../../components/games/FinishedGames'
 import {
   fetchActiveGames,
   fetchProposedGames,
@@ -15,6 +17,7 @@ import { db } from '../../firebase/clientApp'
 import gamesConverter from '../../firebase/converters/gamesConverter'
 import fetchUID from '../../firebase/fetchUID'
 import Game from '../../types/Game'
+import { IconPlus } from '@tabler/icons'
 
 const useStyles = createStyles(() => ({
   center: { height: '100%' },
@@ -121,23 +124,41 @@ const Games = (props: IGames) => {
 
   return (
     <>
-      <Stack style={{ width: '100%' }}>
-        <Stack className={classes.center} style={{ width: '100%' }}>
-          {/* Display proposed games (isActive = false) using filter */}
-          <ProposedGames
-            userUID={uid}
-            games={games.filter((game) => game.isActive == false)}
-          />
-          {/* Display active games (isActive = true) using filter */}
-          <ActiveGames
-            userUID={uid}
-            games={games.filter((game) => game.isActive == true)}
-          />
-        </Stack>
-
-        <Link href="/game/new">
-          <Button>Start a new game</Button>
+      <Stack className={classes.center} style={{ width: '100%' }}>
+        <Link href="/game/new" style={{ textDecoration: 'none' }}>
+          <Center>
+            <Button
+              fullWidth
+              variant="light"
+              color="cyan"
+              style={{ border: '1px solid #99E9F2' }}
+              leftIcon={<IconPlus color="#0C8599" />}
+            >
+              <Text color="cyan.8">New game</Text>
+            </Button>
+          </Center>
         </Link>
+        {/* Display proposed games (isActive = false && gameState = choose) using filter */}
+        <ProposedGames
+          userUID={uid}
+          games={games.filter(
+            (game) =>
+              game.isActive == false && game.gameState === GameStates.CHOOSE
+          )}
+        />
+        {/* Display active games (isActive = true) using filter */}
+        <ActiveGames
+          userUID={uid}
+          games={games.filter((game) => game.isActive == true)}
+        />
+        {/* Displaying finished games (isActive = false && gameSate = end) */}
+        <FinishedGames
+          userUID={uid}
+          games={games.filter(
+            (game) =>
+              game.isActive == false && game.gameState === GameStates.END
+          )}
+        />
       </Stack>
     </>
   )
