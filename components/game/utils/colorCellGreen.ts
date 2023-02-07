@@ -17,7 +17,7 @@ const colorCellGreen = (
     // differenceIndex -> position in row
     const rowPosition = findRowPosition({ index, boardSize })
     if (isPartOfValidWord(rowPosition, rowValidWords)) {
-      return 'green'
+      return '#D8F5A2'
     }
   }
 
@@ -27,7 +27,7 @@ const colorCellGreen = (
     // differenceIndex -> position in col
     const colPosition = findColumnPosition({ index, boardSize })
     if (isPartOfValidWord(colPosition, columnValidWords)) {
-      return 'green'
+      return '#D8F5A2'
     }
   }
 
