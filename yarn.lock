@@ -1641,12 +1641,12 @@
     "@radix-ui/react-scroll-area" "1.0.2"
     react-textarea-autosize "8.3.4"
 
-"@mantine/ds@^5.5.4":
-  version "5.5.4"
-  resolved "https://registry.npmjs.org/@mantine/ds/-/ds-5.5.4.tgz"
-  integrity sha512-84DwRAQe0N+n08H/IGgKTt3gB7I9SFiFWio4I9nsaJBalAQk3/KPw5v7aaMdLUNJvBMwBzzDVTVIa40Pf2U4Og==
+"@mantine/ds@^5.10.3":
+  version "5.10.3"
+  resolved "https://registry.yarnpkg.com/@mantine/ds/-/ds-5.10.3.tgz#35291ee0875771a093bb6d62634d87dfc07f6475"
+  integrity sha512-01koCnPMt644u7nhyCwcaB/1WdafT5YTraO8X0AohgdxKWChQXFpZGWTL4FgKtLPEJHmjHCvni6CZe8eCLeP+g==
   dependencies:
-    "@mantine/utils" "5.5.4"
+    "@mantine/utils" "5.10.3"
 
 "@mantine/form@^5.10.3":
   version "5.10.3"
@@ -1697,11 +1697,6 @@
   version "5.10.3"
   resolved "https://registry.yarnpkg.com/@mantine/utils/-/utils-5.10.3.tgz#724e5076812bffdb15a23859f23b9e78c1774239"
   integrity sha512-ZfR1wouA/rz3xTOb2wBnrQpIiyjLcCLLvbUo7rzaG3LhFy7UoGjZ6uqIW9qDrzs7SR4tETRfMxedYagjcoCiEg==
-
-"@mantine/utils@5.5.4":
-  version "5.5.4"
-  resolved "https://registry.npmjs.org/@mantine/utils/-/utils-5.5.4.tgz"
-  integrity sha512-EO0iD99wfvKC09WHpCXrqb5ewTmuYf4GeNR3xOtecNaXNbFUVxmlV6wwhsJ61YScy+7bM1lplwNvkGz5CF0v7Q==
 
 "@next/env@13.1.6":
   version "13.1.6"

@@ -14,7 +14,7 @@
     "@emotion/server": "^11.10.0",
     "@faker-js/faker": "^7.6.0",
     "@mantine/core": "^5.10.3",
-    "@mantine/ds": "^5.5.4",
+    "@mantine/ds": "^5.10.3",
     "@mantine/form": "^5.10.3",
     "@mantine/hooks": "^5.3.3",
     "@mantine/prism": "^5.10.3",
