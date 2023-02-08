@@ -1,5 +1,7 @@
+import { auth } from 'firebase-admin'
 import { getApp, initializeApp, getApps, FirebaseApp } from 'firebase/app'
-import { getFirestore } from 'firebase/firestore'
+import { connectAuthEmulator, getAuth } from 'firebase/auth'
+import { connectFirestoreEmulator, getFirestore } from 'firebase/firestore'
 
 const clientCredentials = {
   apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
@@ -19,5 +21,14 @@ if (!getApps().length) {
 
 // Initialize Cloud Firestore and get a reference to the service
 export const db = getFirestore(firebase)
+
+// firebaseApps previously initialized using initializeApp()
+if (process.env.NODE_ENV === 'development') {
+  connectAuthEmulator(getAuth(firebase), `https://localhost:4000`)
+
+  if (!db._settingsFrozen) {
+    connectFirestoreEmulator(db, 'localhost', 4000)
+  }
+}
 
 export default firebase
