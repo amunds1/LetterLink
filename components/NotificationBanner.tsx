@@ -17,13 +17,13 @@ export const SuccessNotification = ({
   contentMessage,
   title,
 }: INotification) => (
-  <Notification icon={<IconCheck size={18} />} color="teal" title={title}>
+  <Notification icon={<IconCheck />} color="teal" title={title}>
     {contentMessage}
   </Notification>
 )
 
 export const ErrorNotification = ({ contentMessage, title }: INotification) => (
-  <Notification icon={<IconX size={18} />} color="red" title={title}>
+  <Notification icon={<IconX />} color="red" title={title}>
     {contentMessage}
   </Notification>
 )
