@@ -42,7 +42,7 @@ const DraggableLetterBox = (props: { letter: String; index: number }) => {
             </Box>
           )}
           {/* Box placed at the board */}
-          {props.index === 1 && (
+          {props.index >= 0 && (
             <Box
               ref={provided.innerRef}
               {...provided.draggableProps}

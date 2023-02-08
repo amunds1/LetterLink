@@ -68,10 +68,6 @@ const GameBoard = () => {
     return newBoard
   }
 
-  const onDragStart = () => {
-    setisLetterPlaced(false)
-  }
-
   const onDragEnd = (result: DropResult) => {
     if (
       !result.destination ||
@@ -140,7 +136,7 @@ const GameBoard = () => {
           className={classes.container}
           style={{ padding: '0 0 20px 0' }}
         >
-          <DragDropContext onDragEnd={onDragEnd} onDragStart={onDragStart}>
+          <DragDropContext onDragEnd={onDragEnd}>
             <div>
               <Grid className={classes.grid} columns={gameContext.grid.size}>
                 {board.map((cellValue, index) => (
@@ -167,7 +163,7 @@ const GameBoard = () => {
                               {dropID === index && (
                                 <DraggableLetterBox
                                   letter={prevLetter}
-                                  index={1}
+                                  index={dropID}
                                 ></DraggableLetterBox>
                               )}
                               {provided.placeholder}
