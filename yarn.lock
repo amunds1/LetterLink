@@ -1656,10 +1656,10 @@
     fast-deep-equal "^3.1.3"
     klona "^2.0.5"
 
-"@mantine/hooks@^5.3.3":
-  version "5.5.4"
-  resolved "https://registry.npmjs.org/@mantine/hooks/-/hooks-5.5.4.tgz"
-  integrity sha512-4lPIcZgoMkq+GCILN8CDTVxYzsE/Gfi6ICjHhPZU1Ufmw0mftpjTQhLx3+TFMtBlqnamgBia2ZS1o2BpvTLazA==
+"@mantine/hooks@^5.10.3":
+  version "5.10.3"
+  resolved "https://registry.yarnpkg.com/@mantine/hooks/-/hooks-5.10.3.tgz#1a80a53d8f4e2ddf7da7b0912dcec6a51b55c1ae"
+  integrity sha512-fFDXF0A596z10QKeWAGtTZJ4QotsMxhhbjfWWRHMogY/hXHQ2S+7+GFotpF2JbzefYztpawHEJevy3eYF8cQmQ==
 
 "@mantine/next@^5.10.3":
   version "5.10.3"
