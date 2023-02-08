@@ -105,25 +105,20 @@ const GameBoard = () => {
 
   const submit = () => {
     setisLetterPlaced(false)
-    if (tempBoard.length === boardSize ** 2 && gameContext) {
-      affectedRow &&
-        affectedColumn &&
-        submitMove({
-          gameID: gameContext.gameID,
-          userID: gameContext.userUID,
-          board: tempBoard,
-          row: affectedRow,
-          column: affectedColumn,
-          userPoints: gameContext.userPoints,
-        })
+
+    submitMove({
+      gameID: gameContext!.gameID,
+      userID: gameContext!.userUID,
+      board: tempBoard,
+      row: affectedRow!,
+      column: affectedColumn!,
+      userPoints: gameContext!.userPoints,
+    }).then((res) => {
       setBoard(tempBoard)
       setTempBoard([''])
 
-      updateGameState(gameContext)
-    } else {
-      // TODO: add as feeback messeage
-      console.log('You have to place the letter')
-    }
+      updateGameState(gameContext!)
+    })
   }
 
   // Re-render board after response from /api/check
