@@ -1,4 +1,4 @@
-import { doc, updateDoc } from 'firebase/firestore'
+import { doc, increment, updateDoc } from 'firebase/firestore'
 import { db } from '../../../firebase/clientApp'
 import { fetchBoardData } from '../firebase/fetchBoardData'
 import fetchGameData from '../firebase/fetchGameData'
@@ -37,9 +37,33 @@ const updateGameState = async (gameContext: IGameContext) => {
         isActive: false,
       })
 
+      // Fetch game data from Firebase
       const gameData = await fetchGameData(gameContext.gameID)
 
-      console.log('UpdateGameState', gameData)
+      const players: [string, number][] = Object.entries(gameData!.totalPoints)
+
+      if (players[0][1] > players[1][1]) {
+        await updateDoc(doc(db, 'games', gameContext.gameID), {
+          winner: players[0][0],
+        })
+      }
+      if (players[0][1] < players[1][1]) {
+        await updateDoc(doc(db, 'games', gameContext.gameID), {
+          winner: players[1][0],
+        })
+      } else {
+        await updateDoc(doc(db, 'games', gameContext.gameID), {
+          winner: 'DRAW',
+        })
+      }
+
+      await updateDoc(doc(db, 'users', players[0][0]), {
+        experiencePoints: increment(players[0][1]),
+      })
+
+      await updateDoc(doc(db, 'users', players[1][0]), {
+        experiencePoints: increment(players[1][1]),
+      })
     } else {
       await updateDoc(doc(db, 'games', gameContext.gameID), {
         gameState: GameStates.CHOOSE,
