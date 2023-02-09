@@ -24,6 +24,7 @@ import CheckBoardResponseData from '../../pages/api/types/CheckBoardResponseData
 import { IValidWords } from './interface/IvalidWords'
 import getValidWordsList from './utils/getValidWordsList'
 import colorValidWordBorder from './utils/colorValidWordBorder'
+import Link from 'next/link'
 
 const useStyles = createStyles(() => ({
   grid: {
@@ -294,6 +295,12 @@ const GameBoard = () => {
                   </Button>
                 </Center>
               )}
+
+            {gameContext.gameState === 'END' && (
+              <Link href={`/breakdown/${gameContext.gameID}`}>
+                <Button>Gå videre</Button>
+              </Link>
+            )}
           </>
         </Container>
       )}

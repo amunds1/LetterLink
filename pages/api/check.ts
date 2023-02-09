@@ -4,7 +4,6 @@ import CheckBoardRequestData from './types/CheckBoardRequestData'
 import CheckBoardResponseData from './types/CheckBoardResponseData'
 import newCheckRowOrColumn from './utils/newCheckRowOrColumn'
 import { updateBoard } from './utils/updateBoard'
-import { updateColumnPoints, updateRowPoints } from './utils/updatePoints'
 import {
   updateValidColumnWords,
   updateValidRowWords,
@@ -25,6 +24,8 @@ export default async function handler(
   // Cast request body to RequestData type
   const boardData: CheckBoardRequestData = { ...req.body }
 
+  const promises = []
+
   // Check row
   const validWordInRow = await newCheckRowOrColumn(
     boardData.row.data,
@@ -40,8 +41,7 @@ export default async function handler(
       word: validWordInRow.word,
     }
 
-    updateValidRowWords(boardData, validWordInRow)
-    updateBoard(boardData)
+    await updateValidRowWords(boardData, validWordInRow)
   }
 
   // Check column
@@ -59,12 +59,12 @@ export default async function handler(
       word: validWordInColumn.word,
     }
 
-    updateValidColumnWords(boardData, validWordInColumn)
+    await updateValidColumnWords(boardData, validWordInColumn)
   }
-  updateBoard(boardData)
 
-  // Set next turn to oponent
-  // updateTurn(boardData.gameID, boardData.oponentID)
+  // Update board
+  await updateBoard(boardData)
 
   res.status(200).json(response)
+  return
 }
