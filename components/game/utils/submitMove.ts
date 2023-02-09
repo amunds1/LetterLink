@@ -26,7 +26,7 @@ const submitMove = async ({
     userPoints: userPoints,
   }
 
-  await validateBoard(boardData)
+  return await validateBoard(boardData)
 }
 
 export default submitMove
