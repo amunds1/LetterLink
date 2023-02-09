@@ -36,6 +36,9 @@ const gameDataListener = (gameContextValues: IGameContext) =>
       gameContextValues.setOpponentPoints(
         data?.totalPoints[gameContextValues.opponentID] as number
       )
+
+      // Set winner
+      gameContextValues.setWinner(data?.winner as string)
     }
   )
 
