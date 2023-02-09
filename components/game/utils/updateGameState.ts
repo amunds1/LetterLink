@@ -46,8 +46,7 @@ const updateGameState = async (gameContext: IGameContext) => {
         await updateDoc(doc(db, 'games', gameContext.gameID), {
           winner: players[0][0],
         })
-      }
-      if (players[0][1] < players[1][1]) {
+      } else if (players[0][1] < players[1][1]) {
         await updateDoc(doc(db, 'games', gameContext.gameID), {
           winner: players[1][0],
         })
