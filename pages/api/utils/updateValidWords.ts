@@ -1,4 +1,4 @@
-import { doc, updateDoc } from 'firebase/firestore'
+import { doc, increment, updateDoc } from 'firebase/firestore'
 import { fetchBoardData } from '../../../components/game/firebase/fetchBoardData'
 import { db } from '../../../firebase/clientApp'
 import CheckBoardRequestData from '../types/CheckBoardRequestData'
@@ -8,20 +8,10 @@ import { updateColumnPoints, updateRowPoints } from './updatePoints'
 export const generateGameRef = (boardData: CheckBoardRequestData) =>
   doc(db, 'games', boardData.gameID, boardData.userID, 'boardData')
 
-// Update rowValidWords object inside boardData document
-/* export const updateValidRowWords = async (
-  boardData: CheckBoardRequestData,
-  validWordInRow: { word: string; position: number[] }
-) => {
-  await updateDoc(generateGameRef(boardData), {
-    [`rowValidWords.${boardData.row.positionIndex}`]: validWordInRow.position,
-  })
-} */
-
 // Update columnValidWords object inside boardData document
 export const updateValidColumnWords = async (
   boardData: CheckBoardRequestData,
-  validWordInColumn: { word: string; position: number[] }
+  validWordInColumn: { word: string; position: number[]; points: number }
 ) => {
   // Fetch board data from Firebase
   const tempBoardData = await fetchBoardData(boardData.gameID, boardData.userID)
@@ -39,12 +29,7 @@ export const updateValidColumnWords = async (
     )
       validWordsMask[i] = 1
 
-    // Count number of 1's in validWordMask, where a 1 equals one point, and update points
-    const points = validWordsMask.filter((x) => x == 1).length
-    updateColumnPoints(boardData, points)
-
-    // Update totalPoints
-    const newPointScore = boardData.userPoints + points
+    updateColumnPoints(boardData, validWordInColumn.points)
 
     // Await both updates to boardData and game documents
     await Promise.all([
@@ -53,7 +38,9 @@ export const updateValidColumnWords = async (
         [`columnValidWords.${boardData.column.positionIndex}`]: validWordsMask,
       }),
       updateDoc(doc(db, 'games', boardData.gameID), {
-        [`totalPoints.${boardData.userID}`]: newPointScore,
+        [`totalPoints.${boardData.userID}`]: increment(
+          validWordInColumn.points
+        ),
       }),
     ])
       .then((res) => {
@@ -72,7 +59,7 @@ export const updateValidColumnWords = async (
 // Update rowValidWords object inside boardData document
 export const updateValidRowWords = async (
   boardData: CheckBoardRequestData,
-  validWordInRow: { word: string; position: number[] }
+  validWordInRow: { word: string; position: number[]; points: number }
 ) => {
   // Fetch board data from Firebase
   const tempBoardData = await fetchBoardData(boardData.gameID, boardData.userID)
@@ -90,12 +77,7 @@ export const updateValidRowWords = async (
     )
       validWordsMask[i] = 1
 
-    // Count number of 1's in validWordMask, where a 1 equals one point, and update points
-    const points = validWordsMask.filter((x) => x == 1).length
-    updateRowPoints(boardData, points)
-
-    // Update totalPoints
-    const newPointScore = boardData.userPoints + points
+    updateRowPoints(boardData, validWordInRow.points)
 
     // Await both updates to boardData and game documents
     await Promise.allSettled([
@@ -104,7 +86,7 @@ export const updateValidRowWords = async (
         [`rowValidWords.${boardData.row.positionIndex}`]: validWordsMask,
       }),
       updateDoc(doc(db, 'games', boardData.gameID), {
-        [`totalPoints.${boardData.userID}`]: newPointScore,
+        [`totalPoints.${boardData.userID}`]: increment(validWordInRow.points),
       }),
     ])
       .then((res) => {

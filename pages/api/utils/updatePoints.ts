@@ -1,4 +1,4 @@
-import { doc, updateDoc } from 'firebase/firestore'
+import { doc, increment, updateDoc } from 'firebase/firestore'
 import { db } from '../../../firebase/clientApp'
 import CheckBoardRequestData from '../types/CheckBoardRequestData'
 
@@ -12,7 +12,7 @@ export const updateRowPoints = async (
   points: number
 ) => {
   await updateDoc(generateGameRef(boardData), {
-    [`rowPoints.${boardData.row.positionIndex}`]: points,
+    [`rowPoints.${boardData.row.positionIndex}`]: increment(points),
   })
 }
 
@@ -22,6 +22,6 @@ export const updateColumnPoints = async (
   points: number
 ) => {
   await updateDoc(generateGameRef(boardData), {
-    [`columnPoints.${boardData.column.positionIndex}`]: points,
+    [`columnPoints.${boardData.column.positionIndex}`]: increment(points),
   })
 }
