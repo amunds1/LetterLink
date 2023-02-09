@@ -20,6 +20,7 @@ import {
 import { GameContext } from './utils/gameContext'
 import updateGameState from './utils/updateGameState'
 import submitMove from './utils/submitMove'
+import Link from 'next/link'
 
 const useStyles = createStyles(() => ({
   grid: {
@@ -116,7 +117,6 @@ const GameBoard = () => {
     }).then((res) => {
       setBoard(tempBoard)
       setTempBoard([''])
-
       updateGameState(gameContext!)
     })
   }
@@ -258,6 +258,11 @@ const GameBoard = () => {
                 </Button>
               </Center>
             )}
+          {gameContext.gameState === 'END' && (
+            <Link href={`/breakdown/${gameContext.gameID}`}>
+              <Button>Gå videre</Button>
+            </Link>
+          )}
         </Container>
       )}
     </>

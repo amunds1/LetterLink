@@ -16,6 +16,9 @@ export default async function handler(
 ) {
   let response: CheckBoardResponseData = {}
 
+  let rowPointsUpdated: boolean = false
+  let columnPointsUpdated: boolean = false
+
   // Return error message if HTTP method was not POST
   if (req.method !== 'POST') {
     res.status(405).send({ message: 'Only POST requests allowed' })
@@ -39,9 +42,8 @@ export default async function handler(
       wordPosition: validWordInRow.position,
       word: validWordInRow.word,
     }
-
-    updateValidRowWords(boardData, validWordInRow)
-    updateBoard(boardData)
+    // Vent
+    rowPointsUpdated = await updateValidRowWords(boardData, validWordInRow)
   }
 
   // Check column
@@ -59,12 +61,17 @@ export default async function handler(
       word: validWordInColumn.word,
     }
 
-    updateValidColumnWords(boardData, validWordInColumn)
+    columnPointsUpdated = await updateValidColumnWords(
+      boardData,
+      validWordInColumn
+    )
   }
+
+  // Update board
   updateBoard(boardData)
 
   // Set next turn to oponent
   // updateTurn(boardData.gameID, boardData.oponentID)
 
-  res.status(200).json(response)
+  rowPointsUpdated && columnPointsUpdated && res.status(200).json(response)
 }

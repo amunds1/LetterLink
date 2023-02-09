@@ -46,15 +46,19 @@ export const updateValidColumnWords = async (
     // Update totalPoints
     const newPointScore = boardData.userPoints + points
 
-    // Update columnValidWords with new updated array for given column
-    await updateDoc(generateGameRef(boardData), {
-      [`columnValidWords.${boardData.column.positionIndex}`]: validWordsMask,
-    })
-
-    await updateDoc(doc(db, 'games', boardData.gameID), {
-      [`totalPoints.${boardData.userID}`]: newPointScore,
+    Promise.all([
+      // Update columnValidWords with new updated array for given column
+      updateDoc(generateGameRef(boardData), {
+        [`columnValidWords.${boardData.column.positionIndex}`]: validWordsMask,
+      }),
+      updateDoc(doc(db, 'games', boardData.gameID), {
+        [`totalPoints.${boardData.userID}`]: newPointScore,
+      }),
+    ]).then((res) => {
+      return true
     })
   }
+  return false
 }
 
 // Update rowValidWords object inside boardData document
@@ -85,13 +89,18 @@ export const updateValidRowWords = async (
     // Update totalPoints
     const newPointScore = boardData.userPoints + points
 
-    // Update rowValidWords with new updated array for given row
-    await updateDoc(generateGameRef(boardData), {
-      [`rowValidWords.${boardData.row.positionIndex}`]: validWordsMask,
-    })
-
-    await updateDoc(doc(db, 'games', boardData.gameID), {
-      [`totalPoints.${boardData.userID}`]: newPointScore,
+    Promise.all([
+      // Update rowValidWords with new updated array for given row
+      updateDoc(generateGameRef(boardData), {
+        [`rowValidWords.${boardData.row.positionIndex}`]: validWordsMask,
+      }),
+      updateDoc(doc(db, 'games', boardData.gameID), {
+        [`totalPoints.${boardData.userID}`]: newPointScore,
+      }),
+    ]).then((res) => {
+      return true
     })
   }
+
+  return false
 }

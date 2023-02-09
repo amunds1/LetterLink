@@ -1,5 +1,7 @@
 import { doc, updateDoc } from 'firebase/firestore'
 import { db } from '../../../firebase/clientApp'
+import { fetchBoardData } from '../firebase/fetchBoardData'
+import fetchGameData from '../firebase/fetchGameData'
 import GameStates from '../types/gameStates'
 import { IGameContext } from './gameContext'
 
