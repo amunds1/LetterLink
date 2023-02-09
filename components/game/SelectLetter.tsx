@@ -1,4 +1,4 @@
-import { Button, Center, Input, Text } from '@mantine/core'
+import { Button, Center, Text, TextInput } from '@mantine/core'
 import { updateDoc, doc } from 'firebase/firestore'
 import { ChangeEvent, useContext, useState } from 'react'
 import { db } from '../../firebase/clientApp'
@@ -9,6 +9,7 @@ const SelectLetter = () => {
   const gameContext = useContext(GameContext)
 
   const [selectedLetter, setSelectedLetter] = useState('')
+  const [error, setError] = useState<boolean>(false)
 
   const isValidChar = (char: string) => {
     if (char.length === 1) {
@@ -22,20 +23,30 @@ const SelectLetter = () => {
       {gameContext?.yourTurn && (
         <>
           <Center>
-            <Input
+            <TextInput
               style={{
                 width: '100%',
                 margin: '10px',
               }}
-              type="text"
               placeholder="Type a letter"
+              error={error ? 'Not valid! You have to type a letter' : false}
               maxLength={1}
               onChange={(e: ChangeEvent<HTMLInputElement>) => {
-                const char = e.currentTarget.value.toUpperCase()
+                // Force input to uppercase
+                e.currentTarget.value = e.currentTarget.value.toUpperCase()
+                const char = e.currentTarget.value
+                // Checks if input is valid (not number or symbols)
                 if (isValidChar(char)) {
                   setSelectedLetter(char)
+                  setError(false)
                 } else {
                   setSelectedLetter('')
+                  // If input is empty -> no error message
+                  if (char.length == 0) {
+                    setError(false)
+                  } else {
+                    setError(true)
+                  }
                 }
               }}
             />
