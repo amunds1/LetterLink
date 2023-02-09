@@ -36,6 +36,10 @@ const updateGameState = async (gameContext: IGameContext) => {
         roundsLeft: 0,
         isActive: false,
       })
+
+      const gameData = await fetchGameData(gameContext.gameID)
+
+      console.log('UpdateGameState', gameData)
     } else {
       await updateDoc(doc(db, 'games', gameContext.gameID), {
         gameState: GameStates.CHOOSE,

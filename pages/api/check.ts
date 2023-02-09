@@ -16,9 +16,6 @@ export default async function handler(
 ) {
   let response: CheckBoardResponseData = {}
 
-  let rowPointsUpdated: boolean = false
-  let columnPointsUpdated: boolean = false
-
   // Return error message if HTTP method was not POST
   if (req.method !== 'POST') {
     res.status(405).send({ message: 'Only POST requests allowed' })
@@ -27,6 +24,8 @@ export default async function handler(
 
   // Cast request body to RequestData type
   const boardData: CheckBoardRequestData = { ...req.body }
+
+  const promises = []
 
   // Check row
   const validWordInRow = await newCheckRowOrColumn(
@@ -42,8 +41,11 @@ export default async function handler(
       wordPosition: validWordInRow.position,
       word: validWordInRow.word,
     }
-    // Vent
-    rowPointsUpdated = await updateValidRowWords(boardData, validWordInRow)
+
+    const res = await updateValidRowWords(boardData, validWordInRow)
+    console.log(res)
+
+    // promises.push(updateValidRowWords(boardData, validWordInRow))
   }
 
   // Check column
@@ -61,17 +63,27 @@ export default async function handler(
       word: validWordInColumn.word,
     }
 
-    columnPointsUpdated = await updateValidColumnWords(
-      boardData,
-      validWordInColumn
-    )
+    const res = await updateValidColumnWords(boardData, validWordInColumn)
+    console.log(res)
+
+    // promises.push(updateValidColumnWords(boardData, validWordInColumn))
   }
 
   // Update board
   updateBoard(boardData)
 
-  // Set next turn to oponent
-  // updateTurn(boardData.gameID, boardData.oponentID)
-
-  rowPointsUpdated && columnPointsUpdated && res.status(200).json(response)
+  /* if (promises.length) {
+    Promise.all(promises)
+      .then((results) => {
+        res.status(200).json(response)
+        return
+      })
+      .catch((err) => {
+        res.status(500).json({ message: err })
+        return
+      })
+  } else {
+    res.status(200).json(response)
+    return
+  } */
 }

@@ -46,6 +46,7 @@ export const updateValidColumnWords = async (
     // Update totalPoints
     const newPointScore = boardData.userPoints + points
 
+    // Await both updates to boardData and game documents
     Promise.all([
       // Update columnValidWords with new updated array for given column
       updateDoc(generateGameRef(boardData), {
@@ -54,11 +55,18 @@ export const updateValidColumnWords = async (
       updateDoc(doc(db, 'games', boardData.gameID), {
         [`totalPoints.${boardData.userID}`]: newPointScore,
       }),
-    ]).then((res) => {
-      return true
-    })
+    ])
+      .then((res) => {
+        return true
+      })
+      .catch((err) => {
+        console.log(err)
+        return false
+      })
+  } else {
+    console.log('Could not fetch board data')
+    return false
   }
-  return false
 }
 
 // Update rowValidWords object inside boardData document
@@ -89,7 +97,8 @@ export const updateValidRowWords = async (
     // Update totalPoints
     const newPointScore = boardData.userPoints + points
 
-    Promise.all([
+    // Await both updates to boardData and game documents
+    Promise.allSettled([
       // Update rowValidWords with new updated array for given row
       updateDoc(generateGameRef(boardData), {
         [`rowValidWords.${boardData.row.positionIndex}`]: validWordsMask,
@@ -97,10 +106,16 @@ export const updateValidRowWords = async (
       updateDoc(doc(db, 'games', boardData.gameID), {
         [`totalPoints.${boardData.userID}`]: newPointScore,
       }),
-    ]).then((res) => {
-      return true
-    })
+    ])
+      .then((res) => {
+        return true
+      })
+      .catch((err) => {
+        console.log(err)
+        return false
+      })
+  } else {
+    console.log('Could not fetch board data')
+    return false
   }
-
-  return false
 }
