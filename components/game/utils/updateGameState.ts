@@ -40,8 +40,14 @@ const updateGameState = async (gameContext: IGameContext) => {
       // Fetch game data from Firebase
       const gameData = await fetchGameData(gameContext.gameID)
 
+      /* 
+        Generate a list on the following format:
+
+        [['player1ID', totalPoints], ['player2ID', totalPoints ]
+      */
       const players: [string, number][] = Object.entries(gameData!.totalPoints)
 
+      // Determine the winner and update Game document in Firebase
       if (players[0][1] > players[1][1]) {
         await updateDoc(doc(db, 'games', gameContext.gameID), {
           winner: players[0][0],
@@ -56,6 +62,7 @@ const updateGameState = async (gameContext: IGameContext) => {
         })
       }
 
+      // Update the experience points of the players
       await updateDoc(doc(db, 'users', players[0][0]), {
         experiencePoints: increment(players[0][1]),
       })

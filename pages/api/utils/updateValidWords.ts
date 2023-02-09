@@ -8,16 +8,6 @@ import { updateColumnPoints, updateRowPoints } from './updatePoints'
 export const generateGameRef = (boardData: CheckBoardRequestData) =>
   doc(db, 'games', boardData.gameID, boardData.userID, 'boardData')
 
-// Update rowValidWords object inside boardData document
-/* export const updateValidRowWords = async (
-  boardData: CheckBoardRequestData,
-  validWordInRow: { word: string; position: number[] }
-) => {
-  await updateDoc(generateGameRef(boardData), {
-    [`rowValidWords.${boardData.row.positionIndex}`]: validWordInRow.position,
-  })
-} */
-
 // Update columnValidWords object inside boardData document
 export const updateValidColumnWords = async (
   boardData: CheckBoardRequestData,
@@ -46,7 +36,7 @@ export const updateValidColumnWords = async (
     // Update totalPoints
     const newPointScore = boardData.userPoints + points
 
-    // Await both updates to boardData and game documents
+    // Ensure both columnValidWords and totalPoints are updated
     await Promise.all([
       // Update columnValidWords with new updated array for given column
       updateDoc(generateGameRef(boardData), {
@@ -97,7 +87,7 @@ export const updateValidRowWords = async (
     // Update totalPoints
     const newPointScore = boardData.userPoints + points
 
-    // Await both updates to boardData and game documents
+    // Ensure both rowValidWords and totalPoints are updated
     await Promise.allSettled([
       // Update rowValidWords with new updated array for given row
       updateDoc(generateGameRef(boardData), {
