@@ -47,7 +47,7 @@ export const updateValidColumnWords = async (
     const newPointScore = boardData.userPoints + points
 
     // Await both updates to boardData and game documents
-    Promise.all([
+    await Promise.all([
       // Update columnValidWords with new updated array for given column
       updateDoc(generateGameRef(boardData), {
         [`columnValidWords.${boardData.column.positionIndex}`]: validWordsMask,
@@ -98,7 +98,7 @@ export const updateValidRowWords = async (
     const newPointScore = boardData.userPoints + points
 
     // Await both updates to boardData and game documents
-    Promise.allSettled([
+    await Promise.allSettled([
       // Update rowValidWords with new updated array for given row
       updateDoc(generateGameRef(boardData), {
         [`rowValidWords.${boardData.row.positionIndex}`]: validWordsMask,

@@ -4,7 +4,6 @@ import CheckBoardRequestData from './types/CheckBoardRequestData'
 import CheckBoardResponseData from './types/CheckBoardResponseData'
 import newCheckRowOrColumn from './utils/newCheckRowOrColumn'
 import { updateBoard } from './utils/updateBoard'
-import { updateColumnPoints, updateRowPoints } from './utils/updatePoints'
 import {
   updateValidColumnWords,
   updateValidRowWords,
@@ -42,10 +41,7 @@ export default async function handler(
       word: validWordInRow.word,
     }
 
-    const res = await updateValidRowWords(boardData, validWordInRow)
-    console.log(res)
-
-    // promises.push(updateValidRowWords(boardData, validWordInRow))
+    await updateValidRowWords(boardData, validWordInRow)
   }
 
   // Check column
@@ -63,27 +59,12 @@ export default async function handler(
       word: validWordInColumn.word,
     }
 
-    const res = await updateValidColumnWords(boardData, validWordInColumn)
-    console.log(res)
-
-    // promises.push(updateValidColumnWords(boardData, validWordInColumn))
+    await updateValidColumnWords(boardData, validWordInColumn)
   }
 
   // Update board
-  updateBoard(boardData)
+  await updateBoard(boardData)
 
-  /* if (promises.length) {
-    Promise.all(promises)
-      .then((results) => {
-        res.status(200).json(response)
-        return
-      })
-      .catch((err) => {
-        res.status(500).json({ message: err })
-        return
-      })
-  } else {
-    res.status(200).json(response)
-    return
-  } */
+  res.status(200).json(response)
+  return
 }
