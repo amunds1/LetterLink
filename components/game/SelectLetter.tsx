@@ -1,6 +1,6 @@
-import { Button, Select, Center, Text } from '@mantine/core'
+import { Button, Center, Text, TextInput } from '@mantine/core'
 import { updateDoc, doc } from 'firebase/firestore'
-import { useContext, useState } from 'react'
+import { ChangeEvent, useContext, useState } from 'react'
 import { db } from '../../firebase/clientApp'
 import GameStates from './types/gameStates'
 import { GameContext } from './utils/gameContext'
@@ -9,28 +9,46 @@ const SelectLetter = () => {
   const gameContext = useContext(GameContext)
 
   const [selectedLetter, setSelectedLetter] = useState('')
+  const [error, setError] = useState<boolean>(false)
+
+  const isValidChar = (char: string) => {
+    if (char.length === 1) {
+      return char.toLowerCase() != char.toUpperCase()
+    }
+    return false
+  }
 
   return (
     <>
       {gameContext?.yourTurn && (
         <>
           <Center>
-            <Select
-              style={{ margin: '10px', width: '100%' }}
-              label="Select letter"
-              placeholder=""
-              onChange={(e: string) => {
-                setSelectedLetter(e)
+            <TextInput
+              style={{
+                width: '100%',
+                margin: '10px',
               }}
-              data={[
-                { value: 'P', label: 'P' },
-                { value: 'A', label: 'A' },
-                { value: 'I', label: 'I' },
-                { value: 'O', label: 'O' },
-                { value: 'L', label: 'L' },
-                { value: 'E', label: 'E' },
-                { value: 'R', label: 'R' },
-              ]}
+              placeholder="Type a letter"
+              error={error ? 'Not valid! You have to type a letter' : false}
+              maxLength={1}
+              onChange={(e: ChangeEvent<HTMLInputElement>) => {
+                // Force input to uppercase
+                e.currentTarget.value = e.currentTarget.value.toUpperCase()
+                const char = e.currentTarget.value
+                // Checks if input is valid (not number or symbols)
+                if (isValidChar(char)) {
+                  setSelectedLetter(char)
+                  setError(false)
+                } else {
+                  setSelectedLetter('')
+                  // If input is empty -> no error message
+                  if (char.length == 0) {
+                    setError(false)
+                  } else {
+                    setError(true)
+                  }
+                }
+              }}
             />
           </Center>
           <Center>
