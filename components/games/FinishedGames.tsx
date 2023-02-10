@@ -1,7 +1,19 @@
-import { Avatar, Grid, Group, Stack, Text, Card } from '@mantine/core'
-import { IconChevronRight } from '@tabler/icons'
+import {
+  Avatar,
+  Grid,
+  Group,
+  Stack,
+  Text,
+  Card,
+  Button,
+  Collapse,
+  Container,
+  Box,
+} from '@mantine/core'
+import { IconChevronDown, IconChevronRight, IconChevronUp } from '@tabler/icons'
 import { doc } from 'firebase/firestore'
 import Link from 'next/link'
+import { useState } from 'react'
 import { useDocumentDataOnce } from 'react-firebase-hooks/firestore'
 import { db } from '../../firebase/clientApp'
 import usersConverter from '../../firebase/converters/userConverter'
@@ -90,23 +102,46 @@ const FinishedGame = ({ game, userUID }: IFinishedGame) => {
 }
 
 const FinishedGames = ({ games, userUID }: IFinishedGames) => {
+  const [opened, setOpened] = useState(false)
+
   if (!games) return <></>
 
   return (
-    <Stack>
+    <>
       {games.length > 0 && (
         <>
-          <Text align="left" size="xl" weight="bold" mt="sm">
-            Finished games
-          </Text>
-          {games &&
-            userUID &&
-            games.map((game) => (
-              <FinishedGame key={game.id} game={game} userUID={userUID} />
-            ))}
+          <Button
+            onClick={() => setOpened((o) => !o)}
+            rightIcon={
+              !opened ? (
+                <IconChevronDown color="black" />
+              ) : (
+                <IconChevronUp color="black" />
+              )
+            }
+            variant="subtle"
+            style={{ width: '100%', justifyContent: 'left' }}
+          >
+            <Text size="xl" weight="bold" color="black">
+              Finished games
+            </Text>
+          </Button>
+          <Collapse
+            in={opened}
+            transitionDuration={100}
+            transitionTimingFunction="linear"
+          >
+            <Stack>
+              {games &&
+                userUID &&
+                games.map((game) => (
+                  <FinishedGame key={game.id} game={game} userUID={userUID} />
+                ))}
+            </Stack>
+          </Collapse>
         </>
       )}
-    </Stack>
+    </>
   )
 }
 
