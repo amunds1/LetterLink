@@ -1,4 +1,5 @@
 import { createContext, Dispatch, SetStateAction } from 'react'
+import { IValidWords } from '../interface/IvalidWords'
 import GameStates from '../types/gameStates'
 
 export interface IGameContext {
@@ -46,6 +47,8 @@ export interface IGameContext {
   setUserPoints: Dispatch<SetStateAction<number>>
   setRoundsLeft: Dispatch<number>
   roundsLeft: number
+  validWords: IValidWords[]
+  setValidWords: Dispatch<SetStateAction<IValidWords[]>>
 }
 
 export const GameContext = createContext<IGameContext | null>(null)

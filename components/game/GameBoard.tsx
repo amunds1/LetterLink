@@ -59,8 +59,6 @@ const GameBoard = () => {
   const [tempBoard, setTempBoard] = useState<string[]>([''])
   const [isLetterPlaced, setisLetterPlaced] = useState<boolean>(false)
 
-  const [validWords, setValidWords] = useState<IValidWords[]>([])
-
   const addLetter = (
     board: string[],
     endIndex: number,
@@ -115,10 +113,10 @@ const GameBoard = () => {
     // Creates a list of valid words objects
     const validWordList = getValidWordsList(res)
     if (validWordList) {
-      setValidWords(validWordList)
+      gameContext?.setValidWords(validWordList)
       // Reset validwordslist after 3 secounds.
       setTimeout(() => {
-        setValidWords([])
+        gameContext?.setValidWords([])
       }, 3000)
     }
   }
@@ -151,18 +149,6 @@ const GameBoard = () => {
           style={{ padding: '0 0 20px 0' }}
         >
           <>
-            <Box pb={10}>
-              {validWords.map((validword, index) => (
-                <Text key={index}>
-                  <span style={{ color: 'red', fontWeight: 'bold' }}>
-                    {validword.word}{' '}
-                  </span>
-                  <span style={{ color: 'blue', fontWeight: 'bold' }}>
-                    + {validword.points} points
-                  </span>
-                </Text>
-              ))}
-            </Box>
             <DragDropContext onDragEnd={onDragEnd}>
               <div>
                 <Grid className={classes.grid} columns={gameContext.grid.size}>
@@ -210,7 +196,7 @@ const GameBoard = () => {
                               border: colorValidWordBorder(
                                 index,
                                 boardSize,
-                                validWords
+                                gameContext.validWords
                               ),
                               backgroundColor: colorCellGreen(
                                 index,
@@ -295,12 +281,6 @@ const GameBoard = () => {
                   </Button>
                 </Center>
               )}
-
-            {gameContext.gameState === 'END' && (
-              <Link href={`/breakdown/${gameContext.gameID}`}>
-                <Button>Gå videre</Button>
-              </Link>
-            )}
           </>
         </Container>
       )}

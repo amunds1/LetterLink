@@ -9,13 +9,15 @@ import fetchGameData from '../../components/game/firebase/fetchGameData'
 import getName from '../../components/game/firebase/getName'
 import yourTurn from '../../components/game/firebase/yourTurn'
 import GameBoard from '../../components/game/GameBoard'
+import { IValidWords } from '../../components/game/interface/IvalidWords'
 import Points from '../../components/game/Points'
 import SelectLetter from '../../components/game/SelectLetter'
 import {
   OpponentTurnStatusMessage,
   YourTurnStatusMessage,
   EndTurnStatusMessage,
-} from '../../components/game/TurnStatusMessage'
+  PointsStatusMessage,
+} from '../../components/game/StatusMessage'
 import GameStates from '../../components/game/types/gameStates'
 import {
   GameContext,
@@ -121,6 +123,8 @@ const GameID = (props: IGameID) => {
 
   const [roundsLeft, setRoundsLeft] = useState<number>(roundsIsLeft)
 
+  const [validWords, setValidWords] = useState<IValidWords[]>([])
+
   // Re-render component after value of yourTurn changes
   useEffect(() => {}, [yourTurn])
 
@@ -177,6 +181,8 @@ const GameID = (props: IGameID) => {
     setOpponentPoints: setOpponentPoints,
     roundsLeft: roundsLeft,
     setRoundsLeft: setRoundsLeft,
+    validWords: validWords,
+    setValidWords: setValidWords,
   }
 
   gameDataListener(GameContextValues)
@@ -188,13 +194,21 @@ const GameID = (props: IGameID) => {
 
       <GameContext.Provider value={GameContextValues}>
         {/* Display who turn it is */}
-        {gameState === GameStates.END ? (
-          <EndTurnStatusMessage />
-        ) : yourTurn ? (
+
+        {gameState === GameStates.END && <EndTurnStatusMessage />}
+
+        {!validWords.length && gameState !== GameStates.END && yourTurn && (
           <YourTurnStatusMessage />
-        ) : (
+        )}
+
+        {!validWords.length && gameState !== GameStates.END && !yourTurn && (
           <OpponentTurnStatusMessage />
         )}
+
+        {validWords.length && (
+          <PointsStatusMessage validWordList={validWords} />
+        )}
+
         <Points />
         <GameBoard />
         {gameState === GameStates.CHOOSE && <SelectLetter />}
