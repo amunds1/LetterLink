@@ -86,12 +86,14 @@ export const PointsStatusMessage = ({
           textAlign: 'center',
         }}
       >
-        You placed the word ... for ... points
         {validWordList.map((validword, index) => (
           <Text key={index}>
+            You placed the word{' '}
             <span style={{ fontWeight: 'bold' }}>{validword.word} </span>
+            for{' '}
             <span style={{ fontWeight: 'bold' }}>
-              + {validword.points} points
+              {' '}
+              {validword.points} points
             </span>
           </Text>
         ))}
