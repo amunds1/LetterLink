@@ -145,22 +145,20 @@ export function PageHeader() {
   ))
 
   // Renders Link-components for routes which require authentication
-  const authenticatedLinks = [PageLinks.GAMES, PageLinks.ACHIEVEMENTS].map(
-    (link) => (
-      <Link
-        href={link.link}
-        key={link.label}
-        className={`${classes.link} ${
-          router.pathname === link.link && classes.linkActive
-        }`}
-        onClick={(event) => {
-          toggle()
-        }}
-      >
-        {link.label}
-      </Link>
-    )
-  )
+  const authenticatedLinks = [PageLinks.ACHIEVEMENTS].map((link) => (
+    <Link
+      href={link.link}
+      key={link.label}
+      className={`${classes.link} ${
+        router.pathname === link.link && classes.linkActive
+      }`}
+      onClick={(event) => {
+        toggle()
+      }}
+    >
+      {link.label}
+    </Link>
+  ))
 
   return (
     <Header height={60} mb={120}>

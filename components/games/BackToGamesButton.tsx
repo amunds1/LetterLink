@@ -4,7 +4,7 @@ import Link from 'next/link'
 
 const BackToGamesButton = () => {
   return (
-    <Link href="/games">
+    <Link href="/">
       <Button
         compact
         variant="light"
