@@ -102,9 +102,9 @@ const FinishedGame = ({ game, userUID }: IFinishedGame) => {
 }
 
 const FinishedGames = ({ games, userUID }: IFinishedGames) => {
-  if (!games) return <></>
-
   const [opened, setOpened] = useState(false)
+
+  if (!games) return <></>
 
   return (
     <>
