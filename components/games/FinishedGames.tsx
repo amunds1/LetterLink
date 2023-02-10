@@ -61,11 +61,9 @@ const FinishedGame = ({ game, userUID }: IFinishedGame) => {
                   </Text>
                   <Text color="gray.7">
                     {opponent &&
-                      (game.totalPoints[userUID] >
-                      game.totalPoints[opponent?.id]
+                      (game.winner == userUID
                         ? 'You won the game'
-                        : game.totalPoints[userUID] <
-                          game.totalPoints[opponent?.id]
+                        : game.winner == opponent.id
                         ? `${opponent.name} won the game`
                         : 'The game has no winner')}
                   </Text>

@@ -49,6 +49,8 @@ export interface IGameContext {
   roundsLeft: number
   validWords: IValidWords[]
   setValidWords: Dispatch<SetStateAction<IValidWords[]>>
+  winner: string
+  setWinner: Dispatch<SetStateAction<string>>
 }
 
 export const GameContext = createContext<IGameContext | null>(null)

@@ -48,21 +48,17 @@ export const EndTurnStatusMessage = () => {
     <Center>
       <Alert
         mt="sm"
+        title="The game is over"
         radius="md"
         color="dark"
-        style={{
-          width: '100%',
-          border: '1px solid #909296',
-          textAlign: 'center',
-        }}
+        style={{ width: '100%', border: '1px solid #909296' }}
       >
-        {gameContext?.userPoints &&
-          gameContext.opponentPoints &&
-          (gameContext?.userPoints > gameContext?.opponentPoints
+        {gameContext &&
+          (gameContext?.winner == gameContext.userUID
             ? 'You won the game'
-            : gameContext?.userPoints < gameContext?.opponentPoints
+            : gameContext?.winner == gameContext.opponentID
             ? `${gameContext?.opponentName} won the game`
-            : 'Draw! The game has no winner')}
+            : 'The game has no winner')}
       </Alert>
     </Center>
   )

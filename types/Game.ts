@@ -17,6 +17,7 @@ interface Game {
   totalPoints: {
     [key: string]: number
   }
+  winner: DocumentReference<DocumentData> | string
 }
 
 export default Game

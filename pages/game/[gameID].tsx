@@ -124,6 +124,7 @@ const GameID = (props: IGameID) => {
   const [roundsLeft, setRoundsLeft] = useState<number>(roundsIsLeft)
 
   const [validWords, setValidWords] = useState<IValidWords[]>([])
+  const [winner, setWinner] = useState<string>(gameData.winner as string)
 
   // Re-render component after value of yourTurn changes
   useEffect(() => {}, [yourTurn])
@@ -183,6 +184,8 @@ const GameID = (props: IGameID) => {
     setRoundsLeft: setRoundsLeft,
     validWords: validWords,
     setValidWords: setValidWords,
+    winner: winner,
+    setWinner: setWinner,
   }
 
   gameDataListener(GameContextValues)

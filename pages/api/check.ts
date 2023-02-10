@@ -24,8 +24,6 @@ export default async function handler(
   // Cast request body to RequestData type
   const boardData: CheckBoardRequestData = { ...req.body }
 
-  const promises = []
-
   // Check row
   const validWordInRow = await newCheckRowOrColumn(
     boardData.row.data,
