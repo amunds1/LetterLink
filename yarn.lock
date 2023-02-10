@@ -5163,10 +5163,10 @@ react-beautiful-dnd@^13.1.1:
     redux "^4.0.4"
     use-memo-one "^1.1.1"
 
-react-confetti-explosion@^2.0.1:
-  version "2.0.1"
-  resolved "https://registry.yarnpkg.com/react-confetti-explosion/-/react-confetti-explosion-2.0.1.tgz#cc84e8faaee0149fbaec9b68f12ddc519931361b"
-  integrity sha512-RRKW//48A5lhgafWM1yx2nU6JQBGI3C+z1bzzSY6ewhBB0T/7TfdSBJ/FTUzUJjNX4lC6yrpI6HCAaqohKS+Ww==
+react-confetti-explosion@^2.0.2:
+  version "2.0.2"
+  resolved "https://registry.yarnpkg.com/react-confetti-explosion/-/react-confetti-explosion-2.0.2.tgz#143a66da06e6dc57b14baba312fa319901c3502e"
+  integrity sha512-Ht7bRBeIAJdvsG3eL2d+3rPOUtW+5oylvrhVSPe3mtJPUz2Fg+v1KnHx/vIemrfSuM092Iys2pIOrohM2PkObA==
   dependencies:
     lodash "^4.17.21"
     react-jss "^10.9.2"
