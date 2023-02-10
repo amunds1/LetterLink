@@ -20,6 +20,10 @@ import {
 import { GameContext } from './utils/gameContext'
 import updateGameState from './utils/updateGameState'
 import submitMove from './utils/submitMove'
+import CheckBoardResponseData from '../../pages/api/types/CheckBoardResponseData'
+import { IValidWords } from './interface/IvalidWords'
+import getValidWordsList from './utils/getValidWordsList'
+import colorValidWordBorder from './utils/colorValidWordBorder'
 import Link from 'next/link'
 
 const useStyles = createStyles(() => ({
@@ -104,9 +108,20 @@ const GameBoard = () => {
     setAffectedColumn(column)
   }
 
-  const submit = () => {
-    setisLetterPlaced(false)
+  // Feedback on valid words
+  const displayValidWord = (res: CheckBoardResponseData) => {
+    // Creates a list of valid words objects
+    const validWordList = getValidWordsList(res)
+    if (validWordList) {
+      gameContext?.setValidWords(validWordList)
+      // Reset validwordslist after 3 secounds.
+      setTimeout(() => {
+        gameContext?.setValidWords([])
+      }, 3000)
+    }
+  }
 
+  const submit = async () => {
     submitMove({
       gameID: gameContext!.gameID,
       userID: gameContext!.userUID,
@@ -115,9 +130,11 @@ const GameBoard = () => {
       column: affectedColumn!,
       userPoints: gameContext!.userPoints,
     }).then((res) => {
+      setisLetterPlaced(false)
       setBoard(tempBoard)
       setTempBoard([''])
       updateGameState(gameContext!)
+      displayValidWord(res)
     })
   }
 
@@ -131,138 +148,140 @@ const GameBoard = () => {
           className={classes.container}
           style={{ padding: '0 0 20px 0' }}
         >
-          <DragDropContext onDragEnd={onDragEnd}>
-            <div>
-              <Grid className={classes.grid} columns={gameContext.grid.size}>
-                {board.map((cellValue, index) => (
-                  <Grid.Col className={classes.col} key={index} span={1}>
-                    <>
-                      {/* Empty cells */}
-                      {cellValue.length === 0 && (
-                        <Droppable droppableId={index.toString()}>
-                          {(provided, snapshot) => (
-                            <div
-                              ref={provided.innerRef}
-                              {...provided.droppableProps}
-                              style={{
-                                backgroundColor: snapshot.isDraggingOver
-                                  ? '#C0EB75'
-                                  : 'white',
-                                aspectRatio: '1',
-                                display: 'flex',
-                                alignItems: 'center',
-                                justifyContent: 'center',
-                              }}
-                            >
-                              {/* DraggableLetterBox when its placed on the board */}
-                              {dropID === index && (
-                                <DraggableLetterBox
-                                  letter={prevLetter}
-                                  index={dropID}
-                                ></DraggableLetterBox>
-                              )}
-                              {provided.placeholder}
-                            </div>
-                          )}
-                        </Droppable>
-                      )}
+          <>
+            <DragDropContext onDragEnd={onDragEnd}>
+              <div>
+                <Grid className={classes.grid} columns={gameContext.grid.size}>
+                  {board.map((cellValue, index) => (
+                    <Grid.Col className={classes.col} key={index} span={1}>
+                      <>
+                        {/* Empty cells */}
+                        {cellValue.length === 0 && (
+                          <Droppable droppableId={index.toString()}>
+                            {(provided, snapshot) => (
+                              <div
+                                ref={provided.innerRef}
+                                {...provided.droppableProps}
+                                style={{
+                                  backgroundColor: snapshot.isDraggingOver
+                                    ? '#C0EB75'
+                                    : 'white',
+                                  aspectRatio: '1',
+                                  display: 'flex',
+                                  alignItems: 'center',
+                                  justifyContent: 'center',
+                                }}
+                              >
+                                {/* DraggableLetterBox when its placed on the board */}
+                                {dropID === index && (
+                                  <DraggableLetterBox
+                                    letter={prevLetter}
+                                    index={dropID}
+                                  ></DraggableLetterBox>
+                                )}
+                                {provided.placeholder}
+                              </div>
+                            )}
+                          </Droppable>
+                        )}
 
-                      {/* Cells containing letters */}
-                      {cellValue.length !== 0 && (
-                        <Box
-                          style={{
-                            aspectRatio: '1',
-                            width: '100%',
-                            display: 'flex',
-                            alignItems: 'center',
-                            backgroundColor: colorCellGreen(
-                              index,
-                              boardSize,
-                              gameContext.rowValidWords,
-                              gameContext.columnValidWords
-                            ),
-                          }}
-                        >
-                          <div
+                        {/* Cells containing letters */}
+                        {cellValue.length !== 0 && (
+                          <Box
                             style={{
-                              textAlign: 'center',
+                              aspectRatio: '1',
                               width: '100%',
+                              display: 'flex',
+                              alignItems: 'center',
+                              border: colorValidWordBorder(
+                                index,
+                                boardSize,
+                                gameContext.validWords
+                              ),
+                              backgroundColor: colorCellGreen(
+                                index,
+                                boardSize,
+                                gameContext.rowValidWords,
+                                gameContext.columnValidWords
+                              ),
                             }}
                           >
-                            {cellValue}
-                          </div>
-                        </Box>
+                            <div
+                              style={{
+                                textAlign: 'center',
+                                width: '100%',
+                              }}
+                            >
+                              {cellValue}
+                            </div>
+                          </Box>
+                        )}
+                      </>
+                    </Grid.Col>
+                  ))}
+                </Grid>
+              </div>
+              {(gameContext.gameState === GameStates.PLACE_OWN ||
+                gameContext.gameState === GameStates.PLACE_OPPONENTS) &&
+                gameContext.yourTurn && (
+                  <div
+                    style={{
+                      display: 'flex',
+                      justifyContent: 'center',
+                    }}
+                  >
+                    {}
+                    <Droppable droppableId="letterStartBox">
+                      {(provided) => (
+                        <div
+                          ref={provided.innerRef}
+                          {...provided.droppableProps}
+                          style={{
+                            padding: '10px',
+                            fontSize: '30px',
+                            minHeight: '100px',
+                          }}
+                        >
+                          {/* DraggableLetterBox that is not placed at the board */}
+                          {gameContext.selectedLetter &&
+                            gameContext.selectedLetter.length > 0 &&
+                            !isLetterPlaced && (
+                              <DraggableLetterBox
+                                letter={gameContext.selectedLetter}
+                                index={-1}
+                              ></DraggableLetterBox>
+                            )}
+                          {provided.placeholder}
+                        </div>
                       )}
-                    </>
-                  </Grid.Col>
-                ))}
-              </Grid>
-            </div>
+                    </Droppable>
+                  </div>
+                )}
+            </DragDropContext>
+
             {(gameContext.gameState === GameStates.PLACE_OWN ||
               gameContext.gameState === GameStates.PLACE_OPPONENTS) &&
               gameContext.yourTurn && (
-                <div
-                  style={{
-                    display: 'flex',
-                    justifyContent: 'center',
-                  }}
-                >
-                  {}
-                  <Droppable droppableId="letterStartBox">
-                    {(provided) => (
-                      <div
-                        ref={provided.innerRef}
-                        {...provided.droppableProps}
-                        style={{
-                          padding: '10px',
-                          fontSize: '30px',
-                          minHeight: '100px',
-                        }}
-                      >
-                        {/* DraggableLetterBox that is not placed at the board */}
-                        {gameContext.selectedLetter &&
-                          gameContext.selectedLetter.length > 0 &&
-                          !isLetterPlaced && (
-                            <DraggableLetterBox
-                              letter={gameContext.selectedLetter}
-                              index={-1}
-                            ></DraggableLetterBox>
-                          )}
-                        {provided.placeholder}
-                      </div>
-                    )}
-                  </Droppable>
-                </div>
+                <Center>
+                  <Button
+                    color="lime"
+                    disabled={!isLetterPlaced}
+                    onClick={() => submit()}
+                    fullWidth
+                    variant="light"
+                    style={
+                      isLetterPlaced
+                        ? { border: '1px solid #D8F5A2' }
+                        : { border: '1px solid #CED4DA' }
+                    }
+                  >
+                    <Text color={isLetterPlaced ? 'lime.8' : 'gray.5'}>
+                      Submit
+                    </Text>
+                  </Button>
+                </Center>
               )}
-          </DragDropContext>
-
-          {(gameContext.gameState === GameStates.PLACE_OWN ||
-            gameContext.gameState === GameStates.PLACE_OPPONENTS) &&
-            gameContext.yourTurn && (
-              <Center>
-                <Button
-                  color="lime"
-                  disabled={!isLetterPlaced}
-                  onClick={() => submit()}
-                  fullWidth
-                  variant="light"
-                  style={
-                    isLetterPlaced
-                      ? { border: '1px solid #D8F5A2' }
-                      : { border: '1px solid #CED4DA' }
-                  }
-                >
-                  <Text color={isLetterPlaced ? 'lime.8' : 'gray.5'}>
-                    Submit
-                  </Text>
-                </Button>
-              </Center>
-            )}
-          {gameContext.gameState === 'END' && (
-            <Link href={`/breakdown/${gameContext.gameID}`}>
-              <Button>Gå videre</Button>
-            </Link>
-          )}
+          </>
         </Container>
       )}
     </>
