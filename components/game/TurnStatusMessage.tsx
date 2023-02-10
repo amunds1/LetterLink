@@ -45,11 +45,10 @@ export const EndTurnStatusMessage = () => {
         color="dark"
         style={{ width: '100%', border: '1px solid #909296' }}
       >
-        {gameContext?.userPoints &&
-          gameContext.opponentPoints &&
-          (gameContext?.userPoints > gameContext?.opponentPoints
+        {gameContext &&
+          (gameContext?.winner == gameContext.userUID
             ? 'You won the game'
-            : gameContext?.userPoints < gameContext?.opponentPoints
+            : gameContext?.winner == gameContext.opponentID
             ? `${gameContext?.opponentName} won the game`
             : 'The game has no winner')}
       </Alert>
