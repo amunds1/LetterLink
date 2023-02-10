@@ -17,11 +17,17 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
     )
 
     const uid = await fetchUID(ctx)
-    const userData = JSON.parse(JSON.stringify(await fetchUserData(uid)))
+    let userData = await fetchUserData(uid)
+
+    const winRate = userData?.wins! / userData?.games?.length!
+
+    userData = JSON.parse(JSON.stringify(userData))
 
     return {
       props: {
         userData,
+        winRate,
+        gamesPlayed: userData?.games?.length,
       },
     }
   } catch (err) {
@@ -36,10 +42,12 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
 
 interface IProfile {
   userData: User
+  winRate: number
+  gamesPlayed: number
 }
 
 const Profile = (props: IProfile) => {
-  const { userData } = props
+  const { userData, winRate, gamesPlayed } = props
 
   return (
     <Stack style={{ height: '100%' }} align="center" justify="center">
@@ -58,7 +66,7 @@ const Profile = (props: IProfile) => {
           </Link>
         </Group>
         <ExperiencePointsBar experiencePoints={userData.experiencePoints} />
-        <Statistics />
+        <Statistics winRate={winRate} gamesPlayed={gamesPlayed} />
       </Card>
       <Text size={30}>Previous games</Text>
     </Stack>

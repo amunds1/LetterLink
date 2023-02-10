@@ -24,6 +24,7 @@ const usersConverter: FirestoreDataConverter<User> = {
       name: data.name,
       experiencePoints: data.experiencePoints || 0,
       achievements: data.achievements || null,
+      wins: data.wins || 0,
     }
   },
 }
