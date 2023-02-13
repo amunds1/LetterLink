@@ -1,16 +1,7 @@
-import {
-  Button,
-  Checkbox,
-  Group,
-  Input,
-  Text,
-  TextInput,
-  Transition,
-} from '@mantine/core'
+import { Button, Group, Text, TextInput } from '@mantine/core'
 import { useForm } from '@mantine/form'
 import { GetServerSidePropsContext } from 'next'
 import { useEffect, useState } from 'react'
-import { SuccessNotification } from '../components/NotificationBanner'
 import { fetchUserData } from '../components/profile/firebase/fetchUserData'
 import fetchUID from '../firebase/fetchUID'
 import User from '../types/User'
