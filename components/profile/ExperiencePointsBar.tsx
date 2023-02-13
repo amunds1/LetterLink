@@ -26,8 +26,7 @@ const ExperiencePointsBar = ({
       />
       <Text align="center" size="sm">
         Earn just {(level + 1) * 50 - experiencePoints} more XP points to reach
-        Level
-        {level + 1}!
+        Level {level + 1}!
       </Text>
     </Stack>
   )
