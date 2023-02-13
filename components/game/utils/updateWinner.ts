@@ -107,33 +107,3 @@ const updateWinner = async (gameContext: IGameContext) => {
 }
 
 export default updateWinner
-
-/* 
-
-Regne ut you have beaten the most:
-
-    beatenMost = {
-        player: "player",
-        wins: "wins"}
-
-    opponents.map( (opponent) => {
-        if (opponent.youWon > beatnMost.wins) {
-            beatenMost = opponent
-        }
-    })
-
-
-
-    Regne ut have beaten you the most:
-
-    beatenYouMost = {
-        player: "player",
-        wins: "wins"}
-
-    opponents.map( (opponent) => {
-        if (opponent.youLost > beatnYouMost.wins) {
-            beatenYouMost = opponent
-        }
-    })
-
-*/
