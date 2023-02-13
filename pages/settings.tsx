@@ -44,20 +44,16 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
 const Settings = ({ uid, userData }: { uid: string; userData: User }) => {
   const [alert, setAlert] = useState(false)
 
-  const [newUsername, setNewUsername] = useState('')
   const [deleteProfileModalOpen, setDeleteProfileModalOpen] = useState(false)
 
   const router = useRouter()
 
   const form = useForm({
     initialValues: {
-      username: '',
-      email: '',
+      username: userData.name,
     },
 
-    validate: {
-      email: (value) => (/^\S+@\S+$/.test(value) ? null : 'Invalid email'),
-    },
+    validate: {},
   })
 
   // Remove alert after 3 seconds
@@ -70,7 +66,7 @@ const Settings = ({ uid, userData }: { uid: string; userData: User }) => {
   const updateProfileInformation = async () => {
     // Update user document stored in Firebase
     await updateDoc(doc(db, 'users', userData.id), {
-      name: newUsername,
+      name: form.values.username,
     })
 
     // Set alert to true
