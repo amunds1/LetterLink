@@ -45,19 +45,6 @@ const fetchGames = async (
     const games = await getDocs(q)
     const gamesParsed = games.docs.map((game) => game.data())
 
-    // Populate Game object with opponent name
-    for (const game of gamesParsed) {
-      const oponentID = selectUserID(
-        uid,
-        game.playerOne as string,
-        game.playerTwo as string
-      )
-
-      const userData = await fetchUserData(oponentID)
-
-      game.opponentName = userData?.name
-    }
-
     tempGames.concat(gamesParsed)
   }
 
