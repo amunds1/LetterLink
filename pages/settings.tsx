@@ -152,13 +152,6 @@ const Settings = ({ uid, userData }: { uid: string; userData: User }) => {
               {...form.getInputProps('username')}
             />
 
-            <TextInput
-              label="Email"
-              {...form.getInputProps('email')}
-              error="Email is not verified"
-              placeholder="placeholder@gmail.com"
-            />
-
             <Group position="left">
               <Button type="submit" onClick={() => updateProfileInformation()}>
                 Update profile
