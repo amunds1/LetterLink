@@ -13,6 +13,7 @@ interface User {
   opponents?: {
     [key: string]: IBeatenMostStats
   }
+  hasDefaultUsername: boolean
 }
 
 export default User
