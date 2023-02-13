@@ -1,4 +1,4 @@
-import { Button, Center, createStyles, Stack, Text } from '@mantine/core'
+import { Button, Center, createStyles, Modal, Stack, Text } from '@mantine/core'
 import { collection, doc, query, where } from 'firebase/firestore'
 import { GetServerSidePropsContext } from 'next'
 import Link from 'next/link'
@@ -19,6 +19,7 @@ import fetchUID from '../firebase/fetchUID'
 import Game from '../types/Game'
 import { IconPlus } from '@tabler/icons'
 import Streak from '../components/Streak'
+import SetUsernameModal from '../components/index/SetUsernameModal'
 
 const useStyles = createStyles(() => ({
   center: { height: '100%' },
@@ -56,6 +57,7 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
         uid: uid,
         activeGames: activeGames,
         proposedGames: proposedGames,
+        hasDefaultUsername: userData?.hasDefaultUsername,
       },
     }
   } catch (err) {
@@ -71,13 +73,17 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
 
 interface IGames {
   uid: string
+  hasDefaultUsername: boolean
   activeGames: Game[]
   proposedGames: Game[]
 }
 
 const Games = (props: IGames) => {
   const { classes } = useStyles()
-  const { uid } = props
+  const { uid, hasDefaultUsername } = props
+
+  const [showModalSetUsername, setShowModalSetUsername] =
+    useState(hasDefaultUsername)
 
   const [games, setGames] = useState<Game[]>(
     props.proposedGames.concat(props.activeGames)
@@ -125,6 +131,11 @@ const Games = (props: IGames) => {
 
   return (
     <>
+      <SetUsernameModal
+        showModalSetUsername={showModalSetUsername}
+        setShowModalSetUsername={setShowModalSetUsername}
+        uid={uid}
+      />
       <Stack className={classes.center} style={{ width: '100%' }}>
         <Streak />
         <Link href="/game/new" style={{ textDecoration: 'none' }}>
