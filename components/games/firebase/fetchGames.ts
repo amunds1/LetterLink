@@ -10,35 +10,58 @@ import {
 } from 'firebase/firestore'
 import firebase from '../../../firebase/clientApp'
 import gamesConverter from '../../../firebase/converters/gamesConverter'
+import Game from '../../../types/Game'
 import { fetchUserData } from '../../profile/firebase/fetchUserData'
 import selectUserID from '../utils/selectUserID'
+
+const chunkArray = (list: any[], chunk: number): any[][] => {
+  const result = []
+
+  for (let i = 0; i < list.length; i += chunk) {
+    result.push(list.slice(i, i + chunk))
+  }
+
+  return result
+}
 
 const fetchGames = async (
   gamesIDs: DocumentReference<DocumentData>[],
   uid: string
 ) => {
-  const q = query(
-    collection(getFirestore(firebase), 'games'),
-    where(documentId(), 'in', gamesIDs)
-  ).withConverter(gamesConverter)
+  const tempGames: Game[] = []
 
-  const games = await getDocs(q)
-  const gamesParsed = games.docs.map((game) => game.data())
+  // Split gamesIDs array into chunks of 10, because Firebase does not allow more than
+  // 10 items in a 'in' query
+  const gamesIDsChunks = chunkArray(gamesIDs, 10)
 
-  // Populate Game object with opponent name
-  for (const game of gamesParsed) {
-    const oponentID = selectUserID(
-      uid,
-      game.playerOne as string,
-      game.playerTwo as string
-    )
+  for (const gameIDs of gamesIDsChunks) {
+    // Query games from Firestore
+    const q = query(
+      collection(getFirestore(firebase), 'games'),
+      where(documentId(), 'in', gameIDs)
+    ).withConverter(gamesConverter)
 
-    const userData = await fetchUserData(oponentID)
+    // Fetch and parse games
+    const games = await getDocs(q)
+    const gamesParsed = games.docs.map((game) => game.data())
 
-    game.opponentName = userData?.name
+    // Populate Game object with opponent name
+    for (const game of gamesParsed) {
+      const oponentID = selectUserID(
+        uid,
+        game.playerOne as string,
+        game.playerTwo as string
+      )
+
+      const userData = await fetchUserData(oponentID)
+
+      game.opponentName = userData?.name
+    }
+
+    tempGames.concat(gamesParsed)
   }
 
-  return gamesParsed
+  return tempGames
 }
 
 export const fetchProposedGames = async (
