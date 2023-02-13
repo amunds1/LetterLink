@@ -6,12 +6,14 @@ import {
   Stack,
   Text,
   TextInput,
+  Transition,
 } from '@mantine/core'
 import { useForm } from '@mantine/form'
-import { deleteDoc, doc } from 'firebase/firestore'
+import { deleteDoc, doc, updateDoc } from 'firebase/firestore'
 import { GetServerSidePropsContext } from 'next'
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
+import { SuccessNotification } from '../components/NotificationBanner'
 import { fetchUserData } from '../components/profile/firebase/fetchUserData'
 import { db } from '../firebase/clientApp'
 import fetchUID from '../firebase/fetchUID'
@@ -40,7 +42,7 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
 }
 
 const Settings = ({ uid, userData }: { uid: string; userData: User }) => {
-  const [alert, setAlert] = useState(true)
+  const [alert, setAlert] = useState(false)
 
   const [newUsername, setNewUsername] = useState('')
   const [deleteProfileModalOpen, setDeleteProfileModalOpen] = useState(false)
@@ -65,11 +67,21 @@ const Settings = ({ uid, userData }: { uid: string; userData: User }) => {
     }, 3000)
   }, [])
 
+  const updateProfileInformation = async () => {
+    // Update user document stored in Firebase
+    await updateDoc(doc(db, 'users', userData.id), {
+      name: newUsername,
+    })
+
+    // Set alert to true
+    setAlert(true)
+  }
+
   const deleteProfile = async () => {
     console.log('Deleting profile')
 
     // Delete user document stored in Firebase
-    // await deleteDoc(doc(db, 'users', userData.id))
+    await deleteDoc(doc(db, 'users', userData.id))
 
     // Redirect to /signin
     router.push('/signin')
@@ -77,11 +89,12 @@ const Settings = ({ uid, userData }: { uid: string; userData: User }) => {
 
   return (
     <>
-      {/* <Transition
+      <Transition
         mounted={alert}
         transition="fade"
-        duration={800}
+        duration={2000}
         timingFunction="ease"
+        onExited={() => setAlert(false)}
       >
         {(styles) => (
           <div style={styles}>
@@ -91,7 +104,8 @@ const Settings = ({ uid, userData }: { uid: string; userData: User }) => {
             />
           </div>
         )}
-      </Transition> */}
+      </Transition>
+
       <Modal
         title="Delete profile and data"
         opened={deleteProfileModalOpen}
@@ -146,7 +160,9 @@ const Settings = ({ uid, userData }: { uid: string; userData: User }) => {
             />
 
             <Group position="left">
-              <Button type="submit">Update profile</Button>
+              <Button type="submit" onClick={() => updateProfileInformation()}>
+                Update profile
+              </Button>
             </Group>
           </Stack>
         </form>
@@ -166,7 +182,6 @@ const Settings = ({ uid, userData }: { uid: string; userData: User }) => {
         >
           Delete all my profile and data
         </Button>
-        <Text>This involves ...</Text>
       </Stack>
     </>
   )
