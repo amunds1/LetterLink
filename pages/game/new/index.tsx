@@ -1,11 +1,11 @@
-import { Button, Radio, Select, SelectItem, Stack } from '@mantine/core'
+import { Button, Radio, Select, SelectItem, Stack, Text } from '@mantine/core'
 import { GetServerSideProps, GetServerSidePropsContext } from 'next'
-import Link from 'next/link'
 import { useRouter } from 'next/router'
-import { useCallback, useState } from 'react'
+import { useState } from 'react'
 import addGameToCollection from '../../../components/game/firebase/addToGameCollection'
 import { fetchUsersAsSelectOptions } from '../../../components/game/firebase/fetchUsersAsSelectOptions'
 import fetchUID from '../../../firebase/fetchUID'
+import BackToGamesButton from '../../../components/games/BackToGamesButton'
 
 export const getServerSideProps: GetServerSideProps = async (
   ctx: GetServerSidePropsContext
@@ -34,13 +34,15 @@ const NewGame = (props: INewGame) => {
   const onClick = async () => {
     addGameToCollection(uid, oponent as string, boardSize as string).then(
       () => {
-        router.push('/games')
+        router.push('/')
       }
     )
   }
 
   return (
     <Stack>
+      {/* Back to games button */}
+      <BackToGamesButton />
       {/* SELECT OPONENT */}
       <Select
         label="Select oponent"
@@ -61,21 +63,27 @@ const NewGame = (props: INewGame) => {
         description=""
         withAsterisk
       >
-        <Radio value="3" label="3 x 3" />
-        <Radio value="6" label="6 x 6" />
-        <Radio value="9" label="9 x 9" />
+        <Radio value="2" label="2 x 2" color="cyan" />
+        <Radio value="3" label="3 x 3" color="cyan" />
+        <Radio value="6" label="6 x 6" color="cyan" />
+        <Radio value="9" label="9 x 9" color="cyan" />
       </Radio.Group>
 
       <Button
+        color="cyan"
+        variant="light"
         disabled={!oponent || !boardSize?.length}
         onClick={() => onClick()}
+        style={
+          oponent && boardSize?.length
+            ? { border: '1px solid #99E9F2' }
+            : { border: '1px solid #CED4DA' }
+        }
       >
-        Propose game
+        <Text color={oponent && boardSize?.length ? 'cyan.8' : 'gray.5'}>
+          Propose game
+        </Text>
       </Button>
-
-      <Link href="/games">
-        <Button>Back to games list</Button>
-      </Link>
     </Stack>
   )
 }

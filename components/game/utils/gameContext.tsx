@@ -1,4 +1,5 @@
 import { createContext, Dispatch, SetStateAction } from 'react'
+import { IValidWords } from '../interface/IvalidWords'
 import GameStates from '../types/gameStates'
 
 export interface IGameContext {
@@ -8,9 +9,13 @@ export interface IGameContext {
     | GameStates.PLACE_OWN
     | GameStates.CHOOSE
     | GameStates.PLACE_OPPONENTS
+    | GameStates.END
   setGameState: Dispatch<
     SetStateAction<
-      GameStates.PLACE_OWN | GameStates.CHOOSE | GameStates.PLACE_OPPONENTS
+      | GameStates.PLACE_OWN
+      | GameStates.CHOOSE
+      | GameStates.PLACE_OPPONENTS
+      | GameStates.END
     >
   >
   gameID: string
@@ -34,6 +39,18 @@ export interface IGameContext {
   yourTurn: boolean
   opponentID: string
   setYourTurn: Dispatch<SetStateAction<boolean>>
+  opponentName: string
+  userName: string
+  opponentPoints: number
+  setOpponentPoints: Dispatch<SetStateAction<number>>
+  userPoints: number
+  setUserPoints: Dispatch<SetStateAction<number>>
+  setRoundsLeft: Dispatch<number>
+  roundsLeft: number
+  validWords: IValidWords[]
+  setValidWords: Dispatch<SetStateAction<IValidWords[]>>
+  winner: string
+  setWinner: Dispatch<SetStateAction<string>>
 }
 
 export const GameContext = createContext<IGameContext | null>(null)

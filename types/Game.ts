@@ -13,6 +13,11 @@ interface Game {
   selectedLetter: string | null
   gameState: GameStates
   opponentName?: string | ''
+  roundsLeft: number
+  totalPoints: {
+    [key: string]: number
+  }
+  winner: DocumentReference<DocumentData> | string
 }
 
 export default Game

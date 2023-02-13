@@ -12,9 +12,6 @@ const streakData = {
 }
 
 const Streak = () => {
-  Object.values(streakData).forEach((day) => {
-    console.log(day[0], day[1])
-  })
   return (
     <Card>
       <Stack justify="center" align="center">

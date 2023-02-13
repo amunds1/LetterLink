@@ -23,6 +23,8 @@ const usersConverter: FirestoreDataConverter<User> = {
       proposedGames: data.proposedGames || null,
       name: data.name,
       experiencePoints: data.experiencePoints || 0,
+      achievements: data.achievements || null,
+      wins: data.wins || 0,
     }
   },
 }

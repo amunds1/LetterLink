@@ -1,6 +1,12 @@
 import { Avatar, Center, RingProgress, Stack, Text } from '@mantine/core'
 
-const Statistics = () => {
+const Statistics = ({
+  winRate,
+  gamesPlayed,
+}: {
+  winRate: number
+  gamesPlayed: number
+}) => {
   const ringSize = 100
   const ringThickness = 5
 
@@ -24,7 +30,7 @@ const Statistics = () => {
           label={
             <Center>
               <Text color="green" weight={700} align="center" size="md">
-                7
+                {gamesPlayed}
               </Text>
             </Center>
           }
@@ -36,10 +42,10 @@ const Statistics = () => {
         <RingProgress
           size={ringSize}
           thickness={ringThickness}
-          sections={[{ value: 42, color: 'blue' }]}
+          sections={[{ value: winRate * 100, color: 'blue' }]}
           label={
             <Text color="blue" weight={700} align="center" size="md">
-              42%
+              {winRate * 100}%
             </Text>
           }
         />
