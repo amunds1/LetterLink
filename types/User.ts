@@ -9,6 +9,7 @@ interface User {
   experiencePoints: number
   achievements?: { [key: string]: IAchievement }
   wins?: number
+  hasDefaultUsername: boolean
 }
 
 export default User
