@@ -5,8 +5,16 @@ import CheckBoardRequestData from '../../../pages/api/types/CheckBoardRequestDat
 import CheckBoardResponseData from '../../../pages/api/types/CheckBoardResponseData'
 
 const validateBoard = async (validateBoardData: CheckBoardRequestData) => {
-  // TODO Replace localhost address
-  const response = await fetch('http://localhost:3000/api/check', {
+  let apiURL = ''
+
+  // Use different API URL depending on environment
+  if (process.env.NODE_ENV === 'development') {
+    apiURL = 'http://localhost:3000/api/check'
+  } else {
+    apiURL = 'https://www.letterlink.no/api/check'
+  }
+
+  const response = await fetch(apiURL, {
     method: 'POST',
     headers: {
       'content-type': 'application/json;charset=UTF-8',
