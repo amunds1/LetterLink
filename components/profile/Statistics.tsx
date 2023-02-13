@@ -3,9 +3,13 @@ import { Avatar, Center, RingProgress, Stack, Text } from '@mantine/core'
 const Statistics = ({
   winRate,
   gamesPlayed,
+  userBeatenYouMost,
+  userYouBeatenMost,
 }: {
   winRate: number
   gamesPlayed: number
+  userBeatenYouMost: string
+  userYouBeatenMost: string
 }) => {
   const ringSize = 100
   const ringThickness = 5
@@ -45,7 +49,7 @@ const Statistics = ({
           sections={[{ value: winRate * 100, color: 'blue' }]}
           label={
             <Text color="blue" weight={700} align="center" size="md">
-              {winRate * 100}%
+              {Math.round(winRate * 100)}%
             </Text>
           }
         />
@@ -53,13 +57,39 @@ const Statistics = ({
       </Stack>
 
       <Stack align="center">
-        <Avatar size={ringSize} color="blue" variant="outline" />
-        <Text size="sm">Most wins against</Text>
+        <Avatar
+          size={ringSize}
+          color={userYouBeatenMost ? 'blue' : 'gray'}
+          variant="outline"
+        />
+        {userYouBeatenMost.length === 0 && <Text>No wins</Text>}
+        {userYouBeatenMost.length > 0 && (
+          <>
+            <Text size="sm">
+              Most wins against{' '}
+              <Text span weight={700} size="md">
+                {userYouBeatenMost}
+              </Text>{' '}
+            </Text>
+          </>
+        )}
       </Stack>
 
       <Stack align="center">
-        <Avatar size={ringSize} color="blue" variant="outline" />
-        <Text size="sm">Most defeats against</Text>
+        <Avatar
+          size={ringSize}
+          color={userBeatenYouMost ? 'blue' : 'gray'}
+          variant="outline"
+        />
+        {userBeatenYouMost.length === 0 && <Text>No defeats</Text>}
+        {userBeatenYouMost.length > 0 && (
+          <Text size="sm">
+            Most defeats against{' '}
+            <Text span weight={700} size="md">
+              {userBeatenYouMost}
+            </Text>{' '}
+          </Text>
+        )}
       </Stack>
     </div>
   )

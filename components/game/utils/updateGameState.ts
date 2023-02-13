@@ -4,6 +4,7 @@ import { fetchBoardData } from '../firebase/fetchBoardData'
 import fetchGameData from '../firebase/fetchGameData'
 import GameStates from '../types/gameStates'
 import { IGameContext } from './gameContext'
+import updateWinner from './updateWinner'
 
 const updateGameState = async (gameContext: IGameContext) => {
   // State change from choosing a letter (CHOOSE) to placing own chosen letter (PLACE_OWN)
@@ -37,49 +38,7 @@ const updateGameState = async (gameContext: IGameContext) => {
         isActive: false,
       })
 
-      // Fetch game data from Firebase
-      const gameData = await fetchGameData(gameContext.gameID)
-
-      /* 
-        Generate a list on the following format:
-
-        [['player1ID', totalPoints], ['player2ID', totalPoints ]
-      */
-      const players: [string, number][] = Object.entries(gameData!.totalPoints)
-
-      // Determine the winner and update Game document in Firebase
-      if (players[0][1] > players[1][1]) {
-        await updateDoc(doc(db, 'games', gameContext.gameID), {
-          winner: players[0][0],
-        })
-
-        // Increment wins in user document in Firebase
-        await updateDoc(doc(db, 'users', players[0][0]), {
-          wins: increment(1),
-        })
-      } else if (players[0][1] < players[1][1]) {
-        await updateDoc(doc(db, 'games', gameContext.gameID), {
-          winner: players[1][0],
-        })
-
-        // Increment wins in user document in Firebase
-        await updateDoc(doc(db, 'users', players[1][0]), {
-          wins: increment(1),
-        })
-      } else {
-        await updateDoc(doc(db, 'games', gameContext.gameID), {
-          winner: 'DRAW',
-        })
-      }
-
-      // Update the experience points of the players
-      await updateDoc(doc(db, 'users', players[0][0]), {
-        experiencePoints: increment(players[0][1]),
-      })
-
-      await updateDoc(doc(db, 'users', players[1][0]), {
-        experiencePoints: increment(players[1][1]),
-      })
+      await updateWinner(gameContext)
     } else {
       await updateDoc(doc(db, 'games', gameContext.gameID), {
         gameState: GameStates.CHOOSE,
