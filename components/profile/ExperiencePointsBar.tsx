@@ -34,10 +34,11 @@ const ExperiencePointsBar = ({
         color="green"
         size="xl"
         value={percentNextLevel}
-        label={`${experiencePoints} XP`}
+        label={`${percentNextLevel} %`}
       />
       <Text align="center" size="sm">
-        Earn just {remainingXP} more XP points to reach Level {level + 1}!
+        You have {experiencePoints} XP. Earn just {remainingXP} more XP points
+        to reach Level {level + 1}!
       </Text>
     </Stack>
   )
