@@ -93,7 +93,7 @@ export default function AuthenticationForm(props: PaperProps) {
 
       <form onSubmit={form.onSubmit(() => {})}>
         <Stack>
-          {type === 'register' && (
+          {/* {type === 'register' && (
             <TextInput
               label="Name"
               placeholder="Your name"
@@ -102,7 +102,7 @@ export default function AuthenticationForm(props: PaperProps) {
                 form.setFieldValue('name', event.currentTarget.value)
               }
             />
-          )}
+          )} */}
 
           <TextInput
             required
