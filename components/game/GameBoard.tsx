@@ -59,6 +59,8 @@ const GameBoard = () => {
   const [tempBoard, setTempBoard] = useState<string[]>([''])
   const [isLetterPlaced, setisLetterPlaced] = useState<boolean>(false)
 
+  const [boardIsLoading, setBoardIsLoading] = useState<boolean>(false)
+
   const addLetter = (
     board: string[],
     endIndex: number,
@@ -122,6 +124,12 @@ const GameBoard = () => {
   }
 
   const submit = async () => {
+    /* 
+      Activate loading spinner on Submit button
+      This prevents user from submitting multiple times, thereby gaining more points than intended.
+    */
+    setBoardIsLoading(true)
+
     submitMove({
       gameID: gameContext!.gameID,
       userID: gameContext!.userUID,
@@ -135,6 +143,9 @@ const GameBoard = () => {
       setTempBoard([''])
       updateGameState(gameContext!)
       displayValidWord(res)
+
+      // Deactivate loading spinner after response from /api/check
+      setBoardIsLoading(false)
     })
   }
 
@@ -269,6 +280,7 @@ const GameBoard = () => {
                     onClick={() => submit()}
                     fullWidth
                     variant="light"
+                    loading={boardIsLoading}
                     style={
                       isLetterPlaced
                         ? { border: '1px solid #D8F5A2' }
