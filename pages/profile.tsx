@@ -18,8 +18,7 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
 
     // Get userData from firestore
     const uid = await fetchUID(ctx)
-    let userData = await fetchUserData(uid)
-    userData = JSON.parse(JSON.stringify(userData))
+    let userData = JSON.parse(JSON.stringify(await fetchUserData(uid)))
 
     // Calculate win rate
     const winRate = userData?.wins! / userData?.games?.length!
