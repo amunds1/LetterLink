@@ -24,7 +24,7 @@ const ExperiencePointsBar = ({
   const remainingXP = level * 50 - experiencePoints
 
   // Percent to next level, used in progress bar
-  const percentNextLevel = (remainingXP / 50) * 100
+  let percentNextLevel = remainingXP === 50 ? 0 : 100 - (remainingXP / 50) * 100
 
   return (
     <div style={{ display: 'flex', gap: '15px' }}>
