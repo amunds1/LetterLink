@@ -1,4 +1,4 @@
-import { Progress, Stack, Text } from '@mantine/core'
+import { Progress, Stack, Text, Image } from '@mantine/core'
 import Levels, { ILevels } from '../../constants/Levels'
 
 const ExperiencePointsBar = ({
@@ -13,34 +13,49 @@ const ExperiencePointsBar = ({
     Level 3 -> 100 to 149 XP
     ...
   */
+
   const level = Math.floor(experiencePoints / 50 + 1)
 
   // Find levelName for that level
   const levelList: ILevels = Levels
   const levelName: string = levelList[level]
 
-  // Remaining XP to next level
+  // Remaining XP to next level (will be a number between 1 and 50)
   const remainingXP = level * 50 - experiencePoints
 
   // Percent to next level, used in progress bar
-  const percentNextLevel = ((experiencePoints - (level - 1) * 50) / 50) * 100
+  let percentNextLevel = remainingXP === 50 ? 0 : 100 - (remainingXP / 50) * 100
 
   return (
-    <Stack>
-      <Text align="center">
-        Level {level} - {levelName}
-      </Text>
-      <Progress
-        color="green"
-        size="xl"
-        value={percentNextLevel}
-        label={`${percentNextLevel} %`}
-      />
-      <Text align="center" size="sm">
-        You have {experiencePoints} XP. Earn just {remainingXP} more XP points
-        to reach Level {level + 1}!
-      </Text>
-    </Stack>
+    <div style={{ display: 'flex', gap: '15px' }}>
+      <div style={{ display: 'flex', alignItems: 'center' }}>
+        <Image src="/icons/xp.svg" width={50}></Image>
+      </div>
+      <Stack spacing="xs" style={{ width: '100%' }}>
+        <Text size="sm" align="left" color="teal" weight="bold">
+          {experiencePoints} XP
+        </Text>
+        <Progress
+          color="teal"
+          size="xl"
+          radius="lg"
+          value={percentNextLevel}
+          label={`${percentNextLevel} %`}
+        />
+        <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+          <Text size="lg" color="teal" weight="bold">
+            Level {level} - {levelName}
+          </Text>
+          <Text size="sm" color="gray.6">
+            {remainingXP} XP to{' '}
+            <Text size="md" span color="teal" weight="bold">
+              {' '}
+              Level {level + 1}
+            </Text>
+          </Text>
+        </div>
+      </Stack>
+    </div>
   )
 }
 
