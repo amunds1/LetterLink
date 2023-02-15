@@ -13,33 +13,43 @@ const ExperiencePointsBar = ({
     Level 3 -> 100 to 149 XP
     ...
   */
+
   const level = Math.floor(experiencePoints / 50 + 1)
 
   // Find levelName for that level
   const levelList: ILevels = Levels
   const levelName: string = levelList[level]
 
-  // Remaining XP to next level
+  // Remaining XP to next level (will be a number between 1 and 50)
   const remainingXP = level * 50 - experiencePoints
 
   // Percent to next level, used in progress bar
-  const percentNextLevel = ((experiencePoints - (level - 1) * 50) / 50) * 100
+  const percentNextLevel = (remainingXP / 50) * 100
 
   return (
-    <Stack>
-      <Text align="center">
-        Level {level} - {levelName}
+    <Stack spacing="xs">
+      <Text size="sm" align="left" color="teal" weight="bold">
+        {experiencePoints} XP
       </Text>
       <Progress
-        color="green"
+        color="teal"
         size="xl"
+        radius="lg"
         value={percentNextLevel}
         label={`${percentNextLevel} %`}
       />
-      <Text align="center" size="sm">
-        You have {experiencePoints} XP. Earn just {remainingXP} more XP points
-        to reach Level {level + 1}!
-      </Text>
+      <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+        <Text size="lg" color="teal" weight="bold">
+          Level {level} - {levelName}
+        </Text>
+        <Text size="sm" color="gray.6">
+          {remainingXP} XP to{' '}
+          <Text size="md" span color="teal" weight="bold">
+            {' '}
+            Level {level + 1}
+          </Text>
+        </Text>
+      </div>
     </Stack>
   )
 }

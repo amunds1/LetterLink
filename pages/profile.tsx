@@ -163,7 +163,6 @@ const Profile = (props: IProfile) => {
           userYouBeatenMost={userYouBeatenMost}
         />
       </Card>
-      <Text size={30}>Previous games</Text>
     </Stack>
   )
 }
