@@ -21,10 +21,9 @@ import { GameContext } from './utils/gameContext'
 import updateGameState from './utils/updateGameState'
 import submitMove from './utils/submitMove'
 import CheckBoardResponseData from '../../pages/api/types/CheckBoardResponseData'
-import { IValidWords } from './interface/IvalidWords'
 import getValidWordsList from './utils/getValidWordsList'
 import colorValidWordBorder from './utils/colorValidWordBorder'
-import Link from 'next/link'
+import { useMediaQuery } from '@mantine/hooks'
 
 const useStyles = createStyles(() => ({
   grid: {
@@ -33,15 +32,15 @@ const useStyles = createStyles(() => ({
   col: {
     border: '1px solid grey',
     padding: '0px',
-    fontSize: '30px',
-  },
-  container: {
-    width: '80%',
+    fontSize: 'x-large',
   },
 }))
 
 const GameBoard = () => {
   const gameContext = useContext(GameContext)
+
+  // Adjust boardSize
+  const matches = useMediaQuery('(min-width: 750px)')
 
   const { classes } = useStyles()
   const [boardSize, setBoardSize] = useState<number>(
@@ -145,8 +144,7 @@ const GameBoard = () => {
     <>
       {gameContext && (
         <Container
-          className={classes.container}
-          style={{ padding: '0 0 20px 0' }}
+          style={{ padding: '0 0 1% 0', width: matches ? '50%' : '80%' }}
         >
           <>
             <DragDropContext onDragEnd={onDragEnd}>
@@ -232,14 +230,15 @@ const GameBoard = () => {
                   >
                     {}
                     <Droppable droppableId="letterStartBox">
+                      {/* Area around the LetterStartBox */}
                       {(provided) => (
                         <div
                           ref={provided.innerRef}
                           {...provided.droppableProps}
                           style={{
-                            padding: '10px',
-                            fontSize: '30px',
-                            minHeight: '100px',
+                            padding: '5% 0% 3% 0%',
+                            fontSize: 'x-large',
+                            minHeight: '1vh',
                           }}
                         >
                           {/* DraggableLetterBox that is not placed at the board */}

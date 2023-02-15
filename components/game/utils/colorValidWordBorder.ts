@@ -20,7 +20,7 @@ const colorValidWordBorder = (
       rowPosition.differenceIndex >= validWords[i].wordPosition[0] &&
       rowPosition.differenceIndex <= validWords[i].wordPosition[1]
     ) {
-      return '1px solid red'
+      return '2px solid #E03131'
     }
     // Same (as above) for columns:
     if (
@@ -29,7 +29,7 @@ const colorValidWordBorder = (
       colPosition.differenceIndex >= validWords[i].wordPosition[0] &&
       colPosition.differenceIndex <= validWords[i].wordPosition[1]
     ) {
-      return '1px solid red'
+      return '2px solid #E03131'
     }
   }
   return ''
