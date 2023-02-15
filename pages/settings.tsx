@@ -135,11 +135,13 @@ const Settings = ({ uid, userData }: { uid: string; userData: User }) => {
       </Modal>
 
       <Stack>
+        {/* Update profile form */}
+
+        {/* 
         <Text size="lg" weight="bold">
           Update profile information
         </Text>
 
-        {/* Update profile form */}
         <form onSubmit={form.onSubmit((values) => console.log(values))}>
           <Stack>
             <TextInput
@@ -157,6 +159,7 @@ const Settings = ({ uid, userData }: { uid: string; userData: User }) => {
         </form>
 
         <Divider my="sm" />
+         */}
 
         {/* Danger zone */}
         <Text size="lg" weight="bold">
