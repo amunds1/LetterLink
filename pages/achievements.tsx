@@ -1,8 +1,6 @@
-import { Button, Stack } from '@mantine/core'
+import { Container, Stack } from '@mantine/core'
 import { GetServerSidePropsContext } from 'next/types'
 import Acheviement from '../components/achievements/Achievement'
-import { gameStatus } from '../components/achievements/mockData'
-import updateAchievementStatus from '../components/achievements/updateAchievementStatus'
 import { fetchUserData } from '../components/profile/firebase/fetchUserData'
 import fetchUID from '../firebase/fetchUID'
 import User from '../types/User'
@@ -44,18 +42,13 @@ const Achievements = (props: IAchievements) => {
   return (
     <>
       {achievements && (
-        <Stack>
-          <Button
-            onClick={() =>
-              updateAchievementStatus(gameStatus, id, achievements)
-            }
-          >
-            Simulate completed game
-          </Button>
-          {Object.keys(achievements).map((key) => (
-            <Acheviement key={key} data={achievements[key]} />
-          ))}
-        </Stack>
+        <Container>
+          <Stack align="center">
+            {Object.keys(achievements).map((key) => (
+              <Acheviement key={key} data={achievements[key]} />
+            ))}
+          </Stack>
+        </Container>
       )}
     </>
   )
