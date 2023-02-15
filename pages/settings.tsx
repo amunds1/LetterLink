@@ -13,6 +13,7 @@ import { deleteDoc, doc, updateDoc } from 'firebase/firestore'
 import { GetServerSidePropsContext } from 'next'
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
+import ColorSchemeToggle from '../components/ColorSchemeToggle'
 import { SuccessNotification } from '../components/NotificationBanner'
 import { fetchUserData } from '../components/profile/firebase/fetchUserData'
 import { db } from '../firebase/clientApp'
@@ -135,11 +136,13 @@ const Settings = ({ uid, userData }: { uid: string; userData: User }) => {
       </Modal>
 
       <Stack>
+        {/* Update profile form */}
+
+        {/* 
         <Text size="lg" weight="bold">
           Update profile information
         </Text>
 
-        {/* Update profile form */}
         <form onSubmit={form.onSubmit((values) => console.log(values))}>
           <Stack>
             <TextInput
@@ -155,6 +158,9 @@ const Settings = ({ uid, userData }: { uid: string; userData: User }) => {
             </Group>
           </Stack>
         </form>
+        */}
+
+        <ColorSchemeToggle />
 
         <Divider my="sm" />
 

@@ -14,7 +14,10 @@ import { useEffect, useState } from 'react'
 import { PageHeader } from '../components/PageHeader'
 import { AuthProvider } from '../firebase/AuthProvider'
 import { usePageLoading } from '../hooks/usePageLoading'
+import { getAnalytics, setUserId } from 'firebase/analytics'
 import * as gtag from '../lib/gtag'
+import firebase from '../firebase/clientApp'
+import { getAuth } from 'firebase/auth'
 
 export default function App(props: AppProps) {
   const { Component, pageProps } = props
@@ -28,6 +31,20 @@ export default function App(props: AppProps) {
   const router = useRouter()
 
   const { isPageLoading } = usePageLoading()
+
+  /* 
+    Manually set Google Analytics user ID
+    https://firebase.google.com/docs/analytics/userid
+  */
+  const auth = getAuth()
+  const user = auth.currentUser
+
+  useEffect(() => {
+    if (user) {
+      console.log('Setting Google Analytics user id: ' + user.uid)
+      setUserId(getAnalytics(), user.uid)
+    }
+  }, [user])
 
   useEffect(() => {
     const handleRouteChange = (url: string) => {
