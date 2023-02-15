@@ -213,19 +213,15 @@ export function PageHeader() {
                   <Divider my="sm" />
 
                   {/* SIGN OUT LINK */}
-                  <Link
-                    href={PageLinks.SIGNOUT.link}
-                    key={PageLinks.SIGNOUT.label}
+
+                  <Button
+                    variant="white"
+                    color="red"
+                    style={{ width: '100%' }}
+                    onClick={() => signOutUser().then(() => router.push('/'))}
                   >
-                    <Button
-                      variant="white"
-                      color="red"
-                      style={{ width: '100%' }}
-                      onClick={() => signOutUser().then(() => router.push('/'))}
-                    >
-                      Sign out
-                    </Button>
-                  </Link>
+                    Sign out
+                  </Button>
                 </Popover.Dropdown>
               </Popover>
             </>
