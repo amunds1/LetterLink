@@ -65,8 +65,9 @@ const NewGame = (props: INewGame) => {
       >
         <Radio value="2" label="2 x 2" color="cyan" />
         <Radio value="3" label="3 x 3" color="cyan" />
+        <Radio value="4" label="4 x 4" color="cyan" />
+        <Radio value="4" label="5 x 5" color="cyan" />
         <Radio value="6" label="6 x 6" color="cyan" />
-        <Radio value="9" label="9 x 9" color="cyan" />
       </Radio.Group>
 
       <Button

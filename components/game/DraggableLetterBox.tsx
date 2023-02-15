@@ -24,14 +24,12 @@ const DraggableLetterBox = (props: { letter: String; index: number }) => {
               {...provided.draggableProps}
               {...provided.dragHandleProps}
               className={classes.cell}
-              mt="md"
-              mb="md"
               style={{
                 backgroundColor: 'white',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
-                minWidth: '50px',
+                minWidth: '40px',
                 border: snapshot.isDragging
                   ? '2px solid black'
                   : '2px solid grey',
@@ -53,7 +51,6 @@ const DraggableLetterBox = (props: { letter: String; index: number }) => {
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
-                minWidth: '50px',
                 border: snapshot.isDragging
                   ? '2px solid black'
                   : '3px solid #74B816',
