@@ -39,8 +39,6 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
 
     const uid = await fetchUID(ctx)
 
-    console.log(uid)
-
     // Fetch user data
     const userData = await fetchUserData(uid)
 
