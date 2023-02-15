@@ -13,6 +13,7 @@ import { deleteDoc, doc, updateDoc } from 'firebase/firestore'
 import { GetServerSidePropsContext } from 'next'
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
+import ColorSchemeToggle from '../components/ColorSchemeToggle'
 import { SuccessNotification } from '../components/NotificationBanner'
 import { fetchUserData } from '../components/profile/firebase/fetchUserData'
 import { db } from '../firebase/clientApp'
@@ -157,9 +158,11 @@ const Settings = ({ uid, userData }: { uid: string; userData: User }) => {
             </Group>
           </Stack>
         </form>
+        */}
+
+        <ColorSchemeToggle />
 
         <Divider my="sm" />
-         */}
 
         {/* Danger zone */}
         <Text size="lg" weight="bold">
