@@ -261,19 +261,16 @@ export function PageHeader() {
 
                 {/* SIGN OUT LINK */}
                 {authenticated && (
-                  <Link
-                    href={PageLinks.SIGNOUT.link}
-                    key={PageLinks.SIGNOUT.label}
-                    className={`${classes.link} ${
-                      router.pathname === '/profile' && classes.linkActive
-                    }`}
-                    style={{
-                      color: 'red',
-                    }}
-                    onClick={() => setAuthenticated(false)}
+                  <Button
+                    variant="white"
+                    color="red"
+                    style={{ width: '100%' }}
+                    onClick={() =>
+                      signOutUser().then(() => router.push('/signin'))
+                    }
                   >
-                    {PageLinks.SIGNOUT.label}
-                  </Link>
+                    Sign out
+                  </Button>
                 )}
 
                 {!authenticated && (
