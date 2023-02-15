@@ -56,7 +56,9 @@ const ActiveGame = ({ game, yourTurn, userUID }: IActiveGame) => {
                   {opponent?.name && (
                     <Avatar src={ProfileIconsList[opponent?.name]} />
                   )}
-                  {!opponent?.name && <Avatar color="cyan" radius="xl" />}
+                  {!opponent?.name && (
+                    <Avatar src={ProfileIconsList['Unknown']} />
+                  )}
 
                   <Text color="black" weight="bold" size="md">
                     {opponent?.name}

@@ -1,4 +1,5 @@
-import { Avatar, Center, RingProgress, Stack, Text } from '@mantine/core'
+import { Avatar, Center, RingProgress, Stack, Text, Image } from '@mantine/core'
+import ProfileIcons, { IProfileIcon } from '../../constants/ProfileIcons'
 
 const Statistics = ({
   winRate,
@@ -13,6 +14,7 @@ const Statistics = ({
 }) => {
   const ringSize = 100
   const ringThickness = 5
+  const ProfileIconsList: IProfileIcon = ProfileIcons
 
   return (
     <div
@@ -22,6 +24,7 @@ const Statistics = ({
         alignItems: 'center',
         flexDirection: 'row',
         flexWrap: 'wrap',
+        flexGrow: 1,
         gap: 30,
         paddingTop: '2rem',
       }}
@@ -57,14 +60,15 @@ const Statistics = ({
       </Stack>
 
       <Stack align="center">
-        <Avatar
-          size={ringSize}
-          color={userYouBeatenMost ? 'blue' : 'gray'}
-          variant="outline"
-        />
-        {userYouBeatenMost.length === 0 && <Text>No wins</Text>}
+        {userYouBeatenMost.length === 0 && (
+          <>
+            <Image width={ringSize} src={ProfileIconsList['Unknown']} />
+            <Text>No wins</Text>{' '}
+          </>
+        )}
         {userYouBeatenMost.length > 0 && (
           <>
+            <Image width={ringSize} src={ProfileIconsList[userYouBeatenMost]} />
             <Text size="sm">
               Most wins against{' '}
               <Text span weight={700} size="md">
@@ -76,19 +80,22 @@ const Statistics = ({
       </Stack>
 
       <Stack align="center">
-        <Avatar
-          size={ringSize}
-          color={userBeatenYouMost ? 'blue' : 'gray'}
-          variant="outline"
-        />
-        {userBeatenYouMost.length === 0 && <Text>No defeats</Text>}
+        {userBeatenYouMost.length === 0 && (
+          <>
+            <Image width={ringSize} src={ProfileIconsList['Unknown']} />
+            <Text>No defeats</Text>
+          </>
+        )}
         {userBeatenYouMost.length > 0 && (
-          <Text size="sm">
-            Most defeats against{' '}
-            <Text span weight={700} size="md">
-              {userBeatenYouMost}
-            </Text>{' '}
-          </Text>
+          <>
+            <Image width={ringSize} src={ProfileIconsList[userBeatenYouMost]} />
+            <Text size="sm">
+              Most defeats against{' '}
+              <Text span weight={700} size="md">
+                {userBeatenYouMost}
+              </Text>{' '}
+            </Text>
+          </>
         )}
       </Stack>
     </div>
