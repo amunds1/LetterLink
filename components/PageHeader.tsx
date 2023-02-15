@@ -20,6 +20,7 @@ import { useRouter } from 'next/router'
 import { Dispatch, SetStateAction, useEffect, useState } from 'react'
 import PageLinks from '../constants/PageLinks'
 import firebase from '../firebase/clientApp'
+import signOutUser from '../firebase/signOutUser'
 
 const useStyles = createStyles((theme) => ({
   root: {
@@ -210,18 +211,17 @@ export function PageHeader() {
                   <Divider my="sm" />
 
                   {/* SIGN OUT LINK */}
-                  <Link
-                    href={PageLinks.SIGNOUT.link}
-                    key={PageLinks.SIGNOUT.label}
+
+                  <Button
+                    variant="white"
+                    color="red"
+                    style={{ width: '100%' }}
+                    onClick={() =>
+                      signOutUser().then(() => router.push('/signin'))
+                    }
                   >
-                    <Button
-                      variant="white"
-                      color="red"
-                      style={{ width: '100%' }}
-                    >
-                      Sign out
-                    </Button>
-                  </Link>
+                    Sign out
+                  </Button>
                 </Popover.Dropdown>
               </Popover>
             </>
