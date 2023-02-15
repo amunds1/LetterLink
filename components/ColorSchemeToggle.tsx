@@ -1,31 +1,67 @@
-import { useMantineColorScheme, ActionIcon, Group } from '@mantine/core'
-import { IconSun, IconMoonStars } from '@tabler/icons'
+import {
+  createStyles,
+  UnstyledButton,
+  Text,
+  Center,
+  useMantineColorScheme,
+  Group,
+} from '@mantine/core'
+import { upperFirst } from '@mantine/hooks'
+import { IconMoon, IconSun } from '@tabler/icons'
 
-const ColorSchemeToggle = () => {
+const useStyles = createStyles((theme) => ({
+  control: {
+    backgroundColor:
+      theme.colorScheme === 'dark'
+        ? theme.colors.dark[8]
+        : theme.colors.gray[0],
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    borderRadius: 1000,
+    paddingLeft: theme.spacing.sm,
+    paddingRight: 4,
+    width: 136,
+    height: 36,
+  },
+
+  iconWrapper: {
+    height: 28,
+    width: 28,
+    borderRadius: 28,
+    backgroundColor:
+      theme.colorScheme === 'dark'
+        ? theme.colors.yellow[4]
+        : theme.colors.dark[4],
+    color: theme.colorScheme === 'dark' ? theme.black : theme.colors.blue[2],
+  },
+
+  value: {
+    lineHeight: 1,
+  },
+}))
+
+function ColorSchemeToggle() {
+  const { classes } = useStyles()
   const { colorScheme, toggleColorScheme } = useMantineColorScheme()
+  const Icon = colorScheme === 'dark' ? IconSun : IconMoon
 
   return (
     <Group position="center" my="xl">
-      <ActionIcon
+      <UnstyledButton
+        aria-label="Toggle theme"
+        className={classes.control}
         onClick={() => toggleColorScheme()}
-        size="lg"
-        sx={(theme) => ({
-          backgroundColor:
-            theme.colorScheme === 'dark'
-              ? theme.colors.dark[6]
-              : theme.colors.gray[0],
-          color:
-            theme.colorScheme === 'dark'
-              ? theme.colors.yellow[4]
-              : theme.colors.blue[6],
-        })}
+        title="Ctrl + J"
       >
-        {colorScheme === 'dark' ? (
-          <IconSun size={18} />
-        ) : (
-          <IconMoonStars size={18} />
-        )}
-      </ActionIcon>
+        <Text size="sm" className={classes.value}>
+          {upperFirst(colorScheme === 'light' ? 'dark' : 'light')} theme
+        </Text>
+
+        <Center className={classes.iconWrapper}>
+          <Icon size={18} stroke={1.5} />
+        </Center>
+      </UnstyledButton>
     </Group>
   )
 }
