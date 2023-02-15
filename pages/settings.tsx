@@ -5,8 +5,10 @@ import {
   Modal,
   Stack,
   Text,
-  TextInput,
+  Card,
+  Container,
   Transition,
+  Image,
 } from '@mantine/core'
 import { useForm } from '@mantine/form'
 import { deleteDoc, doc, updateDoc } from 'firebase/firestore'
@@ -85,7 +87,10 @@ const Settings = ({ uid, userData }: { uid: string; userData: User }) => {
   }
 
   return (
-    <>
+    <Container>
+      <Text align="center" size="xl" weight="bold" mt="sm" mb="xl">
+        Settings
+      </Text>
       <Transition
         mounted={alert}
         transition="fade"
@@ -135,10 +140,9 @@ const Settings = ({ uid, userData }: { uid: string; userData: User }) => {
         </Group>
       </Modal>
 
-      <Stack>
-        {/* Update profile form */}
+      {/* Update profile form */}
 
-        {/* 
+      {/* 
         <Text size="lg" weight="bold">
           Update profile information
         </Text>
@@ -160,25 +164,39 @@ const Settings = ({ uid, userData }: { uid: string; userData: User }) => {
         </form>
         */}
 
-        <ColorSchemeToggle />
-
-        <Divider my="sm" />
+      <Stack>
+        <Card shadow="lg">
+          <Stack align="center">
+            <Text size="lg" weight="bold">
+              Change apperance
+            </Text>
+            <ColorSchemeToggle />
+          </Stack>
+        </Card>
 
         {/* Danger zone */}
-        <Text size="lg" weight="bold">
-          Danger zone
-        </Text>
+        <Card shadow="lg">
+          <Stack align="center">
+            <Group spacing="xs">
+              <Text size="lg" weight="bold">
+                Danger zone
+              </Text>
+              <Image width={30} src="icons/warning.svg" />
+            </Group>
 
-        <Button
-          color="red"
-          variant="outline"
-          type="submit"
-          onClick={() => setDeleteProfileModalOpen(true)}
-        >
-          Delete all my profile and data
-        </Button>
+            <Button
+              color="red"
+              variant="light"
+              style={{ border: '1px solid #FFC9C9', width: 'fit-content' }}
+              type="submit"
+              onClick={() => setDeleteProfileModalOpen(true)}
+            >
+              Delete all my profile and data
+            </Button>
+          </Stack>
+        </Card>
       </Stack>
-    </>
+    </Container>
   )
 }
 

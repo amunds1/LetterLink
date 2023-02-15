@@ -153,9 +153,7 @@ const Profile = (props: IProfile) => {
             </Text>
           </Group>
           <Link href="/settings">
-            <Button variant="outline" size="xs">
-              Edit profile
-            </Button>
+            <Image src="/icons/settings.svg" width={40} />
           </Link>
         </Group>
         <Divider my="sm" pb="lg" />
