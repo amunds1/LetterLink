@@ -39,6 +39,8 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
 
     const uid = await fetchUID(ctx)
 
+    console.log(uid)
+
     // Fetch user data
     const userData = await fetchUserData(uid)
 
@@ -57,7 +59,7 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
         uid: uid,
         activeGames: activeGames,
         proposedGames: proposedGames,
-        hasDefaultUsername: userData?.hasDefaultUsername,
+        //hasDefaultUsername: userData?.hasDefaultUsername,
       },
     }
   } catch (err) {
@@ -82,8 +84,7 @@ const Games = (props: IGames) => {
   const { classes } = useStyles()
   const { uid, hasDefaultUsername } = props
 
-  const [showModalSetUsername, setShowModalSetUsername] =
-    useState(hasDefaultUsername)
+  //const [showModalSetUsername, setShowModalSetUsername] = useState(hasDefaultUsername)
 
   const [games, setGames] = useState<Game[]>(
     props.proposedGames.concat(props.activeGames)
@@ -131,11 +132,15 @@ const Games = (props: IGames) => {
 
   return (
     <>
+      {/* 
+      Not in use at the moment
+
       <SetUsernameModal
         showModalSetUsername={showModalSetUsername}
         setShowModalSetUsername={setShowModalSetUsername}
         uid={uid}
-      />
+      /> 
+      */}
       <Stack className={classes.center} style={{ width: '100%' }}>
         <Streak />
         <Link href="/game/new" style={{ textDecoration: 'none' }}>
