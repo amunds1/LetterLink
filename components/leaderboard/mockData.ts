@@ -5,27 +5,27 @@ export type Player = {
 
 export const mockPlayerData: Player[] = [
   {
-    username: 'Andreas',
+    username: 'Cow',
     points: 100,
   },
   {
-    username: 'Kristine',
+    username: 'Pig',
     points: 100,
   },
   {
-    username: 'Carl',
+    username: 'Wolf',
     points: 300,
   },
   {
-    username: 'Mathias',
+    username: 'Owl',
     points: 150,
   },
   {
-    username: 'Per',
+    username: 'Rabbit',
     points: 50,
   },
   {
-    username: 'Yusef',
+    username: 'Frog',
     points: 77,
   },
 ]
