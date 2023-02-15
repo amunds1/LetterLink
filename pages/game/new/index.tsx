@@ -82,6 +82,7 @@ const NewGame = (props: INewGame) => {
         placeholder=""
         itemComponent={SelectItem}
         data={oponentOptions}
+        onChange={setOponent}
         searchable
         maxDropdownHeight={400}
         nothingFound="Could not find any users matching your search"
