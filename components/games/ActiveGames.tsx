@@ -102,7 +102,7 @@ const ActiveGames = ({ games, userUID }: IActiveGames) => {
       {/* YOUR TURN */}
       {games?.filter((game) => game.nextTurn === userUID).length > 0 && (
         <Stack>
-          <Text align="left" size="xl" weight="bold" mt="sm">
+          <Text align="center" size="xl" weight="bold" mt="sm">
             Your turn
           </Text>
           {games &&
@@ -122,7 +122,7 @@ const ActiveGames = ({ games, userUID }: IActiveGames) => {
       {/* THEIR TURN */}
       {games?.filter((game) => game.nextTurn != userUID).length > 0 && (
         <Stack>
-          <Text align="left" size="xl" weight="bold" mt="sm">
+          <Text align="center" size="xl" weight="bold" mt="sm">
             Their turn
           </Text>
 

@@ -1,4 +1,4 @@
-import { Container, Stack } from '@mantine/core'
+import { Container, Stack, Text } from '@mantine/core'
 import { GetServerSidePropsContext } from 'next/types'
 import Acheviement from '../components/achievements/Achievement'
 import { fetchUserData } from '../components/profile/firebase/fetchUserData'
@@ -40,17 +40,18 @@ const Achievements = (props: IAchievements) => {
   const { id, achievements } = props.userData
 
   return (
-    <>
+    <Container>
+      <Text align="center" size="xl" weight="bold" mt="sm">
+        Achievements
+      </Text>
       {achievements && (
-        <Container>
-          <Stack align="center">
-            {Object.keys(achievements).map((key) => (
-              <Acheviement key={key} data={achievements[key]} />
-            ))}
-          </Stack>
-        </Container>
+        <Stack align="center" pt="lg">
+          {Object.keys(achievements).map((key) => (
+            <Acheviement key={key} data={achievements[key]} />
+          ))}
+        </Stack>
       )}
-    </>
+    </Container>
   )
 }
 
