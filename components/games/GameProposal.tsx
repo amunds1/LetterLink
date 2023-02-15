@@ -12,6 +12,7 @@ import { IconBan, IconCircleCheck, IconCircleX } from '@tabler/icons'
 import { doc } from 'firebase/firestore'
 import { useEffect, useState } from 'react'
 import { useDocumentDataOnce } from 'react-firebase-hooks/firestore'
+import ProfileIcons, { IProfileIcon } from '../../constants/ProfileIcons'
 import { db } from '../../firebase/clientApp'
 import usersConverter from '../../firebase/converters/userConverter'
 import Game from '../../types/Game'
@@ -53,14 +54,14 @@ const GameProposal = ({ game, userUID }: IGameProposal) => {
       selectUserID(userUID, game.playerOne as string, game.playerTwo as string)
     ).withConverter(usersConverter)
   )
+  const ProfileIconsList: IProfileIcon = ProfileIcons
 
   return (
     <Card shadow="sm" p="sm" radius="md" withBorder>
       <Group position="apart" mt="xs" ml="xs">
         <Group position="left">
-          <Avatar color="cyan" radius="xl">
-            AB
-          </Avatar>
+          {opponent?.name && <Avatar src={ProfileIconsList[opponent?.name]} />}
+          {!opponent?.name && <Avatar color="cyan" radius="xl" />}
           <Text weight="bold"> {opponent?.name}</Text>
         </Group>
         <Badge color="orange" variant="light">

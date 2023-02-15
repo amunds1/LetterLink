@@ -1,7 +1,16 @@
-import { Button, Radio, Select, SelectItem, Stack, Text } from '@mantine/core'
+import {
+  Avatar,
+  Button,
+  Group,
+  Radio,
+  Select,
+  SelectItem,
+  Stack,
+  Text,
+} from '@mantine/core'
 import { GetServerSideProps, GetServerSidePropsContext } from 'next'
 import { useRouter } from 'next/router'
-import { useState } from 'react'
+import { forwardRef, useState } from 'react'
 import addGameToCollection from '../../../components/game/firebase/addToGameCollection'
 import { fetchUsersAsSelectOptions } from '../../../components/game/firebase/fetchUsersAsSelectOptions'
 import fetchUID from '../../../firebase/fetchUID'
@@ -39,20 +48,47 @@ const NewGame = (props: INewGame) => {
     )
   }
 
+  interface ItemProps extends React.ComponentPropsWithoutRef<'div'> {
+    image: string
+    label: string
+    description: string
+  }
+
+  // eslint-disable-next-line react/display-name
+  const SelectItem = forwardRef<HTMLDivElement, ItemProps>(
+    ({ image, label, description, ...others }: ItemProps, ref) => (
+      <div ref={ref} {...others}>
+        <Group noWrap>
+          <Avatar src={image} />
+
+          <div>
+            <Text size="sm">{label}</Text>
+            <Text size="xs" opacity={0.65}>
+              {description}
+            </Text>
+          </div>
+        </Group>
+      </div>
+    )
+  )
+
   return (
     <Stack>
       {/* Back to games button */}
       <BackToGamesButton />
       {/* SELECT OPONENT */}
       <Select
-        label="Select oponent"
-        placeholder="Pick one oponent"
-        value={oponent}
-        onChange={setOponent}
+        label="Select an oponent"
+        placeholder=""
+        itemComponent={SelectItem}
         data={oponentOptions}
         searchable
-        clearable
-        withAsterisk
+        maxDropdownHeight={400}
+        nothingFound="Could not find any users matching your search"
+        filter={(value, item) =>
+          item?.label?.toLowerCase().includes(value.toLowerCase().trim()) ||
+          item?.description?.toLowerCase().includes(value.toLowerCase().trim())
+        }
       />
 
       <Radio.Group
