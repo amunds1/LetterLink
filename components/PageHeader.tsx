@@ -218,7 +218,9 @@ export function PageHeader() {
                     variant="white"
                     color="red"
                     style={{ width: '100%' }}
-                    onClick={() => signOutUser().then(() => router.push('/'))}
+                    onClick={() =>
+                      signOutUser().then(() => router.push('/signin'))
+                    }
                   >
                     Sign out
                   </Button>
