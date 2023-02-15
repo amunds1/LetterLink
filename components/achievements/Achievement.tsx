@@ -8,7 +8,7 @@ const Acheviement = ({ data }: { data: IAchievement }) => {
   const AchievementsIconsList: IAchievementIcons = AchievementIcons
   return (
     <Card style={{ backgroundColor: 'white', width: '60%' }} shadow="lg">
-      <div style={{ display: 'flex', gap: '5%' }}>
+      <div style={{ display: 'flex', gap: '5%', alignItems: 'center' }}>
         {data.unlocked && (
           <Image
             src={AchievementsIconsList[data.title.replace(/ /g, '-')]}
