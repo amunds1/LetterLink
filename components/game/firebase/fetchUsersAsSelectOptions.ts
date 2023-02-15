@@ -6,10 +6,13 @@ import {
   documentId,
   getDocs,
 } from 'firebase/firestore'
+import ProfileIcons, { IProfileIcon } from '../../../constants/ProfileIcons'
 import { db } from '../../../firebase/clientApp'
 import usersConverter from '../../../firebase/converters/userConverter'
 
 export const fetchUsersAsSelectOptions = async (uid: string) => {
+  const ProfileIconsList: IProfileIcon = ProfileIcons
+
   // Generate array of name and id to be used as Select options
   const options: (string | SelectItem)[] = []
 
@@ -22,7 +25,12 @@ export const fetchUsersAsSelectOptions = async (uid: string) => {
   const querySnapshot = await getDocs(q)
 
   querySnapshot.forEach((user) => {
-    options.push({ value: user.data().id, label: user.data().name })
+    options.push({
+      value: user.data().id,
+      label: user.data().name,
+      image: ProfileIconsList[user.data().name],
+      description: user.data().experiencePoints + ' experience points',
+    })
   })
 
   return options
