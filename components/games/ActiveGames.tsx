@@ -3,6 +3,7 @@ import { IconChevronRight } from '@tabler/icons'
 import { doc } from 'firebase/firestore'
 import Link from 'next/link'
 import { useDocumentDataOnce } from 'react-firebase-hooks/firestore'
+import ProfileIcons, { IProfileIcon } from '../../constants/ProfileIcons'
 import { db } from '../../firebase/clientApp'
 import usersConverter from '../../firebase/converters/userConverter'
 import Game from '../../types/Game'
@@ -28,6 +29,8 @@ const ActiveGame = ({ game, yourTurn, userUID }: IActiveGame) => {
     ).withConverter(usersConverter)
   )
 
+  const ProfileIconsList: IProfileIcon = ProfileIcons
+
   return (
     <>
       <Card
@@ -50,13 +53,11 @@ const ActiveGame = ({ game, yourTurn, userUID }: IActiveGame) => {
             <Grid.Col span="auto">
               <Stack spacing="xs">
                 <Group spacing="sm" mt="xs" ml="xs">
-                  <Avatar
-                    color="grape"
-                    radius="xl"
-                    style={{ border: '1px solid #EEBEFA' }}
-                  >
-                    KL
-                  </Avatar>
+                  {opponent?.name && (
+                    <Avatar src={ProfileIconsList[opponent?.name]} />
+                  )}
+                  {!opponent?.name && <Avatar color="cyan" radius="xl" />}
+
                   <Text color="black" weight="bold" size="md">
                     {opponent?.name}
                   </Text>

@@ -6,6 +6,7 @@ import { fetchUserData } from '../components/profile/firebase/fetchUserData'
 import Statistics from '../components/profile/Statistics'
 import fetchUID from '../firebase/fetchUID'
 import User from '../types/User'
+import ProfileIcons, { IProfileIcon } from '../constants/ProfileIcons'
 
 export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
   try {
@@ -139,14 +140,14 @@ const Profile = (props: IProfile) => {
     userYouBeatenMost,
   } = props
 
+  const ProfileIconsList: IProfileIcon = ProfileIcons
+
   return (
     <Stack style={{ height: '100%' }} align="center" justify="center">
       <Card shadow="sm" p="lg" radius="md" withBorder>
         <Group position="apart" pb="lg">
           <Group>
-            <Avatar color="cyan" radius="xl">
-              AA
-            </Avatar>
+            <Avatar src={ProfileIconsList[userData.name]} />
             <Text size={30}>{userData.name}</Text>
           </Group>
           <Link href="/settings">

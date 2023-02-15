@@ -1,6 +1,7 @@
 import { useContext } from 'react'
 import { GameContext } from './utils/gameContext'
 import { Box, Center, Avatar, Text, createStyles } from '@mantine/core'
+import ProfileIcons, { IProfileIcon } from '../../constants/ProfileIcons'
 
 const useStyles = createStyles(() => ({
   playerBox: {
@@ -20,6 +21,8 @@ const Points = () => {
 
   const gameContext = useContext(GameContext)
 
+  const ProfileIconsList: IProfileIcon = ProfileIcons
+
   return (
     <Box
       sx={(theme) => ({
@@ -31,7 +34,10 @@ const Points = () => {
         {/* User points */}
         <Box className={classes.playerBox}>
           <Center>
-            <Avatar variant="filled" color="teal" radius="xl"></Avatar>
+            {gameContext?.userName && (
+              <Avatar src={ProfileIconsList[gameContext?.userName]} />
+            )}
+            {!gameContext?.userName && <Avatar color="cyan" radius="xl" />}
           </Center>
           <Center>
             <Text size="md">{gameContext?.userName}</Text>
@@ -50,7 +56,10 @@ const Points = () => {
         </Text>
         <Box className={classes.playerBox}>
           <Center>
-            <Avatar variant="filled" color="indigo" radius="xl"></Avatar>
+            {gameContext?.opponentName && (
+              <Avatar src={ProfileIconsList[gameContext?.opponentName]} />
+            )}
+            {!gameContext?.opponentName && <Avatar color="cyan" radius="xl" />}
           </Center>
           <Center>
             <Text size="md">{gameContext?.opponentName}</Text>

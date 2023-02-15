@@ -193,9 +193,7 @@ export function PageHeader() {
               <Popover width={200} position="bottom" withArrow shadow="md">
                 <Popover.Target>
                   <ActionIcon>
-                    <Avatar color="cyan" radius="xl">
-                      AA
-                    </Avatar>
+                    <Avatar color="cyan" radius="xl" />
                   </ActionIcon>
                 </Popover.Target>
                 <Popover.Dropdown>
