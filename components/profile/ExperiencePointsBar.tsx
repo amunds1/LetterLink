@@ -1,4 +1,4 @@
-import { Progress, Stack, Text } from '@mantine/core'
+import { Progress, Stack, Text, Image } from '@mantine/core'
 import Levels, { ILevels } from '../../constants/Levels'
 
 const ExperiencePointsBar = ({
@@ -27,30 +27,35 @@ const ExperiencePointsBar = ({
   const percentNextLevel = (remainingXP / 50) * 100
 
   return (
-    <Stack spacing="xs">
-      <Text size="sm" align="left" color="teal" weight="bold">
-        {experiencePoints} XP
-      </Text>
-      <Progress
-        color="teal"
-        size="xl"
-        radius="lg"
-        value={percentNextLevel}
-        label={`${percentNextLevel} %`}
-      />
-      <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-        <Text size="lg" color="teal" weight="bold">
-          Level {level} - {levelName}
-        </Text>
-        <Text size="sm" color="gray.6">
-          {remainingXP} XP to{' '}
-          <Text size="md" span color="teal" weight="bold">
-            {' '}
-            Level {level + 1}
-          </Text>
-        </Text>
+    <div style={{ display: 'flex', gap: '15px' }}>
+      <div style={{ display: 'flex', alignItems: 'center' }}>
+        <Image src="/icons/xp.svg" width={50}></Image>
       </div>
-    </Stack>
+      <Stack spacing="xs" style={{ width: '100%' }}>
+        <Text size="sm" align="left" color="teal" weight="bold">
+          {experiencePoints} XP
+        </Text>
+        <Progress
+          color="teal"
+          size="xl"
+          radius="lg"
+          value={percentNextLevel}
+          label={`${percentNextLevel} %`}
+        />
+        <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+          <Text size="lg" color="teal" weight="bold">
+            Level {level} - {levelName}
+          </Text>
+          <Text size="sm" color="gray.6">
+            {remainingXP} XP to{' '}
+            <Text size="md" span color="teal" weight="bold">
+              {' '}
+              Level {level + 1}
+            </Text>
+          </Text>
+        </div>
+      </Stack>
+    </div>
   )
 }
 
