@@ -1,12 +1,4 @@
-import {
-  Modal,
-  Image,
-  Stack,
-  Text,
-  BackgroundImage,
-  Group,
-} from '@mantine/core'
-import { _BackgroundImage } from '@mantine/core/lib/BackgroundImage/BackgroundImage'
+import { Modal, Image, Stack, Text } from '@mantine/core'
 import Levels, { ILevels } from '../../constants/Levels'
 interface ILevelModalProps {
   openLeveldUpModal: boolean

@@ -5,6 +5,7 @@ import { useEffect, useState } from 'react'
 import { resetServerContext } from 'react-beautiful-dnd'
 import ConfettiExplosion from 'react-confetti-explosion'
 import { useDocumentData } from 'react-firebase-hooks/firestore'
+import AchievementsModal from '../../components/game/AchievementsModal'
 import { fetchBoardData } from '../../components/game/firebase/fetchBoardData'
 import fetchGameData from '../../components/game/firebase/fetchGameData'
 import yourTurn from '../../components/game/firebase/yourTurn'
@@ -312,27 +313,21 @@ const GameID = (props: IGameID) => {
           closeLeveldUpModal={closeLeveldUpModal}
           experiencePoints={GameContextValues.experiencePoints}
         />
-        <Modal
-          opened={openWin3GamesModal}
-          onClose={() => closeAchievementsModal('win-3-games')}
-          title="Win 3 games"
-        >
-          Win 3 games
-        </Modal>
-        <Modal
-          opened={openPlay3Opponents}
-          onClose={() => closeAchievementsModal('play-3-different-opponents')}
-          title="Play 3 opponents"
-        >
-          Play 3 opponents
-        </Modal>
-        <Modal
-          opened={openPlay10GamesModal}
-          onClose={() => closeAchievementsModal('play-10-games')}
-          title="Play 10 games"
-        >
-          Play 10 games
-        </Modal>
+        <AchievementsModal
+          acheievement={'win-3-games'}
+          openModal={openWin3GamesModal}
+          closeAchievementsModal={closeAchievementsModal}
+        />
+        <AchievementsModal
+          acheievement={'play-3-different-opponents'}
+          openModal={openPlay3Opponents}
+          closeAchievementsModal={closeAchievementsModal}
+        />
+        <AchievementsModal
+          acheievement={'play-10-games'}
+          openModal={openPlay10GamesModal}
+          closeAchievementsModal={closeAchievementsModal}
+        />
       </GameContext.Provider>
     </Container>
   )
