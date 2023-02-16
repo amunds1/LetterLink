@@ -1,4 +1,4 @@
-import { Avatar, Button, Card, Group, Stack, Text } from '@mantine/core'
+import { Image, Button, Card, Group, Stack, Text, Divider } from '@mantine/core'
 import { GetServerSidePropsContext } from 'next'
 import Link from 'next/link'
 import ExperiencePointsBar from '../components/profile/ExperiencePointsBar'
@@ -145,17 +145,18 @@ const Profile = (props: IProfile) => {
   return (
     <Stack style={{ height: '100%' }} align="center" justify="center">
       <Card shadow="sm" p="lg" radius="md" withBorder>
-        <Group position="apart" pb="lg">
+        <Group position="apart">
           <Group>
-            <Avatar src={ProfileIconsList[userData.name]} />
-            <Text size={30}>{userData.name}</Text>
+            <Image src={ProfileIconsList[userData.name]} width={60} />
+            <Text size={30} weight="bold">
+              {userData.name}
+            </Text>
           </Group>
           <Link href="/settings">
-            <Button variant="outline" size="xs">
-              Edit profile
-            </Button>
+            <Image src="/icons/settings.svg" width={40} />
           </Link>
         </Group>
+        <Divider my="sm" pb="lg" />
         <ExperiencePointsBar experiencePoints={userData.experiencePoints} />
         <Statistics
           winRate={winRate}

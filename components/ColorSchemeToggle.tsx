@@ -47,7 +47,7 @@ function ColorSchemeToggle() {
   const Icon = colorScheme === 'dark' ? IconSun : IconMoon
 
   return (
-    <Group position="center" my="xl">
+    <Group position="center">
       <UnstyledButton
         aria-label="Toggle theme"
         className={classes.control}
