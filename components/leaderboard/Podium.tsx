@@ -22,7 +22,7 @@ const Podium = ({ players }: { players: Partial<User>[] }) => {
       <Grid.Col span={4}>
         {/* First place - name */}
         <Stack align="center" spacing="xs">
-          <Image src={ProfileIconsList[players[0].name]} width={50} />
+          <Image src={ProfileIconsList[players[0].name!]} width={50} />
           <Text align="center" weight="bold">
             1. {players[0].name}
           </Text>
@@ -32,7 +32,7 @@ const Podium = ({ players }: { players: Partial<User>[] }) => {
       <Grid.Col span={4}>
         {/* Secondth place - name */}
         <Stack align="center" spacing="xs">
-          <Image src={ProfileIconsList[players[1].name]} width={50} />
+          <Image src={ProfileIconsList[players[1].name!]} width={50} />
           <Text align="center" weight="bold">
             2. {players[1].name}
           </Text>
@@ -56,7 +56,7 @@ const Podium = ({ players }: { players: Partial<User>[] }) => {
       <Grid.Col span={4}>
         {/* Third place - name */}
         <Stack align="center" spacing="xs">
-          <Image src={ProfileIconsList[players[2].name]} width={50} />
+          <Image src={ProfileIconsList[players[2].name!]} width={50} />
           <Text align="center" weight="bold">
             3. {players[2].name}
           </Text>
