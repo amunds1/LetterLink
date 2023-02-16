@@ -14,7 +14,11 @@ const LeaderboardList = ({ players }: { players: Partial<User>[] }) => {
             <div style={{ display: 'flex', justifyContent: 'space-between' }}>
               <Group>
                 <Text weight="bold">{index + 4}.</Text>
-                <Image src={ProfileIconsList[player.name]} width={30} />
+                <Image
+                  src={ProfileIconsList[player.name!]}
+                  width={30}
+                  alt="Profile avatar"
+                />
                 <Text>{player.name}</Text>
               </Group>
               <Text color="teal" weight="bold">
