@@ -1,5 +1,5 @@
-import { Center, Container } from '@mantine/core'
-import { doc } from 'firebase/firestore'
+import { Center, Container, Modal } from '@mantine/core'
+import { doc, updateDoc } from 'firebase/firestore'
 import { GetServerSideProps, GetServerSidePropsContext } from 'next'
 import { useEffect, useState } from 'react'
 import { resetServerContext } from 'react-beautiful-dnd'
@@ -26,11 +26,14 @@ import {
 } from '../../components/game/utils/gameContext'
 import BackToGamesButton from '../../components/games/BackToGamesButton'
 import selectUserID from '../../components/games/utils/selectUserID'
+import { fetchUserData } from '../../components/profile/firebase/fetchUserData'
 import { db } from '../../firebase/clientApp'
 import boardDataConverter from '../../firebase/converters/boardDataConverter'
+import userConverter from '../../firebase/converters/userConverter'
 import fetchUID from '../../firebase/fetchUID'
 import BoardData from '../../types/BoardData'
 import Game from '../../types/Game'
+import User from '../../types/User'
 import gameDataListener from '../api/utils/gameDataListener'
 
 export const getServerSideProps: GetServerSideProps = async (
@@ -51,13 +54,16 @@ export const getServerSideProps: GetServerSideProps = async (
   const roundsIsLeft = gameData?.roundsLeft
 
   // Used to display Points and Usernames
-  const userName = await getName(uid)
+  let userData = await fetchUserData(uid)
+  userData = JSON.parse(JSON.stringify(userData))
+
   const opponentID = selectUserID(
     uid,
     gameData?.playerOne as string,
     gameData?.playerTwo as string
   )
-  const opponentName = await getName(opponentID)
+  let opponentData = await fetchUserData(opponentID)
+  opponentData = JSON.parse(JSON.stringify(opponentData))
 
   return {
     props: {
@@ -66,8 +72,8 @@ export const getServerSideProps: GetServerSideProps = async (
       gameData: gameData,
       initialGameState: initialGameState,
       itsYourTurn: itsYourTurn,
-      opponentName: opponentName,
-      userName: userName,
+      opponentData: opponentData,
+      userData: userData,
       opponentID: opponentID,
       roundsIsLeft: roundsIsLeft,
     },
@@ -80,9 +86,9 @@ interface IGameID {
   initialGameState: GameStates
   gameData: Game
   itsYourTurn: boolean
-  opponentName: string
+  opponentData: User
   opponentID: string
-  userName: string
+  userData: User
   roundsIsLeft: number
 }
 
@@ -94,8 +100,8 @@ const GameID = (props: IGameID) => {
     gameData,
     itsYourTurn,
     opponentID,
-    opponentName,
-    userName,
+    opponentData,
+    userData,
     roundsIsLeft,
   } = props
 
@@ -127,6 +133,10 @@ const GameID = (props: IGameID) => {
   const [validWords, setValidWords] = useState<IValidWords[]>([])
   const [winner, setWinner] = useState<string>(gameData.winner as string)
 
+  const [openLeveldUpModal, setOpenLeveldUpModal] = useState<boolean>(
+    userData.openLeveldUpModal || false
+  )
+
   // Re-render component after value of yourTurn changes
   useEffect(() => {}, [yourTurn])
 
@@ -156,6 +166,32 @@ const GameID = (props: IGameID) => {
     }
   }, [value])
 
+  /* 
+    Listen for changes in user data, in order to update openLeveldUpModal
+    in GameContextValues
+
+    This allows LeveledUpModal to be shown when the user has leveld up
+  */
+
+  const [userDoc] = useDocumentData(
+    doc(db, 'users', uid as string).withConverter(userConverter)
+  )
+
+  useEffect(() => {
+    // If openLeveldUpModal has been changed to true in firebase -> set to true localy to show the modal
+    if (userDoc?.openLeveldUpModal == true) {
+      setOpenLeveldUpModal(true)
+    }
+  }, [userDoc])
+
+  const closeLeveldUpModal = async () => {
+    // When closing the OpenLeveldUpModal, openLeveldUpModal is set to false both localy and in firebase
+    setOpenLeveldUpModal(false)
+    await updateDoc(doc(db, 'users', uid), {
+      openLeveldUpModal: false,
+    })
+  }
+
   // Populate GameContext
   const GameContextValues: IGameContext = {
     selectedLetter: selectedLetter,
@@ -175,8 +211,8 @@ const GameID = (props: IGameID) => {
     yourTurn: yourTurn,
     setYourTurn: setYourTurn,
     opponentID: opponentID,
-    opponentName: opponentName,
-    userName: userName,
+    opponentName: opponentData.name,
+    userName: userData.name,
     userPoints: userPoints,
     setUserPoints: setUserPoints,
     opponentPoints: opponentPoints,
@@ -187,6 +223,10 @@ const GameID = (props: IGameID) => {
     setValidWords: setValidWords,
     winner: winner,
     setWinner: setWinner,
+    experiencePoints: userData.experiencePoints,
+    opponentExperiencePoints: opponentData.experiencePoints,
+    setOpenLeveldUpModal: setOpenLeveldUpModal,
+    openLeveldUpModal: openLeveldUpModal,
   }
 
   gameDataListener(GameContextValues)
@@ -228,6 +268,13 @@ const GameID = (props: IGameID) => {
         <Points />
         <GameBoard />
         {gameState === GameStates.CHOOSE && <SelectLetter />}
+        <Modal
+          opened={openLeveldUpModal}
+          onClose={() => closeLeveldUpModal()}
+          title="Introduce yourself!"
+        >
+          Level up!
+        </Modal>
       </GameContext.Provider>
     </Container>
   )

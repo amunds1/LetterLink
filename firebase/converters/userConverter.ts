@@ -27,6 +27,7 @@ const usersConverter: FirestoreDataConverter<User> = {
       wins: data.wins || 0,
       opponents: data.opponents || null,
       hasDefaultUsername: data.hasDefaultUsername || false,
+      openLeveldUpModal: data.openLeveldUpModal || false,
     }
   },
 }

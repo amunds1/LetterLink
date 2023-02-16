@@ -14,6 +14,7 @@ interface User {
     [key: string]: IBeatenMostStats
   }
   hasDefaultUsername: boolean
+  openLeveldUpModal?: boolean
 }
 
 export default User

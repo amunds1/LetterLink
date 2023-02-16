@@ -51,6 +51,10 @@ export interface IGameContext {
   setValidWords: Dispatch<SetStateAction<IValidWords[]>>
   winner: string
   setWinner: Dispatch<SetStateAction<string>>
+  experiencePoints: number
+  opponentExperiencePoints: number
+  setOpenLeveldUpModal: Dispatch<SetStateAction<boolean>>
+  openLeveldUpModal: boolean
 }
 
 export const GameContext = createContext<IGameContext | null>(null)
