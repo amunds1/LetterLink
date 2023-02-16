@@ -45,7 +45,7 @@ const Achievements = (props: IAchievements) => {
         Achievements
       </Text>
       {achievements && (
-        <Stack align="center" pt="lg">
+        <Stack align="" pt="lg">
           {Object.keys(achievements).map((key) => (
             <Acheviement key={key} data={achievements[key]} />
           ))}
