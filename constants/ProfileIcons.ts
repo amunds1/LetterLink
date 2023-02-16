@@ -43,6 +43,7 @@ const ProfileIcons = {
   Whale: '/profileIcons/whale.svg',
   Wolf: '/profileIcons/wolf.svg',
   Zebra: '/profileIcons/zebra.svg',
+  Unknown: 'profileIcons/unknown.svg',
 }
 
 export default ProfileIcons

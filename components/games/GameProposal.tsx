@@ -61,7 +61,7 @@ const GameProposal = ({ game, userUID }: IGameProposal) => {
       <Group position="apart" mt="xs" ml="xs">
         <Group position="left">
           {opponent?.name && <Avatar src={ProfileIconsList[opponent?.name]} />}
-          {!opponent?.name && <Avatar color="cyan" radius="xl" />}
+          {!opponent?.name && <Avatar src={ProfileIconsList['Unknown']} />}
           <Text weight="bold"> {opponent?.name}</Text>
         </Group>
         <Badge color="orange" variant="light">

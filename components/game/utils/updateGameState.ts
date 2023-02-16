@@ -1,6 +1,7 @@
-import { doc, increment, updateDoc } from 'firebase/firestore'
+import { doc, updateDoc } from 'firebase/firestore'
 import { db } from '../../../firebase/clientApp'
-import { fetchBoardData } from '../firebase/fetchBoardData'
+import updateAchievementStatus from '../../achievements/updateAchievementStatus'
+import { fetchUserData } from '../../profile/firebase/fetchUserData'
 import fetchGameData from '../firebase/fetchGameData'
 import GameStates from '../types/gameStates'
 import { IGameContext } from './gameContext'
@@ -39,6 +40,31 @@ const updateGameState = async (gameContext: IGameContext) => {
       })
 
       await updateWinner(gameContext)
+
+      // Fetch userData, opponentData and gameData
+      const userData = await fetchUserData(gameContext.userUID)
+      const opponentData = await fetchUserData(gameContext.opponentID)
+      const gameData = await fetchGameData(gameContext.gameID)
+
+      // Update achievements for user
+      await updateAchievementStatus(
+        {
+          won: gameContext.userUID === gameData!.winner,
+          opponent: gameContext.opponentID,
+        },
+        gameContext.userUID,
+        userData?.achievements!
+      )
+
+      // Update achievements for opponent
+      await updateAchievementStatus(
+        {
+          won: gameContext.opponentID === gameData!.winner,
+          opponent: gameContext.userUID,
+        },
+        gameContext.opponentID,
+        opponentData?.achievements!
+      )
     } else {
       await updateDoc(doc(db, 'games', gameContext.gameID), {
         gameState: GameStates.CHOOSE,

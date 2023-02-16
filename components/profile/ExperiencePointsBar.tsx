@@ -24,10 +24,11 @@ const ExperiencePointsBar = ({
   const remainingXP = level * 50 - experiencePoints
 
   // Percent to next level, used in progress bar
-  let percentNextLevel = remainingXP === 50 ? 0 : 100 - (remainingXP / 50) * 100
+  let percentNextLevel =
+    remainingXP === 50 ? 0 : Math.round(100 - (remainingXP / 50) * 100)
 
   return (
-    <div style={{ display: 'flex', gap: '15px' }}>
+    <div style={{ display: 'flex', gap: '15px', paddingBottom: '2%' }}>
       <div style={{ display: 'flex', alignItems: 'center' }}>
         <Image src="/icons/xp.svg" width={50}></Image>
       </div>
