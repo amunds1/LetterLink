@@ -23,14 +23,14 @@ function LeaderboardTable() {
         header: 'Name',
         cell: (info) => info.getValue(),
         footer: (props) => props.column.id,
-        accessorFn: (row) => row.username,
+        accessorFn: (row) => row.name,
       },
       {
         accessor: 'points',
         header: 'Points',
         cell: (info) => info.getValue(),
         footer: (props) => props.column.id,
-        accessorFn: (row) => row.points,
+        accessorFn: (row) => row.experiencePoints,
       },
     ],
     []

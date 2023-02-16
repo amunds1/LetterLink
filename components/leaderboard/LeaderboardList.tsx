@@ -1,9 +1,9 @@
-import { Card, Image, Text, Group, Container, Stack } from '@mantine/core'
+import { Card, Image, Text, Group, Stack } from '@mantine/core'
 import ProfileIcons, { IProfileIcon } from '../../constants/ProfileIcons'
-import { Player } from './mockData'
 import { useMediaQuery } from '@mantine/hooks'
+import User from '../../types/User'
 
-const LeaderboardList = ({ players }: { players: Player[] }) => {
+const LeaderboardList = ({ players }: { players: Partial<User>[] }) => {
   const ProfileIconsList: IProfileIcon = ProfileIcons
   const matches = useMediaQuery('(min-width: 850px)')
   return (
@@ -14,11 +14,11 @@ const LeaderboardList = ({ players }: { players: Player[] }) => {
             <div style={{ display: 'flex', justifyContent: 'space-between' }}>
               <Group>
                 <Text weight="bold">{index + 4}.</Text>
-                <Image src={ProfileIconsList[player.username]} width={30} />
-                <Text>{player.username}</Text>
+                <Image src={ProfileIconsList[player.name]} width={30} />
+                <Text>{player.name}</Text>
               </Group>
               <Text color="teal" weight="bold">
-                {player.points} XP
+                {player.experiencePoints} XP
               </Text>
             </div>
           </Card>
