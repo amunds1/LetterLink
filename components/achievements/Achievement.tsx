@@ -1,4 +1,4 @@
-import { Card, Progress, Text, Stack, Image } from '@mantine/core'
+import { Card, Progress, Text, Stack, Image, Group } from '@mantine/core'
 import AchievementIcons, {
   IAchievementIcons,
 } from '../../constants/AchievementIcons'
@@ -7,26 +7,42 @@ import { IAchievement } from './types/IAchievement'
 const Acheviement = ({ data }: { data: IAchievement }) => {
   const AchievementsIconsList: IAchievementIcons = AchievementIcons
   return (
-    <Card style={{ backgroundColor: 'white', width: '60%' }} shadow="lg">
-      <div style={{ display: 'flex', gap: '5%', alignItems: 'center' }}>
+    <Card style={{ backgroundColor: 'white', width: '100%' }} shadow="lg">
+      <div style={{ display: 'flex', gap: '3%', alignItems: 'center' }}>
         {data.unlocked && (
           <Image
             src={AchievementsIconsList[data.title.replace(/ /g, '-')]}
-            width={80}
+            width={60}
+            alt="Unlocked medal"
           />
         )}
         {!data.unlocked && (
-          <Image src={AchievementsIconsList['locked']} width={80} />
+          <Image
+            src={AchievementsIconsList['locked']}
+            width={60}
+            alt="Locked medal"
+          />
         )}
+
         <Stack spacing="xs" style={{ width: '100%' }}>
-          <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-            <Text align="left" weight="bold">
+          <Group position="apart" noWrap>
+            {/* Achievement title */}
+            <Text
+              sx={(theme) => ({
+                '@media (max-width: 500px)': {
+                  fontSize: theme.fontSizes.xs,
+                },
+              })}
+              weight="bold"
+            >
               {data.title}
             </Text>
+            {/* Achievement completion status */}
             <Text>
               {data.completionStatus} / {data.range}
             </Text>
-          </div>
+          </Group>
+          {/* Achievement completion status using progress bar */}
           <Progress
             size="xl"
             color={data.unlocked ? 'lime' : 'cyan'}
