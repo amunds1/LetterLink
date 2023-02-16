@@ -20,8 +20,12 @@ const updateAchievementStatus = async (
 
       // Set unlocked to true if completionStatus is one less than range
       // which means the achievement is completed
+      // Set openAchievementModal = true to let the User know it has been unlocked
       if (achievement.completionStatus == achievement.range - 1) {
         tempUnlocked = true
+        await updateDoc(doc(db, 'users', userID), {
+          'achievements.play-10-games.openAchievementModal': true,
+        })
       }
 
       // Update completionStatus and unlocked of achievement in firestore
@@ -41,8 +45,12 @@ const updateAchievementStatus = async (
 
       // Set unlocked to true if completionStatus is one less than range
       // which means the achievement is completed
+      // Set openAchievementModal = true to let the User know it has been unlocked
       if (achievement.completionStatus == achievement.range - 1) {
         tempUnlocked = true
+        await updateDoc(doc(db, 'users', userID), {
+          'achievements.win-3-games.openAchievementModal': true,
+        })
       }
 
       // If game was won, update completionStatus and unlocked of achievement in firestore
@@ -64,8 +72,12 @@ const updateAchievementStatus = async (
 
       // Set unlocked to true if completionStatus is one less than range
       // which means the achievement is completed
+      // Set openAchievementModal = true to let the User know it has been unlocked
       if (achievement.completionStatus == achievement.range - 1) {
         tempUnlocked = true
+        await updateDoc(doc(db, 'users', userID), {
+          'achievements.play-3-different-opponents.openAchievementModal': true,
+        })
       }
 
       const previousOpponents = achievement.previousOpponents

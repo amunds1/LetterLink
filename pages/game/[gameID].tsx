@@ -7,10 +7,10 @@ import ConfettiExplosion from 'react-confetti-explosion'
 import { useDocumentData } from 'react-firebase-hooks/firestore'
 import { fetchBoardData } from '../../components/game/firebase/fetchBoardData'
 import fetchGameData from '../../components/game/firebase/fetchGameData'
-import getName from '../../components/game/firebase/getName'
 import yourTurn from '../../components/game/firebase/yourTurn'
 import GameBoard from '../../components/game/GameBoard'
 import { IValidWords } from '../../components/game/interface/IvalidWords'
+import LeveledUpModal from '../../components/game/LeveldUpModal'
 import Points from '../../components/game/Points'
 import SelectLetter from '../../components/game/SelectLetter'
 import {
@@ -133,9 +133,14 @@ const GameID = (props: IGameID) => {
   const [validWords, setValidWords] = useState<IValidWords[]>([])
   const [winner, setWinner] = useState<string>(gameData.winner as string)
 
-  const [openLeveldUpModal, setOpenLeveldUpModal] = useState<boolean>(
-    userData.openLeveldUpModal || false
-  )
+  // Modal for level up
+  const [openLeveldUpModal, setOpenLeveldUpModal] = useState<boolean>(false)
+
+  // Modal for Achievements
+  const [openPlay10GamesModal, setOpenPlay10GamesModal] =
+    useState<boolean>(false)
+  const [openWin3GamesModal, setOpenWin3GamesModal] = useState<boolean>(false)
+  const [openPlay3Opponents, setOpenPlay3Opponents] = useState<boolean>(false)
 
   // Re-render component after value of yourTurn changes
   useEffect(() => {}, [yourTurn])
@@ -173,6 +178,8 @@ const GameID = (props: IGameID) => {
     This allows LeveledUpModal to be shown when the user has leveld up
   */
 
+  console.log(userData.achievements)
+
   const [userDoc] = useDocumentData(
     doc(db, 'users', uid as string).withConverter(userConverter)
   )
@@ -182,6 +189,25 @@ const GameID = (props: IGameID) => {
     if (userDoc?.openLeveldUpModal == true) {
       setOpenLeveldUpModal(true)
     }
+    if (
+      userDoc?.achievements &&
+      userDoc?.achievements['play-10-games'].openAchievementModal == true
+    ) {
+      setOpenPlay10GamesModal(true)
+    }
+    if (
+      userDoc?.achievements &&
+      userDoc?.achievements['win-3-games'].openAchievementModal == true
+    ) {
+      setOpenWin3GamesModal(true)
+    }
+    if (
+      userDoc?.achievements &&
+      userDoc?.achievements['play-3-different-opponents']
+        .openAchievementModal == true
+    ) {
+      setOpenPlay3Opponents(true)
+    }
   }, [userDoc])
 
   const closeLeveldUpModal = async () => {
@@ -189,6 +215,21 @@ const GameID = (props: IGameID) => {
     setOpenLeveldUpModal(false)
     await updateDoc(doc(db, 'users', uid), {
       openLeveldUpModal: false,
+    })
+  }
+
+  const closeAchievementsModal = async (achievement: string) => {
+    // Set local state to false
+    if (achievement == 'play-10-games') {
+      setOpenPlay10GamesModal(false)
+    } else if (achievement == 'win-3-games') {
+      setOpenWin3GamesModal(false)
+    } else if (achievement == 'play-3-different-opponents') {
+      setOpenPlay3Opponents(false)
+    }
+    // Set firebase state to false
+    await updateDoc(doc(db, 'users', uid), {
+      [`achievements.${achievement}.openAchievementModal`]: false,
     })
   }
 
@@ -225,8 +266,6 @@ const GameID = (props: IGameID) => {
     setWinner: setWinner,
     experiencePoints: userData.experiencePoints,
     opponentExperiencePoints: opponentData.experiencePoints,
-    setOpenLeveldUpModal: setOpenLeveldUpModal,
-    openLeveldUpModal: openLeveldUpModal,
   }
 
   gameDataListener(GameContextValues)
@@ -268,12 +307,31 @@ const GameID = (props: IGameID) => {
         <Points />
         <GameBoard />
         {gameState === GameStates.CHOOSE && <SelectLetter />}
+        <LeveledUpModal
+          openLeveldUpModal={openLeveldUpModal}
+          closeLeveldUpModal={closeLeveldUpModal}
+          experiencePoints={GameContextValues.experiencePoints}
+        />
         <Modal
-          opened={openLeveldUpModal}
-          onClose={() => closeLeveldUpModal()}
-          title="Introduce yourself!"
+          opened={openWin3GamesModal}
+          onClose={() => closeAchievementsModal('win-3-games')}
+          title="Win 3 games"
         >
-          Level up!
+          Win 3 games
+        </Modal>
+        <Modal
+          opened={openPlay3Opponents}
+          onClose={() => closeAchievementsModal('play-3-different-opponents')}
+          title="Play 3 opponents"
+        >
+          Play 3 opponents
+        </Modal>
+        <Modal
+          opened={openPlay10GamesModal}
+          onClose={() => closeAchievementsModal('play-10-games')}
+          title="Play 10 games"
+        >
+          Play 10 games
         </Modal>
       </GameContext.Provider>
     </Container>

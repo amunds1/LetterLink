@@ -53,8 +53,6 @@ export interface IGameContext {
   setWinner: Dispatch<SetStateAction<string>>
   experiencePoints: number
   opponentExperiencePoints: number
-  setOpenLeveldUpModal: Dispatch<SetStateAction<boolean>>
-  openLeveldUpModal: boolean
 }
 
 export const GameContext = createContext<IGameContext | null>(null)
