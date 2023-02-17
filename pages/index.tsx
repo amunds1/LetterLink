@@ -20,6 +20,7 @@ import Game from '../types/Game'
 import { IconPlus } from '@tabler/icons'
 import Streak from '../components/Streak'
 import SetUsernameModal from '../components/index/SetUsernameModal'
+import { updateStreak } from '../components/game/firebase/updateStreak'
 
 const useStyles = createStyles(() => ({
   center: { height: '100%' },
@@ -83,6 +84,10 @@ const Games = (props: IGames) => {
   const { uid, hasDefaultUsername } = props
 
   //const [showModalSetUsername, setShowModalSetUsername] = useState(hasDefaultUsername)
+
+  useEffect(() => {
+    updateStreak()
+  }, [])
 
   const [games, setGames] = useState<Game[]>(
     props.proposedGames.concat(props.activeGames)
