@@ -314,17 +314,17 @@ const GameID = (props: IGameID) => {
           experiencePoints={GameContextValues.experiencePoints}
         />
         <AchievementsModal
-          acheievement={'win-3-games'}
+          acheievement="win-3-games"
           openModal={openWin3GamesModal}
           closeAchievementsModal={closeAchievementsModal}
         />
         <AchievementsModal
-          acheievement={'play-3-different-opponents'}
+          acheievement="play-3-different-opponents"
           openModal={openPlay3Opponents}
           closeAchievementsModal={closeAchievementsModal}
         />
         <AchievementsModal
-          acheievement={'play-10-games'}
+          acheievement="play-10-games"
           openModal={openPlay10GamesModal}
           closeAchievementsModal={closeAchievementsModal}
         />
