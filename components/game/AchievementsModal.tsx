@@ -26,9 +26,9 @@ const win3gamesModal = (props: IAchievementModal) => {
           background: 'linear-gradient(75deg, #FFF9DB 0%, #FFEC99 100%)',
         },
         close: {
-          background: '#C1C2C5',
-          border: '2px solid #909296',
-          color: '#1A1B1E',
+          background: '#25262B',
+          borderRadius: '20px',
+          color: '#F8F9FA',
         },
       }}
     >
