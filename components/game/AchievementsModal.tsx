@@ -32,7 +32,7 @@ const win3gamesModal = (props: IAchievementModal) => {
         },
       }}
     >
-      <Stack align={'center'}>
+      <Stack align="center">
         <Text size={25} weight={800} color="orange.6" align="center">
           ACHIEVEMENT UNLOCKED!
         </Text>

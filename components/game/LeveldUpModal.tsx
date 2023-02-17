@@ -31,7 +31,7 @@ const LeveledUpModal = (props: ILevelModalProps) => {
         },
       }}
     >
-      <Stack align={'center'}>
+      <Stack align="center">
         <Text size={40} weight={800} color="pink.6">
           LEVEL UP!
         </Text>
