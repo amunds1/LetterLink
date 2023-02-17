@@ -18,6 +18,8 @@ import { getAnalytics, setUserId } from 'firebase/analytics'
 import * as gtag from '../lib/gtag'
 import firebase from '../firebase/clientApp'
 import { getAuth } from 'firebase/auth'
+import FooterNavBar from '../components/FooterNavBar'
+import { PageNavBar } from '../components/PageNavBar'
 
 export default function App(props: AppProps) {
   const { Component, pageProps } = props
@@ -103,7 +105,7 @@ export default function App(props: AppProps) {
           <AuthProvider>
             <AppShell
               padding="md"
-              header={<PageHeader />}
+              header={<PageNavBar />}
               styles={(theme) => ({
                 main: {
                   backgroundColor:
