@@ -152,13 +152,27 @@ const GameBoard = () => {
   useEffect(() => {}, [board])
 
   return (
-    <>
+    // Center board
+    <div
+      style={{
+        display: 'flex',
+        justifyContent: 'center',
+      }}
+    >
       {gameContext && (
         <Container
-          style={{ padding: '0 0 1% 0', width: matches ? '50%' : '80%' }}
+          style={{
+            padding: '0 0 1% 0',
+            width: matches ? '50%' : '70%',
+            // fixed position prevent page scroll when dragging
+            position: 'fixed',
+          }}
         >
           <>
-            <DragDropContext onDragEnd={onDragEnd}>
+            <DragDropContext
+              onDragEnd={onDragEnd}
+              onBeforeDragStart={() => window.scrollTo(0, window.scrollY)}
+            >
               <div>
                 <Grid className={classes.grid} columns={gameContext.grid.size}>
                   {board.map((cellValue, index) => (
@@ -295,7 +309,7 @@ const GameBoard = () => {
           </>
         </Container>
       )}
-    </>
+    </div>
   )
 }
 
