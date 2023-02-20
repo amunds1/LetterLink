@@ -175,7 +175,20 @@ const Settings = ({ uid, userData }: { uid: string; userData: User }) => {
           </Stack>
         </Card>
 
-        <Button onClick={() => signOutUser()}> Log out</Button>
+        <Card shadow="lg">
+          <Stack align="center">
+            <Text size="lg" weight="bold">
+              Log out of LetterLink
+            </Text>
+            <Button
+              onClick={() => signOutUser().then(() => router.push('/signin'))}
+              variant="light"
+              color="blue"
+            >
+              Log out
+            </Button>
+          </Stack>
+        </Card>
 
         {/* Danger zone */}
         <Card shadow="lg">
