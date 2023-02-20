@@ -44,12 +44,36 @@ const ExperiencePointsBar = ({
           label={`${percentNextLevel} %`}
         />
         <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-          <Text size="lg" color="teal" weight="bold">
+          <Text
+            sx={(theme) => ({
+              '@media (max-width: 500px)': {
+                fontSize: theme.fontSizes.xs,
+              },
+            })}
+            color="teal"
+            weight="bold"
+          >
             Level {level} - {levelName}
           </Text>
-          <Text size="sm" color="gray.6">
+          <Text
+            sx={(theme) => ({
+              '@media (max-width: 500px)': {
+                fontSize: theme.fontSizes.xs,
+              },
+            })}
+            color="gray.6"
+          >
             {remainingXP} XP to{' '}
-            <Text size="md" span color="teal" weight="bold">
+            <Text
+              sx={(theme) => ({
+                '@media (max-width: 500px)': {
+                  fontSize: theme.fontSizes.xs,
+                },
+              })}
+              span
+              color="teal"
+              weight="bold"
+            >
               {' '}
               Level {level + 1}
             </Text>
