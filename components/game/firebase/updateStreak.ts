@@ -1,32 +1,28 @@
-import { updateDoc, arrayUnion, doc } from 'firebase/firestore'
+import { doc, increment, updateDoc } from 'firebase/firestore'
 import { db } from '../../../firebase/clientApp'
-import { IGameContext } from '../utils/gameContext'
 
-export const updateStreak = async () => {
-  const dateFromFirebase = new Date(2023, 1, 15)
+export const updateStreak = async (uid: string) => {
+  const dateFromFirebase = new Date(2023, 1, 24)
 
-  const currentDate = new Date()
+  const currentDate = new Date(2023, 1, 25)
 
   console.log(dateFromFirebase.getDay(), currentDate.getDay())
 
   if (dateFromFirebase.getDay() + 1 === currentDate.getDay()) {
-    console.log('increment streak')
-  } else if (dateFromFirebase.getDay() > currentDate.getDay() + 1) {
-    console.log('reset streak')
-  } else {
-    console.log('do nothing')
+    console.log('Increment')
+
+    // Update date of last action performed in Firestore
+    await updateDoc(doc(db, 'users', uid), {
+      lastActionPerformed: new Date(),
+      streak: increment(1),
+    })
+  } else if (dateFromFirebase.getDay() + 1 < currentDate.getDay()) {
+    console.log('Reset')
+
+    // Update date of last action performed in Firestore
+    await updateDoc(doc(db, 'users', uid), {
+      lastActionPerformed: new Date(),
+      streak: 1,
+    })
   }
-
-  /*
-    
-    
-    2. If Date().getDay() stored === Date().getDay() + 1, then increment streak by one
-
-    3. If Date().getDay() stored > Date().getDay() + 1, then reset streak to 0
-  */
-
-  // Update date of last action performed in Firestores
-  /* await updateDoc(doc(db, 'users', gameContext.userUID), {
-    lastActionPerformed: new Date(),
-  }) */
 }

@@ -14,6 +14,8 @@ interface User {
     [key: string]: IBeatenMostStats
   }
   hasDefaultUsername: boolean
+  lastActionPerformed?: Date
+  streak?: number
 }
 
 export default User

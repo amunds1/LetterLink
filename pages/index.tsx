@@ -85,10 +85,6 @@ const Games = (props: IGames) => {
 
   //const [showModalSetUsername, setShowModalSetUsername] = useState(hasDefaultUsername)
 
-  useEffect(() => {
-    updateStreak()
-  }, [])
-
   const [games, setGames] = useState<Game[]>(
     props.proposedGames.concat(props.activeGames)
   )

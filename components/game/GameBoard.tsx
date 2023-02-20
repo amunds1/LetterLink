@@ -24,6 +24,7 @@ import CheckBoardResponseData from '../../pages/api/types/CheckBoardResponseData
 import getValidWordsList from './utils/getValidWordsList'
 import colorValidWordBorder from './utils/colorValidWordBorder'
 import { useMediaQuery } from '@mantine/hooks'
+import { updateStreak } from './firebase/updateStreak'
 
 const useStyles = createStyles(() => ({
   grid: {

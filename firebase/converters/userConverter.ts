@@ -27,6 +27,8 @@ const usersConverter: FirestoreDataConverter<User> = {
       wins: data.wins || 0,
       opponents: data.opponents || null,
       hasDefaultUsername: data.hasDefaultUsername || false,
+      lastActionPerformed: data.lastActionPerformed || new Date(),
+      streak: data.streak || 1,
     }
   },
 }
