@@ -145,7 +145,7 @@ const Games = (props: IGames) => {
       */}
       <Stack className={classes.center} style={{ width: '100%' }}>
         <DisplayName name={name} />
-        <Streak />
+        {/* <Streak /> */}
         <Link href="/game/new" style={{ textDecoration: 'none' }}>
           <Center>
             <Button
