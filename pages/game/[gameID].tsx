@@ -1,4 +1,5 @@
 import { Center, Container } from '@mantine/core'
+import { useScrollLock } from '@mantine/hooks'
 import { doc, updateDoc } from 'firebase/firestore'
 import { GetServerSideProps, GetServerSidePropsContext } from 'next'
 import { useEffect, useState } from 'react'
@@ -272,6 +273,12 @@ const GameID = (props: IGameID) => {
 
   gameDataListener(GameContextValues)
 
+  /* 
+    Lock scroll using use-scroll-lock
+    https://mantine.dev/hooks/use-scroll-lock/
+  */
+  const [scrollLocked, setScrollLocked] = useScrollLock(true)
+
   return (
     <Container>
       {/* Back to games button */}
@@ -307,8 +314,9 @@ const GameID = (props: IGameID) => {
         )}
 
         <Points />
+
         <GameBoard />
-        {gameState === GameStates.CHOOSE && <SelectLetter />}
+
         <LeveledUpModal
           openLeveldUpModal={openLeveldUpModal}
           closeLeveldUpModal={closeLeveldUpModal}
