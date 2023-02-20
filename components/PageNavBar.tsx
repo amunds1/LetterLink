@@ -1,5 +1,4 @@
 import { ActionIcon, createStyles, Header } from '@mantine/core'
-import { useDisclosure } from '@mantine/hooks'
 import { IconHome, IconSettings } from '@tabler/icons'
 import Link from 'next/link'
 import { useRouter } from 'next/router'

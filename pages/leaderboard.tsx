@@ -11,10 +11,10 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
   try {
     // Set cache header
     // https://nextjs.org/docs/basic-features/data-fetching/get-server-side-props#caching-with-server-side-rendering-ssr
-    ctx.res.setHeader(
+    /* ctx.res.setHeader(
       'Cache-Control',
       'public, s-maxage=10, stale-while-revalidate=59'
-    )
+    ) */
 
     // Retrieve all documents in users collection
     const querySnapshot = await getDocs(
