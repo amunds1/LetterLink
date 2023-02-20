@@ -182,8 +182,6 @@ const GameID = (props: IGameID) => {
     This allows LeveledUpModal to be shown when the user has leveld up
   */
 
-  console.log(userData.achievements)
-
   const [userDoc] = useDocumentData(
     doc(db, 'users', uid as string).withConverter(userConverter)
   )
