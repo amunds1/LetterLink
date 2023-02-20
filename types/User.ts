@@ -16,6 +16,7 @@ interface User {
   hasDefaultUsername: boolean
   lastActionPerformed?: Date
   streak?: number
+  openLeveldUpModal?: boolean
 }
 
 export default User

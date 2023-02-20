@@ -11,8 +11,10 @@ const Acheviement = ({ data }: { data: IAchievement }) => {
       <div style={{ display: 'flex', gap: '3%', alignItems: 'center' }}>
         {data.unlocked && (
           <Image
-            src={AchievementsIconsList[data.title.replace(/ /g, '-')]}
-            width={60}
+            src={
+              AchievementsIconsList[data.title.toLowerCase().replace(/ /g, '-')]
+            }
+            width={80}
             alt="Unlocked medal"
           />
         )}

@@ -29,6 +29,7 @@ const usersConverter: FirestoreDataConverter<User> = {
       hasDefaultUsername: data.hasDefaultUsername || false,
       lastActionPerformed: data.lastActionPerformed || new Date(),
       streak: data.streak || 1,
+      openLeveldUpModal: data.openLeveldUpModal || false,
     }
   },
 }
