@@ -146,7 +146,7 @@ export default function AuthenticationForm(props: PaperProps) {
         </Stack>
 
         <Group position="apart" mt="xl">
-          <Anchor
+          {/* <Anchor
             component="button"
             type="button"
             color="dimmed"
@@ -156,7 +156,7 @@ export default function AuthenticationForm(props: PaperProps) {
             {type === 'register'
               ? 'Already have an account? Login'
               : "Don't have an account? Register"}
-          </Anchor>
+          </Anchor> */}
           <Button
             type="submit"
             onClick={() => {
