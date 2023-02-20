@@ -10,7 +10,7 @@
     "lint:fix": "next lint --fix"
   },
   "dependencies": {
-    "@emotion/react": "^11.10.5",
+    "@emotion/react": "^11.10.6",
     "@emotion/server": "^11.10.0",
     "@faker-js/faker": "^7.6.0",
     "@mantine/core": "^5.10.3",
