@@ -9,6 +9,13 @@ import User from '../types/User'
 import ProfileIcons, { IProfileIcon } from '../constants/ProfileIcons'
 
 export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
+  return {
+    redirect: {
+      destination: '/',
+      permanent: false,
+    },
+  }
+
   try {
     // Set cache header
     // https://nextjs.org/docs/basic-features/data-fetching/get-server-side-props#caching-with-server-side-rendering-ssr
