@@ -128,11 +128,11 @@ export default function AuthenticationForm(props: PaperProps) {
               'Password should include at least 6 characters'
             }
           />
-          <Link href="/resetpassword">
+          {/* <Link href="/resetpassword">
             <Anchor size="sm" color="red.6">
               Forgot password?
             </Anchor>
-          </Link>
+          </Link> */}
 
           {type === 'register' && (
             <Checkbox
