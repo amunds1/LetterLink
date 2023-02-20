@@ -14,6 +14,48 @@ const updateWinner = async (gameContext: IGameContext) => {
     */
   const players: [string, number][] = Object.entries(gameData!.totalPoints)
 
+  // ------ Check if users has leveld up -------
+
+  /* Since it rely on the up-to-date player points fetched in gamedata
+  we need here to find out whos player 1 and whos player 0 to compare with right 
+  experiencePoints in gameContect
+  */
+  /* CASE 1:
+      - player0 = you
+      - player1 = opponent
+   */
+  if (players[0][0] == gameContext.userUID) {
+    // Checks if player 0 (you) has leveld up
+    if ((gameContext.experiencePoints % 50) + players[0][1] >= 50) {
+      await updateDoc(doc(db, 'users', players[0][0]), {
+        openLeveldUpModal: true,
+      })
+    }
+    // Checks if player 1 (opponent) has leveld up
+    if ((gameContext.opponentExperiencePoints % 50) + players[1][1] >= 50) {
+      await updateDoc(doc(db, 'users', players[1][0]), {
+        openLeveldUpModal: true,
+      })
+    }
+  } else if (players[1][0] == gameContext.userUID) {
+    /* CASE 2:
+        - player1 = you
+        - player0 = opponent
+     */
+    // Checks if player 1 (you) has leveld up
+    if ((gameContext.experiencePoints % 50) + players[1][1] >= 50) {
+      await updateDoc(doc(db, 'users', players[1][0]), {
+        openLeveldUpModal: true,
+      })
+    }
+    // Checks if player 0 (opponent) has leveld up
+    if ((gameContext.opponentExperiencePoints % 50) + players[0][1] >= 50) {
+      await updateDoc(doc(db, 'users', players[0][0]), {
+        openLeveldUpModal: true,
+      })
+    }
+  }
+
   // ------ Determine the winner and update Game document in Firebase ------
 
   /*  
