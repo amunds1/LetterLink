@@ -75,7 +75,7 @@ export default function AuthenticationForm(props: PaperProps) {
 
   return (
     <Paper radius="md" p="xl" withBorder {...props}>
-      <Text size="xl" weight={500}>
+      <Text size="xl" pb="md" weight={500}>
         Welcome to LetterLink
       </Text>
 
@@ -89,7 +89,7 @@ export default function AuthenticationForm(props: PaperProps) {
         <GithubButton radius="xl">GitHub</GithubButton>
       </Group> */}
 
-      <Divider label="Or continue with email" labelPosition="center" my="lg" />
+      {/* <Divider label="Or continue with email" labelPosition="center" my="lg" /> */}
 
       <form onSubmit={form.onSubmit(() => {})}>
         <Stack>
