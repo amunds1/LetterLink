@@ -1,16 +1,17 @@
-import { Center, Container } from '@mantine/core'
-import { doc } from 'firebase/firestore'
+import { Center, Container, Modal } from '@mantine/core'
+import { doc, updateDoc } from 'firebase/firestore'
 import { GetServerSideProps, GetServerSidePropsContext } from 'next'
 import { useEffect, useState } from 'react'
 import { resetServerContext } from 'react-beautiful-dnd'
 import ConfettiExplosion from 'react-confetti-explosion'
 import { useDocumentData } from 'react-firebase-hooks/firestore'
+import AchievementsModal from '../../components/game/AchievementsModal'
 import { fetchBoardData } from '../../components/game/firebase/fetchBoardData'
 import fetchGameData from '../../components/game/firebase/fetchGameData'
-import getName from '../../components/game/firebase/getName'
 import yourTurn from '../../components/game/firebase/yourTurn'
 import GameBoard from '../../components/game/GameBoard'
 import { IValidWords } from '../../components/game/interface/IvalidWords'
+import LeveledUpModal from '../../components/game/LeveldUpModal'
 import Points from '../../components/game/Points'
 import SelectLetter from '../../components/game/SelectLetter'
 import {
@@ -26,11 +27,14 @@ import {
 } from '../../components/game/utils/gameContext'
 import BackToGamesButton from '../../components/games/BackToGamesButton'
 import selectUserID from '../../components/games/utils/selectUserID'
+import { fetchUserData } from '../../components/profile/firebase/fetchUserData'
 import { db } from '../../firebase/clientApp'
 import boardDataConverter from '../../firebase/converters/boardDataConverter'
+import userConverter from '../../firebase/converters/userConverter'
 import fetchUID from '../../firebase/fetchUID'
 import BoardData from '../../types/BoardData'
 import Game from '../../types/Game'
+import User from '../../types/User'
 import gameDataListener from '../api/utils/gameDataListener'
 
 export const getServerSideProps: GetServerSideProps = async (
@@ -51,13 +55,16 @@ export const getServerSideProps: GetServerSideProps = async (
   const roundsIsLeft = gameData?.roundsLeft
 
   // Used to display Points and Usernames
-  const userName = await getName(uid)
+  let userData = await fetchUserData(uid)
+  userData = JSON.parse(JSON.stringify(userData))
+
   const opponentID = selectUserID(
     uid,
     gameData?.playerOne as string,
     gameData?.playerTwo as string
   )
-  const opponentName = await getName(opponentID)
+  let opponentData = await fetchUserData(opponentID)
+  opponentData = JSON.parse(JSON.stringify(opponentData))
 
   return {
     props: {
@@ -66,8 +73,8 @@ export const getServerSideProps: GetServerSideProps = async (
       gameData: gameData,
       initialGameState: initialGameState,
       itsYourTurn: itsYourTurn,
-      opponentName: opponentName,
-      userName: userName,
+      opponentData: opponentData,
+      userData: userData,
       opponentID: opponentID,
       roundsIsLeft: roundsIsLeft,
     },
@@ -80,9 +87,9 @@ interface IGameID {
   initialGameState: GameStates
   gameData: Game
   itsYourTurn: boolean
-  opponentName: string
+  opponentData: User
   opponentID: string
-  userName: string
+  userData: User
   roundsIsLeft: number
 }
 
@@ -94,8 +101,8 @@ const GameID = (props: IGameID) => {
     gameData,
     itsYourTurn,
     opponentID,
-    opponentName,
-    userName,
+    opponentData,
+    userData,
     roundsIsLeft,
   } = props
 
@@ -127,6 +134,15 @@ const GameID = (props: IGameID) => {
   const [validWords, setValidWords] = useState<IValidWords[]>([])
   const [winner, setWinner] = useState<string>(gameData.winner as string)
 
+  // Modal for level up
+  const [openLeveldUpModal, setOpenLeveldUpModal] = useState<boolean>(false)
+
+  // Modal for Achievements
+  const [openPlay10GamesModal, setOpenPlay10GamesModal] =
+    useState<boolean>(false)
+  const [openWin3GamesModal, setOpenWin3GamesModal] = useState<boolean>(false)
+  const [openPlay3Opponents, setOpenPlay3Opponents] = useState<boolean>(false)
+
   // Re-render component after value of yourTurn changes
   useEffect(() => {}, [yourTurn])
 
@@ -156,6 +172,68 @@ const GameID = (props: IGameID) => {
     }
   }, [value])
 
+  /* 
+    Listen for changes in user data, in order to update openLeveldUpModal
+    in GameContextValues
+
+    This allows LeveledUpModal to be shown when the user has leveld up
+  */
+
+  console.log(userData.achievements)
+
+  const [userDoc] = useDocumentData(
+    doc(db, 'users', uid as string).withConverter(userConverter)
+  )
+
+  useEffect(() => {
+    // If openLeveldUpModal has been changed to true in firebase -> set to true localy to show the modal
+    if (userDoc?.openLeveldUpModal == true) {
+      setOpenLeveldUpModal(true)
+    }
+    if (
+      userDoc?.achievements &&
+      userDoc?.achievements['play-10-games'].openAchievementModal == true
+    ) {
+      setOpenPlay10GamesModal(true)
+    }
+    if (
+      userDoc?.achievements &&
+      userDoc?.achievements['win-3-games'].openAchievementModal == true
+    ) {
+      setOpenWin3GamesModal(true)
+    }
+    if (
+      userDoc?.achievements &&
+      userDoc?.achievements['play-3-different-opponents']
+        .openAchievementModal == true
+    ) {
+      setOpenPlay3Opponents(true)
+    }
+  }, [userDoc])
+
+  const closeLeveldUpModal = async () => {
+    // When closing the OpenLeveldUpModal, openLeveldUpModal is set to false both localy and in firebase
+    setOpenLeveldUpModal(false)
+    await updateDoc(doc(db, 'users', uid), {
+      openLeveldUpModal: false,
+    })
+  }
+
+  const closeAchievementsModal = async (achievement: string) => {
+    // Set local state to false
+    if (achievement == 'play-10-games') {
+      setOpenPlay10GamesModal(false)
+    } else if (achievement == 'win-3-games') {
+      setOpenWin3GamesModal(false)
+    } else if (achievement == 'play-3-different-opponents') {
+      setOpenPlay3Opponents(false)
+    }
+    // Set firebase state to false
+    await updateDoc(doc(db, 'users', uid), {
+      [`achievements.${achievement}.openAchievementModal`]: false,
+    })
+  }
+
   // Populate GameContext
   const GameContextValues: IGameContext = {
     selectedLetter: selectedLetter,
@@ -175,8 +253,8 @@ const GameID = (props: IGameID) => {
     yourTurn: yourTurn,
     setYourTurn: setYourTurn,
     opponentID: opponentID,
-    opponentName: opponentName,
-    userName: userName,
+    opponentName: opponentData.name,
+    userName: userData.name,
     userPoints: userPoints,
     setUserPoints: setUserPoints,
     opponentPoints: opponentPoints,
@@ -187,6 +265,8 @@ const GameID = (props: IGameID) => {
     setValidWords: setValidWords,
     winner: winner,
     setWinner: setWinner,
+    experiencePoints: userData.experiencePoints,
+    opponentExperiencePoints: opponentData.experiencePoints,
   }
 
   gameDataListener(GameContextValues)
@@ -228,6 +308,26 @@ const GameID = (props: IGameID) => {
         <Points />
         <GameBoard />
         {gameState === GameStates.CHOOSE && <SelectLetter />}
+        <LeveledUpModal
+          openLeveldUpModal={openLeveldUpModal}
+          closeLeveldUpModal={closeLeveldUpModal}
+          experiencePoints={GameContextValues.experiencePoints}
+        />
+        <AchievementsModal
+          acheievement="win-3-games"
+          openModal={openWin3GamesModal}
+          closeAchievementsModal={closeAchievementsModal}
+        />
+        <AchievementsModal
+          acheievement="play-3-different-opponents"
+          openModal={openPlay3Opponents}
+          closeAchievementsModal={closeAchievementsModal}
+        />
+        <AchievementsModal
+          acheievement="play-10-games"
+          openModal={openPlay10GamesModal}
+          closeAchievementsModal={closeAchievementsModal}
+        />
       </GameContext.Provider>
     </Container>
   )

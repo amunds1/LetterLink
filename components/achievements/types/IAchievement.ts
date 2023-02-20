@@ -4,4 +4,5 @@ export interface IAchievement {
   completionStatus: number
   unlocked: boolean
   previousOpponents?: string[] | null
+  openAchievementModal?: boolean
 }
