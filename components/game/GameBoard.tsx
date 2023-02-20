@@ -25,6 +25,7 @@ import getValidWordsList from './utils/getValidWordsList'
 import colorValidWordBorder from './utils/colorValidWordBorder'
 import { useMediaQuery } from '@mantine/hooks'
 import { updateStreak } from './firebase/updateStreak'
+import SelectLetter from './SelectLetter'
 
 const useStyles = createStyles(() => ({
   grid: {
@@ -164,10 +165,26 @@ const GameBoard = () => {
         <Container
           style={{
             padding: '0 0 1% 0',
-            width: matches ? '50%' : '70%',
+            // width: matches ? '25%' : '70%',
             // fixed position prevent page scroll when dragging
             position: 'fixed',
           }}
+          sx={(theme) => ({
+            // Desktop
+            '@media (min-width: 600px)': {
+              width: '20%',
+            },
+            // Tablets
+            '@media (min-width: 500px) and (max-width: 1300px) and (orientation: portrait)':
+              {
+                width: '65%',
+              },
+            // Phones
+            '@media (min-width: 375px) and (max-width: 812px) and (orientation: portrait)':
+              {
+                width: '55%',
+              },
+          })}
         >
           <>
             <DragDropContext
@@ -283,6 +300,8 @@ const GameBoard = () => {
                   </div>
                 )}
             </DragDropContext>
+
+            {gameContext.gameState === GameStates.CHOOSE && <SelectLetter />}
 
             {(gameContext.gameState === GameStates.PLACE_OWN ||
               gameContext.gameState === GameStates.PLACE_OPPONENTS) &&

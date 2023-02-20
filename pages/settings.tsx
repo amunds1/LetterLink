@@ -20,6 +20,7 @@ import { SuccessNotification } from '../components/NotificationBanner'
 import { fetchUserData } from '../components/profile/firebase/fetchUserData'
 import { db } from '../firebase/clientApp'
 import fetchUID from '../firebase/fetchUID'
+import signOutUser from '../firebase/signOutUser'
 import User from '../types/User'
 
 export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
@@ -173,6 +174,8 @@ const Settings = ({ uid, userData }: { uid: string; userData: User }) => {
             <ColorSchemeToggle />
           </Stack>
         </Card>
+
+        <Button onClick={() => signOutUser()}> Log out</Button>
 
         {/* Danger zone */}
         <Card shadow="lg">

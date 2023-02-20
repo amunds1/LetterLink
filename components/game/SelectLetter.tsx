@@ -26,7 +26,7 @@ const SelectLetter = () => {
             <TextInput
               style={{
                 width: '100%',
-                margin: '10px',
+                margin: '10px 10px 0px 10px',
               }}
               placeholder="Type a letter"
               error={error ? 'Not valid! You have to type a letter' : false}

@@ -317,7 +317,6 @@ const GameID = (props: IGameID) => {
 
         <GameBoard />
 
-        {gameState === GameStates.CHOOSE && <SelectLetter />}
         <LeveledUpModal
           openLeveldUpModal={openLeveldUpModal}
           closeLeveldUpModal={closeLeveldUpModal}
