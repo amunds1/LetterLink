@@ -21,6 +21,7 @@ import { IconPlus } from '@tabler/icons'
 import Streak from '../components/Streak'
 import SetUsernameModal from '../components/index/SetUsernameModal'
 import { updateStreak } from '../components/game/firebase/updateStreak'
+import DisplayName from '../components/DisplayName'
 
 const useStyles = createStyles(() => ({
   center: { height: '100%' },
@@ -58,6 +59,7 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
         uid: uid,
         activeGames: activeGames,
         proposedGames: proposedGames,
+        name: userData?.name,
         //hasDefaultUsername: userData?.hasDefaultUsername,
       },
     }
@@ -77,11 +79,12 @@ interface IGames {
   hasDefaultUsername: boolean
   activeGames: Game[]
   proposedGames: Game[]
+  name: string
 }
 
 const Games = (props: IGames) => {
   const { classes } = useStyles()
-  const { uid, hasDefaultUsername } = props
+  const { uid, name, hasDefaultUsername } = props
 
   //const [showModalSetUsername, setShowModalSetUsername] = useState(hasDefaultUsername)
 
@@ -141,6 +144,7 @@ const Games = (props: IGames) => {
       /> 
       */}
       <Stack className={classes.center} style={{ width: '100%' }}>
+        <DisplayName name={name} />
         <Streak />
         <Link href="/game/new" style={{ textDecoration: 'none' }}>
           <Center>
