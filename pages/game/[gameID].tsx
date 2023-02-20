@@ -1,4 +1,4 @@
-import { Center, Container, Modal } from '@mantine/core'
+import { Center, Container } from '@mantine/core'
 import { doc, updateDoc } from 'firebase/firestore'
 import { GetServerSideProps, GetServerSidePropsContext } from 'next'
 import { useEffect, useState } from 'react'
@@ -8,6 +8,7 @@ import { useDocumentData } from 'react-firebase-hooks/firestore'
 import AchievementsModal from '../../components/game/AchievementsModal'
 import { fetchBoardData } from '../../components/game/firebase/fetchBoardData'
 import fetchGameData from '../../components/game/firebase/fetchGameData'
+import { updateStreak } from '../../components/game/firebase/updateStreak'
 import yourTurn from '../../components/game/firebase/yourTurn'
 import GameBoard from '../../components/game/GameBoard'
 import { IValidWords } from '../../components/game/interface/IvalidWords'
@@ -15,10 +16,10 @@ import LeveledUpModal from '../../components/game/LeveldUpModal'
 import Points from '../../components/game/Points'
 import SelectLetter from '../../components/game/SelectLetter'
 import {
-  OpponentTurnStatusMessage,
-  YourTurnStatusMessage,
   EndTurnStatusMessage,
+  OpponentTurnStatusMessage,
   PointsStatusMessage,
+  YourTurnStatusMessage,
 } from '../../components/game/StatusMessage'
 import GameStates from '../../components/game/types/gameStates'
 import {
@@ -57,6 +58,8 @@ export const getServerSideProps: GetServerSideProps = async (
   // Used to display Points and Usernames
   let userData = await fetchUserData(uid)
   userData = JSON.parse(JSON.stringify(userData))
+
+  await updateStreak(uid, userData?.lastActionPerformed)
 
   const opponentID = selectUserID(
     uid,
@@ -178,8 +181,6 @@ const GameID = (props: IGameID) => {
 
     This allows LeveledUpModal to be shown when the user has leveld up
   */
-
-  console.log(userData.achievements)
 
   const [userDoc] = useDocumentData(
     doc(db, 'users', uid as string).withConverter(userConverter)
