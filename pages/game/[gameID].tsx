@@ -8,6 +8,7 @@ import { useDocumentData } from 'react-firebase-hooks/firestore'
 import AchievementsModal from '../../components/game/AchievementsModal'
 import { fetchBoardData } from '../../components/game/firebase/fetchBoardData'
 import fetchGameData from '../../components/game/firebase/fetchGameData'
+import { updateStreak } from '../../components/game/firebase/updateStreak'
 import yourTurn from '../../components/game/firebase/yourTurn'
 import GameBoard from '../../components/game/GameBoard'
 import { IValidWords } from '../../components/game/interface/IvalidWords'
@@ -57,6 +58,8 @@ export const getServerSideProps: GetServerSideProps = async (
   // Used to display Points and Usernames
   let userData = await fetchUserData(uid)
   userData = JSON.parse(JSON.stringify(userData))
+
+  await updateStreak(uid, userData?.lastActionPerformed)
 
   const opponentID = selectUserID(
     uid,

@@ -1,4 +1,4 @@
-import { DocumentReference, DocumentData } from 'firebase/firestore'
+import { DocumentReference, DocumentData, Timestamp } from 'firebase/firestore'
 import { IAchievement } from '../components/achievements/types/IAchievement'
 import { IBeatenMostStats } from '../components/game/types/IBeatenMostStats'
 
@@ -14,7 +14,7 @@ interface User {
     [key: string]: IBeatenMostStats
   }
   hasDefaultUsername: boolean
-  lastActionPerformed?: Date
+  lastActionPerformed?: Timestamp
   streak?: number
   openLeveldUpModal?: boolean
 }
