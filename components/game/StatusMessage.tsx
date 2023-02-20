@@ -2,8 +2,17 @@ import { Alert, Center, Text } from '@mantine/core'
 import { useContext } from 'react'
 import { IValidWords } from './interface/IvalidWords'
 import { GameContext } from './utils/gameContext'
+import GameStates from './types/gameStates'
 
-export const YourTurnStatusMessage = () => {
+export const YourTurnStatusMessage = ({
+  gameState,
+}: {
+  gameState:
+    | GameStates.PLACE_OWN
+    | GameStates.CHOOSE
+    | GameStates.PLACE_OPPONENTS
+    | GameStates.END
+}) => {
   return (
     <Center>
       <Alert
@@ -16,7 +25,12 @@ export const YourTurnStatusMessage = () => {
           textAlign: 'center',
         }}
       >
-        Drag the letter to the grid
+        {gameState === GameStates.CHOOSE && 'Choose a letter'}
+
+        {gameState === GameStates.PLACE_OWN && 'Drag the letter to the grid'}
+
+        {gameState === GameStates.PLACE_OPPONENTS &&
+          'Drag the letter to the grid'}
       </Alert>
     </Center>
   )

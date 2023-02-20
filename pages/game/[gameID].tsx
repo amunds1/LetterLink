@@ -302,7 +302,7 @@ const GameID = (props: IGameID) => {
         )}
 
         {!validWords.length && gameState !== GameStates.END && yourTurn && (
-          <YourTurnStatusMessage />
+          <YourTurnStatusMessage gameState={gameState} />
         )}
 
         {!validWords.length && gameState !== GameStates.END && !yourTurn && (
