@@ -79,7 +79,7 @@ export default function AuthenticationForm(props: PaperProps) {
         Welcome to LetterLink
       </Text>
 
-      <Text size="lg" pt="sm">
+      {/* <Text size="lg" pt="sm">
         Sign in with
       </Text>
       <Group grow mb="md" mt="md" onClick={() => signInWithFacebook()}>
@@ -87,7 +87,7 @@ export default function AuthenticationForm(props: PaperProps) {
       </Group>
       <Group grow mb="md" mt="md" onClick={() => signInWithGithub()}>
         <GithubButton radius="xl">GitHub</GithubButton>
-      </Group>
+      </Group> */}
 
       <Divider label="Or continue with email" labelPosition="center" my="lg" />
 
