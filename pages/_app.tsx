@@ -6,18 +6,17 @@ import {
   LoadingOverlay,
   MantineProvider,
 } from '@mantine/core'
+import { getAnalytics, setUserId } from 'firebase/analytics'
+import { getAuth } from 'firebase/auth'
 import { AppProps } from 'next/app'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
 import Script from 'next/script'
 import { useEffect, useState } from 'react'
-import { PageHeader } from '../components/PageHeader'
+import { PageNavBar } from '../components/PageNavBar'
 import { AuthProvider } from '../firebase/AuthProvider'
 import { usePageLoading } from '../hooks/usePageLoading'
-import { getAnalytics, setUserId } from 'firebase/analytics'
 import * as gtag from '../lib/gtag'
-import firebase from '../firebase/clientApp'
-import { getAuth } from 'firebase/auth'
 
 export default function App(props: AppProps) {
   const { Component, pageProps } = props
@@ -103,7 +102,7 @@ export default function App(props: AppProps) {
           <AuthProvider>
             <AppShell
               padding="md"
-              header={<PageHeader />}
+              header={<PageNavBar />}
               styles={(theme) => ({
                 main: {
                   backgroundColor:
