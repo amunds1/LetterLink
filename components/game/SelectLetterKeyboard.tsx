@@ -39,7 +39,7 @@ const SelectLetterKeyboard = () => {
   return (
     <>
       <Group
-        spacing="2px"
+        spacing="xs"
         position="center"
         pt="lg"
         style={{ position: 'relative' }}
