@@ -20,6 +20,7 @@ import acceptProposedGame from './firebase/acceptProposedGame'
 import rejectProposedGame from './firebase/rejectProposedGame'
 import withdrawGameProposal from './firebase/withdrawGameProposal'
 import selectUserID from './utils/selectUserID'
+import formatDistance from 'date-fns/formatDistance'
 
 interface IGameProposal {
   game: Game
@@ -27,25 +28,6 @@ interface IGameProposal {
 }
 
 const GameProposal = ({ game, userUID }: IGameProposal) => {
-  const [gameProposedTimeDelta, setGameProposedTimeDelta] = useState<{
-    value: number
-    label: string
-  }>({ value: 0, label: '' })
-
-  useEffect(() => {
-    const proposedAtAsDate = new Date(game.proposedAt as Date)
-    const timeDelta = Date.now() - proposedAtAsDate.getTime()
-
-    const timeDeltaSeconds = timeDelta / 1000
-    const timeDeltaMinutes = timeDeltaSeconds / 60
-    const timeDeltaHours = timeDeltaMinutes / 60
-
-    setGameProposedTimeDelta({
-      value: Math.round(timeDeltaHours),
-      label: 'hours',
-    })
-  }, [game])
-
   // Fetch opponent data to get name
   const [opponent, loading, error] = useDocumentDataOnce(
     doc(
@@ -65,7 +47,7 @@ const GameProposal = ({ game, userUID }: IGameProposal) => {
           <Text weight="bold"> {opponent?.name}</Text>
         </Group>
         <Badge color="orange" variant="light">
-          {gameProposedTimeDelta.value} {gameProposedTimeDelta.label} ago
+          {formatDistance(new Date(game.proposedAt as Date), new Date())} ago
         </Badge>
       </Group>
 
