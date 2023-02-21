@@ -12,6 +12,7 @@ import {
   Checkbox,
   Anchor,
   Stack,
+  Alert,
 } from '@mantine/core'
 import { FacebookButton, GithubButton } from './SocialButtons'
 import { getAuth, sendPasswordResetEmail } from 'firebase/auth'
@@ -73,13 +74,15 @@ export default function AuthenticationForm(props: PaperProps) {
     createUserWithEmailAndPassword(form.values.email, form.values.password)
   }
 
+  console.log(errorLoadingEmail)
+
   return (
     <Paper radius="md" p="xl" withBorder {...props}>
-      <Text size="xl" weight={500}>
+      <Text size="xl" pb="md" weight={500}>
         Welcome to LetterLink
       </Text>
 
-      <Text size="lg" pt="sm">
+      {/* <Text size="lg" pt="sm">
         Sign in with
       </Text>
       <Group grow mb="md" mt="md" onClick={() => signInWithFacebook()}>
@@ -87,9 +90,15 @@ export default function AuthenticationForm(props: PaperProps) {
       </Group>
       <Group grow mb="md" mt="md" onClick={() => signInWithGithub()}>
         <GithubButton radius="xl">GitHub</GithubButton>
-      </Group>
+      </Group> */}
 
-      <Divider label="Or continue with email" labelPosition="center" my="lg" />
+      {/* <Divider label="Or continue with email" labelPosition="center" my="lg" /> */}
+
+      {errorLoadingEmail?.code && (
+        <Alert mb="lg" color="red">
+          Wrong email or password
+        </Alert>
+      )}
 
       <form onSubmit={form.onSubmit(() => {})}>
         <Stack>
@@ -128,11 +137,11 @@ export default function AuthenticationForm(props: PaperProps) {
               'Password should include at least 6 characters'
             }
           />
-          <Link href="/resetpassword">
+          {/* <Link href="/resetpassword">
             <Anchor size="sm" color="red.6">
               Forgot password?
             </Anchor>
-          </Link>
+          </Link> */}
 
           {type === 'register' && (
             <Checkbox
@@ -146,7 +155,7 @@ export default function AuthenticationForm(props: PaperProps) {
         </Stack>
 
         <Group position="apart" mt="xl">
-          <Anchor
+          {/* <Anchor
             component="button"
             type="button"
             color="dimmed"
@@ -156,9 +165,10 @@ export default function AuthenticationForm(props: PaperProps) {
             {type === 'register'
               ? 'Already have an account? Login'
               : "Don't have an account? Register"}
-          </Anchor>
+          </Anchor> */}
           <Button
             type="submit"
+            loading={loadingLoginEmail}
             onClick={() => {
               type === 'register' && onClickRegister()
               type === 'login' && onClickLogin()
