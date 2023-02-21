@@ -2,8 +2,8 @@ import { Stack, Button, TextInput } from '@mantine/core'
 import { getAuth } from 'firebase/auth'
 import { useState } from 'react'
 import { useSendPasswordResetEmail } from 'react-firebase-hooks/auth'
-import { SuccessNotification } from '../components/NotificationBanner'
-import firebase from '../firebase/clientApp'
+import { SuccessNotification } from '../NotificationBanner'
+import firebase from '../../firebase/clientApp'
 
 const ResetPassword = () => {
   const [email, setEmail] = useState('')

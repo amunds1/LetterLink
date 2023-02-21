@@ -1,20 +1,13 @@
 import { Stack } from '@mantine/core'
 import { getDocs, collection } from 'firebase/firestore'
 import { GetServerSidePropsContext } from 'next'
-import LeaderboardList from '../components/leaderboard/LeaderboardList'
-import Podium from '../components/leaderboard/Podium'
-import { db } from '../firebase/clientApp'
-import usersConverter from '../firebase/converters/userConverter'
-import User from '../types/User'
+import LeaderboardList from '../leaderboard/LeaderboardList'
+import Podium from '../leaderboard/Podium'
+import { db } from '../../firebase/clientApp'
+import usersConverter from '../../firebase/converters/userConverter'
+import User from '../../types/User'
 
 export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
-  return {
-    redirect: {
-      destination: '/',
-      permanent: false,
-    },
-  }
-
   try {
     // Set cache header
     // https://nextjs.org/docs/basic-features/data-fetching/get-server-side-props#caching-with-server-side-rendering-ssr

@@ -1,21 +1,14 @@
 import { Image, Button, Card, Group, Stack, Text, Divider } from '@mantine/core'
 import { GetServerSidePropsContext } from 'next'
 import Link from 'next/link'
-import ExperiencePointsBar from '../components/profile/ExperiencePointsBar'
-import { fetchUserData } from '../components/profile/firebase/fetchUserData'
-import Statistics from '../components/profile/Statistics'
-import fetchUID from '../firebase/fetchUID'
-import User from '../types/User'
-import ProfileIcons, { IProfileIcon } from '../constants/ProfileIcons'
+import ExperiencePointsBar from '../profile/ExperiencePointsBar'
+import { fetchUserData } from '../profile/firebase/fetchUserData'
+import Statistics from '../profile/Statistics'
+import fetchUID from '../../firebase/fetchUID'
+import User from '../../types/User'
+import ProfileIcons, { IProfileIcon } from '../../constants/ProfileIcons'
 
 export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
-  return {
-    redirect: {
-      destination: '/',
-      permanent: false,
-    },
-  }
-
   try {
     // Set cache header
     // https://nextjs.org/docs/basic-features/data-fetching/get-server-side-props#caching-with-server-side-rendering-ssr
