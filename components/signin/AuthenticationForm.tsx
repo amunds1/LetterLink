@@ -12,6 +12,7 @@ import {
   Checkbox,
   Anchor,
   Stack,
+  Alert,
 } from '@mantine/core'
 import { FacebookButton, GithubButton } from './SocialButtons'
 import { getAuth, sendPasswordResetEmail } from 'firebase/auth'
@@ -73,6 +74,8 @@ export default function AuthenticationForm(props: PaperProps) {
     createUserWithEmailAndPassword(form.values.email, form.values.password)
   }
 
+  console.log(errorLoadingEmail)
+
   return (
     <Paper radius="md" p="xl" withBorder {...props}>
       <Text size="xl" pb="md" weight={500}>
@@ -90,6 +93,12 @@ export default function AuthenticationForm(props: PaperProps) {
       </Group> */}
 
       {/* <Divider label="Or continue with email" labelPosition="center" my="lg" /> */}
+
+      {errorLoadingEmail?.code && (
+        <Alert mb="lg" color="red">
+          Wrong email or password
+        </Alert>
+      )}
 
       <form onSubmit={form.onSubmit(() => {})}>
         <Stack>
@@ -159,6 +168,7 @@ export default function AuthenticationForm(props: PaperProps) {
           </Anchor> */}
           <Button
             type="submit"
+            loading={loadingLoginEmail}
             onClick={() => {
               type === 'register' && onClickRegister()
               type === 'login' && onClickLogin()
