@@ -26,6 +26,7 @@ import colorValidWordBorder from './utils/colorValidWordBorder'
 import { useMediaQuery } from '@mantine/hooks'
 import { updateStreak } from './firebase/updateStreak'
 import SelectLetter from './SelectLetter'
+import useSound from 'use-sound'
 
 const useStyles = createStyles(() => ({
   grid: {
@@ -62,6 +63,12 @@ const GameBoard = () => {
 
   const [boardIsLoading, setBoardIsLoading] = useState<boolean>(false)
 
+  // Sound played when a letter is placed
+  const [playPlaced] = useSound('/sounds/placeLetter.mp3')
+
+  // Sound played when a move is submited
+  const [playValidWord] = useSound('/sounds/valid_word.wav')
+
   const addLetter = (
     board: string[],
     endIndex: number,
@@ -73,6 +80,7 @@ const GameBoard = () => {
     setPrevLetter(selectedLetter)
     setisLetterPlaced(true)
     gameContext!.setSelectedLetter(null)
+
     return newBoard
   }
 
@@ -84,6 +92,7 @@ const GameBoard = () => {
     ) {
       return
     }
+    playPlaced()
     const index = Number(result.destination.droppableId)
     // Used to place the letterbox inside the cell its dropped into
     setDropID(index)
@@ -116,6 +125,7 @@ const GameBoard = () => {
     // Creates a list of valid words objects
     const validWordList = getValidWordsList(res)
     if (validWordList) {
+      playValidWord()
       gameContext?.setValidWords(validWordList)
       // Reset validwordslist after 3 secounds.
       setTimeout(() => {
@@ -155,19 +165,11 @@ const GameBoard = () => {
 
   return (
     // Center board
-    <div
-      style={{
-        display: 'flex',
-        justifyContent: 'center',
-      }}
-    >
+    <>
       {gameContext && (
         <Container
           style={{
             padding: '0 0 1% 0',
-            // width: matches ? '25%' : '70%',
-            // fixed position prevent page scroll when dragging
-            position: 'fixed',
           }}
           sx={(theme) => ({
             // Desktop
@@ -329,7 +331,7 @@ const GameBoard = () => {
           </>
         </Container>
       )}
-    </div>
+    </>
   )
 }
 
