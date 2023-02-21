@@ -83,10 +83,7 @@ const ActiveGame = ({ game, yourTurn, userUID }: IActiveGame) => {
                   display: 'flex',
                 }}
               >
-                <IconChevronRight
-                  color={yourTurn ? '#66A80F' : '#E8590C'}
-                  size="2rem"
-                />
+                <IconChevronRight color={yourTurn ? '#66A80F' : '#E8590C'} />
               </div>
             </Grid.Col>
           </Grid>

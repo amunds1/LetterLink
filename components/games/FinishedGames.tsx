@@ -97,7 +97,7 @@ const FinishedGame = ({ game, userUID }: IFinishedGame) => {
                   display: 'flex',
                 }}
               >
-                <IconChevronRight color="#141517" size="2rem" />
+                <IconChevronRight color="#141517" />
               </div>
             </Grid.Col>
           </Grid>
