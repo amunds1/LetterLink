@@ -100,7 +100,6 @@ const NewGame = (props: INewGame) => {
         description=""
         withAsterisk
       >
-        <Radio value="2" label="2 x 2" color="cyan" />
         <Radio value="3" label="3 x 3" color="cyan" />
         <Radio value="4" label="4 x 4" color="cyan" />
         <Radio value="5" label="5 x 5" color="cyan" />

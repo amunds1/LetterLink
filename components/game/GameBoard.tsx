@@ -165,19 +165,11 @@ const GameBoard = () => {
 
   return (
     // Center board
-    <div
-      style={{
-        display: 'flex',
-        justifyContent: 'center',
-      }}
-    >
+    <>
       {gameContext && (
         <Container
           style={{
             padding: '0 0 1% 0',
-            // width: matches ? '25%' : '70%',
-            // fixed position prevent page scroll when dragging
-            position: 'fixed',
           }}
           sx={(theme) => ({
             // Desktop
@@ -339,7 +331,7 @@ const GameBoard = () => {
           </>
         </Container>
       )}
-    </div>
+    </>
   )
 }
 

@@ -1,4 +1,4 @@
-import { Center, Container } from '@mantine/core'
+import { Center, Container, Grid } from '@mantine/core'
 import { useScrollLock } from '@mantine/hooks'
 import { doc, updateDoc } from 'firebase/firestore'
 import { GetServerSideProps, GetServerSidePropsContext } from 'next'
@@ -16,6 +16,7 @@ import { IValidWords } from '../../components/game/interface/IvalidWords'
 import LeveledUpModal from '../../components/game/LeveldUpModal'
 import Points from '../../components/game/Points'
 import SelectLetter from '../../components/game/SelectLetter'
+
 import {
   EndTurnStatusMessage,
   OpponentTurnStatusMessage,
@@ -277,45 +278,54 @@ const GameID = (props: IGameID) => {
     Lock scroll using use-scroll-lock
     https://mantine.dev/hooks/use-scroll-lock/
   */
-  const [scrollLocked, setScrollLocked] = useScrollLock(true)
+  // const [scrollLocked, setScrollLocked] = useScrollLock(true)
 
   return (
-    <Container>
+    <Grid>
       {/* Back to games button */}
-      <BackToGamesButton />
+      {/* <Grid.Col>
+        <BackToGamesButton />
+      </Grid.Col> */}
 
       <GameContext.Provider value={GameContextValues}>
         {/* Display who turn it is */}
 
-        {gameState === GameStates.END && <EndTurnStatusMessage />}
+        <Grid.Col span={12}>
+          {gameState === GameStates.END && <EndTurnStatusMessage />}
 
-        {gameState === GameStates.END && winner === uid && (
-          <Center style={{ width: '100%', height: '100%', overflow: 'hidden' }}>
-            <ConfettiExplosion
-              force={0.6}
-              duration={8000}
-              particleCount={100}
-              height={1600}
-              width={1600}
-            />
-          </Center>
-        )}
+          {gameState === GameStates.END && winner === uid && (
+            <Center
+              style={{ width: '100%', height: '100%', overflow: 'hidden' }}
+            >
+              <ConfettiExplosion
+                force={0.6}
+                duration={8000}
+                particleCount={100}
+                height={1600}
+                width={1600}
+              />
+            </Center>
+          )}
 
-        {!validWords.length && gameState !== GameStates.END && yourTurn && (
-          <YourTurnStatusMessage gameState={gameState} />
-        )}
+          {!validWords.length && gameState !== GameStates.END && yourTurn && (
+            <YourTurnStatusMessage gameState={gameState} />
+          )}
 
-        {!validWords.length && gameState !== GameStates.END && !yourTurn && (
-          <OpponentTurnStatusMessage />
-        )}
+          {!validWords.length && gameState !== GameStates.END && !yourTurn && (
+            <OpponentTurnStatusMessage />
+          )}
 
-        {validWords.length >= 1 && (
-          <PointsStatusMessage validWordList={validWords} />
-        )}
+          {validWords.length >= 1 && (
+            <PointsStatusMessage validWordList={validWords} />
+          )}
 
-        <Points />
+          <Points />
+        </Grid.Col>
 
-        <GameBoard />
+        <Grid.Col span={12}>
+          <GameBoard />
+        </Grid.Col>
+        {/* {gameState === GameStates.CHOOSE && <SelectLetterKeyboard />} */}
 
         <LeveledUpModal
           openLeveldUpModal={openLeveldUpModal}
@@ -338,7 +348,7 @@ const GameID = (props: IGameID) => {
           closeAchievementsModal={closeAchievementsModal}
         />
       </GameContext.Provider>
-    </Container>
+    </Grid>
   )
 }
 
