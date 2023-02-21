@@ -16,6 +16,7 @@ import { IValidWords } from '../../components/game/interface/IvalidWords'
 import LeveledUpModal from '../../components/game/LeveldUpModal'
 import Points from '../../components/game/Points'
 import SelectLetter from '../../components/game/SelectLetter'
+import SelectLetterKeyboard from '../../components/game/SelectLetterKeyboard'
 import {
   EndTurnStatusMessage,
   OpponentTurnStatusMessage,
@@ -277,7 +278,7 @@ const GameID = (props: IGameID) => {
     Lock scroll using use-scroll-lock
     https://mantine.dev/hooks/use-scroll-lock/
   */
-  const [scrollLocked, setScrollLocked] = useScrollLock(true)
+  // const [scrollLocked, setScrollLocked] = useScrollLock(true)
 
   return (
     <Container>
@@ -316,6 +317,7 @@ const GameID = (props: IGameID) => {
         <Points />
 
         <GameBoard />
+        {/* {gameState === GameStates.CHOOSE && <SelectLetterKeyboard />} */}
 
         <LeveledUpModal
           openLeveldUpModal={openLeveldUpModal}

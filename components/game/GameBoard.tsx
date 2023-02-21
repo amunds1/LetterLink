@@ -6,6 +6,7 @@ import {
   Grid,
   Center,
   Text,
+  Stack,
 } from '@mantine/core'
 import { useContext, useEffect, useState } from 'react'
 import { DragDropContext, Droppable, DropResult } from 'react-beautiful-dnd'
@@ -26,6 +27,7 @@ import colorValidWordBorder from './utils/colorValidWordBorder'
 import { useMediaQuery } from '@mantine/hooks'
 import { updateStreak } from './firebase/updateStreak'
 import SelectLetter from './SelectLetter'
+import SelectLetterKeyboard from './SelectLetterKeyboard'
 
 const useStyles = createStyles(() => ({
   grid: {
@@ -155,21 +157,17 @@ const GameBoard = () => {
 
   return (
     // Center board
-    <div
-      style={{
-        display: 'flex',
-        justifyContent: 'center',
-      }}
-    >
+    <>
       {gameContext && (
-        <Container
+        <Stack
           style={{
-            padding: '0 0 1% 0',
+            //padding: '0 0 1% 0',
             // width: matches ? '25%' : '70%',
             // fixed position prevent page scroll when dragging
-            position: 'fixed',
+            //position: 'fixed',
+            backgroundColor: 'green',
           }}
-          sx={(theme) => ({
+          /* sx={(theme) => ({
             // Desktop
             '@media (min-width: 600px)': {
               width: '20%',
@@ -184,7 +182,7 @@ const GameBoard = () => {
               {
                 width: '55%',
               },
-          })}
+          })} */
         >
           <>
             <DragDropContext
@@ -301,7 +299,7 @@ const GameBoard = () => {
                 )}
             </DragDropContext>
 
-            {gameContext.gameState === GameStates.CHOOSE && <SelectLetter />}
+            <SelectLetterKeyboard />
 
             {(gameContext.gameState === GameStates.PLACE_OWN ||
               gameContext.gameState === GameStates.PLACE_OPPONENTS) &&
@@ -327,9 +325,9 @@ const GameBoard = () => {
                 </Center>
               )}
           </>
-        </Container>
+        </Stack>
       )}
-    </div>
+    </>
   )
 }
 
