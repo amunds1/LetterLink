@@ -278,7 +278,7 @@ const GameID = (props: IGameID) => {
     Lock scroll using use-scroll-lock
     https://mantine.dev/hooks/use-scroll-lock/
   */
-  const [scrollLocked, setScrollLocked] = useScrollLock(true)
+  // const [scrollLocked, setScrollLocked] = useScrollLock(true)
 
   return (
     <Grid>
