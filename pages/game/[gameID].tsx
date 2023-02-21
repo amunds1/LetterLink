@@ -294,7 +294,7 @@ const GameID = (props: IGameID) => {
 
         {gameState === GameStates.END && <EndTurnStatusMessage />}
 
-        {gameState === GameStates.END && winner === uid && (
+        {/* {gameState === GameStates.END && winner === uid && (
           <Center style={{ width: '100%', height: '100%', overflow: 'hidden' }}>
             <ConfettiExplosion
               force={0.6}
@@ -304,7 +304,7 @@ const GameID = (props: IGameID) => {
               width={1600}
             />
           </Center>
-        )}
+        )} */}
 
         {!validWords.length && gameState !== GameStates.END && yourTurn && (
           <YourTurnStatusMessage gameState={gameState} />
