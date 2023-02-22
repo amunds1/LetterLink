@@ -6,7 +6,7 @@ import {
   LoadingOverlay,
   MantineProvider,
 } from '@mantine/core'
-import { getAnalytics, setUserId } from 'firebase/analytics'
+// import { getAnalytics, setUserId } from 'firebase/analytics'
 import { getAuth } from 'firebase/auth'
 import { AppProps } from 'next/app'
 import Head from 'next/head'
@@ -41,7 +41,8 @@ export default function App(props: AppProps) {
   useEffect(() => {
     if (user) {
       console.log('Setting Google Analytics user id: ' + user.uid)
-      setUserId(getAnalytics(), user.uid)
+      // setUserId(getAnalytics(), user.uid)
+      gtag.setUserID(user.uid)
     }
   }, [user])
 
