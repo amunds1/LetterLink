@@ -6,7 +6,7 @@ import {
   LoadingOverlay,
   MantineProvider,
 } from '@mantine/core'
-// import { getAnalytics, setUserId } from 'firebase/analytics'
+import { getAnalytics, setUserId } from 'firebase/analytics'
 import { getAuth } from 'firebase/auth'
 import { AppProps } from 'next/app'
 import Head from 'next/head'
@@ -34,6 +34,12 @@ export default function App(props: AppProps) {
   /* 
     Manually set Google Analytics user ID
     https://firebase.google.com/docs/analytics/userid
+
+    From the docs:
+
+      After setting a user ID, all future events will be automatically tagged with this value, 
+      and you can access it by querying for the user_id value in BigQuery. 
+      Adding a user ID will not affect any events previously recorded by Google Analytics.
   */
   const auth = getAuth()
   const user = auth.currentUser
@@ -42,13 +48,12 @@ export default function App(props: AppProps) {
     if (user) {
       // console.log('Setting Google Analytics user id: ' + user.uid)
       // setUserId(getAnalytics(), user.uid)
-      // gtag.setUserID(user.uid)
     }
   }, [user])
 
   useEffect(() => {
     const handleRouteChange = (url: string) => {
-      gtag.pageview(url, user?.uid)
+      // gtag.pageview(url, user?.uid)
     }
     router.events.on('routeChangeComplete', handleRouteChange)
     router.events.on('hashChangeComplete', handleRouteChange)
@@ -60,70 +65,78 @@ export default function App(props: AppProps) {
 
   return (
     <>
-      <Head>
-        <title>LetterLink</title>
-        <meta
-          name="viewport"
-          content="maximum-scale=1, initial-scale=1, width=device-width"
-        />
-      </Head>
+      {/* Wait untill user object is available, so uid can be set in gtag config in <Script /> tag */}
+      {user && user.uid && (
+        <>
+          <Head>
+            <title>LetterLink</title>
+            <meta
+              name="viewport"
+              content="maximum-scale=1, initial-scale=1, width=device-width"
+            />
+          </Head>
 
-      {/* Global Site Tag (gtag.js) - Google Analytics */}
-      <Script
-        strategy="afterInteractive"
-        src={`https://www.googletagmanager.com/gtag/js?id=${gtag.GA_TRACKING_ID}`}
-      />
-      <Script
-        id="gtag-init"
-        strategy="afterInteractive"
-        dangerouslySetInnerHTML={{
-          __html: `
+          {/* Global Site Tag (gtag.js) - Google Analytics */}
+          <Script
+            strategy="afterInteractive"
+            src={`https://www.googletagmanager.com/gtag/js?id=${gtag.GA_TRACKING_ID}`}
+          />
+
+          {/* Set 'user_id' in gtag config */}
+          <Script
+            id="gtag-init"
+            strategy="afterInteractive"
+            dangerouslySetInnerHTML={{
+              __html: `
             window.dataLayer = window.dataLayer || [];
             function gtag(){dataLayer.push(arguments);}
             gtag('js', new Date());
             gtag('config', '${gtag.GA_TRACKING_ID}', {
               page_path: window.location.pathname,
+              user_id: '${user?.uid}'
             });
           `,
-        }}
-      />
+            }}
+          />
 
-      <ColorSchemeProvider
-        colorScheme={colorScheme}
-        toggleColorScheme={toggleColorScheme}
-      >
-        <MantineProvider
-          withGlobalStyles
-          withNormalizeCSS
-          theme={{
-            /** Put your mantine theme override here */
-            colorScheme: colorScheme,
-          }}
-        >
-          <AuthProvider>
-            <AppShell
-              padding="md"
-              header={<PageNavBar />}
-              styles={(theme) => ({
-                main: {
-                  backgroundColor:
-                    theme.colorScheme === 'dark'
-                      ? theme.colors.dark[8]
-                      : theme.colors.gray[0],
-                },
-              })}
+          <ColorSchemeProvider
+            colorScheme={colorScheme}
+            toggleColorScheme={toggleColorScheme}
+          >
+            <MantineProvider
+              withGlobalStyles
+              withNormalizeCSS
+              theme={{
+                /** Put your mantine theme override here */
+                colorScheme: colorScheme,
+              }}
             >
-              {isPageLoading ? (
-                <Center>
-                  <LoadingOverlay visible={true} overlayBlur={2} />
-                </Center>
-              ) : (
-                <Component {...pageProps} />
-              )}
-            </AppShell>
-          </AuthProvider>
-        </MantineProvider>
-      </ColorSchemeProvider>
+              <AuthProvider>
+                <AppShell
+                  padding="md"
+                  header={<PageNavBar />}
+                  styles={(theme) => ({
+                    main: {
+                      backgroundColor:
+                        theme.colorScheme === 'dark'
+                          ? theme.colors.dark[8]
+                          : theme.colors.gray[0],
+                    },
+                  })}
+                >
+                  {isPageLoading ? (
+                    <Center>
+                      <LoadingOverlay visible={true} overlayBlur={2} />
+                    </Center>
+                  ) : (
+                    <Component {...pageProps} />
+                  )}
+                </AppShell>
+              </AuthProvider>
+            </MantineProvider>
+          </ColorSchemeProvider>
+        </>
+      )}
     </>
   )
 }
