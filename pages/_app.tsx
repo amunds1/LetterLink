@@ -6,7 +6,7 @@ import {
   LoadingOverlay,
   MantineProvider,
 } from '@mantine/core'
-import { getAnalytics, setUserId } from 'firebase/analytics'
+// import { getAnalytics, setUserId } from 'firebase/analytics'
 import { getAuth } from 'firebase/auth'
 import { AppProps } from 'next/app'
 import Head from 'next/head'
@@ -40,14 +40,15 @@ export default function App(props: AppProps) {
 
   useEffect(() => {
     if (user) {
-      console.log('Setting Google Analytics user id: ' + user.uid)
-      setUserId(getAnalytics(), user.uid)
+      // console.log('Setting Google Analytics user id: ' + user.uid)
+      // setUserId(getAnalytics(), user.uid)
+      // gtag.setUserID(user.uid)
     }
   }, [user])
 
   useEffect(() => {
     const handleRouteChange = (url: string) => {
-      gtag.pageview(url)
+      gtag.pageview(url, user?.uid)
     }
     router.events.on('routeChangeComplete', handleRouteChange)
     router.events.on('hashChangeComplete', handleRouteChange)
@@ -55,7 +56,7 @@ export default function App(props: AppProps) {
       router.events.off('routeChangeComplete', handleRouteChange)
       router.events.off('hashChangeComplete', handleRouteChange)
     }
-  }, [router.events])
+  }, [router.events, user])
 
   return (
     <>
