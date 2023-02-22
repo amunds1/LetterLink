@@ -73,6 +73,7 @@ const SelectLetter = () => {
                   : { border: '1px solid #CED4DA', margin: '10px' }
               }
               onClick={async () => {
+                window.scrollTo(0, 0)
                 // Set new gameState and selectedLetter in game document
                 await updateDoc(doc(db, 'games', gameContext.gameID), {
                   gameState: GameStates.PLACE_OWN,
