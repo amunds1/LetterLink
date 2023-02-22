@@ -1,4 +1,11 @@
-import { Button, Center, createStyles, Stack, Text } from '@mantine/core'
+import {
+  Button,
+  Center,
+  createStyles,
+  Stack,
+  Text,
+  useMantineColorScheme,
+} from '@mantine/core'
 import { IconPlus } from '@tabler/icons'
 import { collection, doc, query, where } from 'firebase/firestore'
 import { GetServerSidePropsContext } from 'next'
@@ -80,6 +87,10 @@ interface IGames {
 }
 
 const Games = (props: IGames) => {
+  // Darkmode
+  const { colorScheme } = useMantineColorScheme()
+  const dark = colorScheme === 'dark'
+
   const { classes } = useStyles()
   const { uid, name, hasDefaultUsername } = props
 
@@ -150,9 +161,9 @@ const Games = (props: IGames) => {
               variant="light"
               color="cyan"
               style={{ border: '1px solid #99E9F2' }}
-              leftIcon={<IconPlus color="#0C8599" />}
+              leftIcon={<IconPlus color={dark ? '#99E9F2' : '#15AABF'} />}
             >
-              <Text color="cyan.8">New game</Text>
+              New game
             </Button>
           </Center>
         </Link>

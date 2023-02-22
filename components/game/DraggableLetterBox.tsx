@@ -10,7 +10,11 @@ const useStyles = createStyles(() => ({
   },
 }))
 
-const DraggableLetterBox = (props: { letter: String; index: number }) => {
+const DraggableLetterBox = (props: {
+  letter: String
+  index: number
+  dark: boolean
+}) => {
   const { classes } = useStyles()
 
   return (
@@ -25,7 +29,9 @@ const DraggableLetterBox = (props: { letter: String; index: number }) => {
               {...provided.dragHandleProps}
               className={classes.cell}
               style={{
-                backgroundColor: 'white',
+                // Darkmode - gray 8
+                // Ligthmode - white
+                backgroundColor: props.dark ? '#343A40' : 'white',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
@@ -47,11 +53,19 @@ const DraggableLetterBox = (props: { letter: String; index: number }) => {
               {...provided.dragHandleProps}
               className={classes.cell}
               style={{
-                backgroundColor: 'white',
+                // Darkmode - gray 8
+                // Ligthmode - white
+                backgroundColor: props.dark ? '#343A40' : 'white',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
-                border: snapshot.isDragging
+                // Darkmode - dark 0  / lime 7 80%
+                // Ligthmode - black / lime 7
+                border: props.dark
+                  ? snapshot.isDragging
+                    ? '2px solid #C1C2C5'
+                    : '3px solid #74B81680'
+                  : snapshot.isDragging
                   ? '2px solid black'
                   : '3px solid #74B816',
                 ...provided.draggableProps.style,

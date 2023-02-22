@@ -1,4 +1,4 @@
-import { Alert, Center, Text } from '@mantine/core'
+import { Alert, Center, Text, useMantineColorScheme } from '@mantine/core'
 import { useContext } from 'react'
 import { IValidWords } from './interface/IvalidWords'
 import { GameContext } from './utils/gameContext'
@@ -21,7 +21,7 @@ export const YourTurnStatusMessage = ({
         color="lime"
         style={{
           width: '100%',
-          border: '1px solid #A9E34B',
+          border: '1px solid #D8F5A2',
           textAlign: 'center',
         }}
       >
@@ -46,7 +46,7 @@ export const OpponentTurnStatusMessage = () => {
         color="orange"
         style={{
           width: '100%',
-          border: '1px solid #FFA94D',
+          border: '1px solid #FFD8A8',
           textAlign: 'center',
         }}
       >
@@ -58,15 +58,22 @@ export const OpponentTurnStatusMessage = () => {
 
 export const EndTurnStatusMessage = () => {
   const gameContext = useContext(GameContext)
+  // Dark mode
+  const { colorScheme } = useMantineColorScheme()
+  const dark = colorScheme === 'dark'
   return (
     <Center>
       <Alert
         mt="sm"
-        title="The game is over"
         radius="md"
-        color="dark"
-        style={{ width: '100%', border: '1px solid #909296' }}
+        color={dark ? 'gray' : 'dark'}
+        style={{
+          width: '100%',
+          border: '1px solid #909296',
+          textAlign: 'center',
+        }}
       >
+        <Text weight="bold">The game is over</Text>
         {gameContext &&
           (gameContext?.winner == gameContext.userUID
             ? 'You won the game'

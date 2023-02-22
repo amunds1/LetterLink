@@ -9,7 +9,8 @@ const colorCellGreen = (
   },
   columnValidWords: {
     [key: number]: number[]
-  }
+  },
+  dark: boolean
 ) => {
   if (rowValidWords) {
     // rowPosition = { positionIndex, differenceIndex }
@@ -17,7 +18,9 @@ const colorCellGreen = (
     // differenceIndex -> position in row
     const rowPosition = findRowPosition({ index, boardSize })
     if (isPartOfValidWord(rowPosition, rowValidWords)) {
-      return '#D8F5A2'
+      // darkmode - lime 9 50%
+      // lightmode - lime 2
+      return dark ? '#5C940D50' : '#D8F5A2'
     }
   }
 
@@ -27,11 +30,15 @@ const colorCellGreen = (
     // differenceIndex -> position in col
     const colPosition = findColumnPosition({ index, boardSize })
     if (isPartOfValidWord(colPosition, columnValidWords)) {
-      return '#D8F5A2'
+      // darkmode - lime 9 50%
+      // lightmode - lime 2
+      return dark ? '#5C940D50' : '#D8F5A2'
     }
   }
 
-  return 'white'
+  // darkmode - gray 8
+  // lightmode - white
+  return dark ? '#343A40' : 'white'
 }
 
 export default colorCellGreen

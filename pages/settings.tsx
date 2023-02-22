@@ -184,6 +184,7 @@ const Settings = ({ uid, userData }: { uid: string; userData: User }) => {
               onClick={() => signOutUser().then(() => router.push('/signin'))}
               variant="light"
               color="blue"
+              style={{ border: '1px solid #A5D8FF' }}
             >
               Log out
             </Button>

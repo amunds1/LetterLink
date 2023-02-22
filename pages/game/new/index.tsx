@@ -14,7 +14,6 @@ import { forwardRef, useState } from 'react'
 import addGameToCollection from '../../../components/game/firebase/addToGameCollection'
 import { fetchUsersAsSelectOptions } from '../../../components/game/firebase/fetchUsersAsSelectOptions'
 import fetchUID from '../../../firebase/fetchUID'
-import BackToGamesButton from '../../../components/games/BackToGamesButton'
 
 export const getServerSideProps: GetServerSideProps = async (
   ctx: GetServerSidePropsContext
@@ -74,8 +73,6 @@ const NewGame = (props: INewGame) => {
 
   return (
     <Stack>
-      {/* Back to games button */}
-      <BackToGamesButton />
       {/* SELECT OPONENT */}
       <Select
         label="Select an oponent"
