@@ -9,6 +9,8 @@ import {
   Collapse,
   Container,
   Box,
+  useMantineColorScheme,
+  createStyles,
 } from '@mantine/core'
 import { IconChevronDown, IconChevronRight, IconChevronUp } from '@tabler/icons'
 import { doc } from 'firebase/firestore'
@@ -32,6 +34,10 @@ interface IFinishedGame {
 }
 
 const FinishedGame = ({ game, userUID }: IFinishedGame) => {
+  // Dark mode
+  const { colorScheme } = useMantineColorScheme()
+  const dark = colorScheme === 'dark'
+
   // Fetch opponent data to get name
   const [opponent, loading, error] = useDocumentDataOnce(
     doc(
@@ -50,7 +56,9 @@ const FinishedGame = ({ game, userUID }: IFinishedGame) => {
         key={game.id}
         radius="md"
         style={{
-          backgroundColor: '#C1C2C5',
+          // Darkmode - gray 5 33%
+          // Lightmode - dark 0
+          backgroundColor: dark ? '#ADB5BD33' : '#C1C2C5',
           padding: '0.5rem',
           border: '1px solid #909296',
         }}
@@ -69,15 +77,15 @@ const FinishedGame = ({ game, userUID }: IFinishedGame) => {
                   {!opponent?.name && (
                     <Avatar src={ProfileIconsList['Unknown']} />
                   )}
-                  <Text color="black" weight="bold" size="md">
+                  <Text weight="bold" size="md">
                     {opponent?.name}
                   </Text>
                 </Group>
                 <Group spacing="md" mb="xs" ml="xs">
-                  <Text color="gray.7">
+                  <Text color={dark ? 'dark.2' : 'gray.7'}>
                     {game.boardSize}x{game.boardSize}
                   </Text>
-                  <Text color="gray.7">
+                  <Text color={dark ? 'dark.2' : 'gray.7'}>
                     {opponent &&
                       (game.winner == userUID
                         ? 'You won the game'
@@ -97,7 +105,11 @@ const FinishedGame = ({ game, userUID }: IFinishedGame) => {
                   display: 'flex',
                 }}
               >
-                <IconChevronRight color="#141517" />
+                <IconChevronRight
+                  // Darkmode gray 2
+                  // Lightmode dark 8
+                  color={dark ? '#909296' : '#141517'}
+                />
               </div>
             </Grid.Col>
           </Grid>
@@ -107,7 +119,20 @@ const FinishedGame = ({ game, userUID }: IFinishedGame) => {
   )
 }
 
+const useStyles = createStyles(() => ({
+  noHoverButton: {
+    '&:hover': {
+      backgroundColor: 'transparent',
+    },
+  },
+}))
+
 const FinishedGames = ({ games, userUID }: IFinishedGames) => {
+  // Dark mode
+  const { colorScheme } = useMantineColorScheme()
+  const dark = colorScheme === 'dark'
+  const { classes } = useStyles()
+
   const [opened, setOpened] = useState(false)
 
   if (!games) return <></>
@@ -120,15 +145,16 @@ const FinishedGames = ({ games, userUID }: IFinishedGames) => {
             onClick={() => setOpened((o) => !o)}
             rightIcon={
               !opened ? (
-                <IconChevronDown color="black" />
+                <IconChevronDown color={dark ? '#C1C2C5' : 'black'} />
               ) : (
-                <IconChevronUp color="black" />
+                <IconChevronUp color={dark ? '#C1C2C5' : 'black'} />
               )
             }
             variant="subtle"
             style={{ width: '100%', justifyContent: 'left' }}
+            className={classes.noHoverButton}
           >
-            <Text size="xl" weight="bold" color="black">
+            <Text size="xl" weight="bold" color={dark ? '#C1C2C5' : 'black'}>
               Finished games
             </Text>
           </Button>

@@ -1,4 +1,10 @@
-import { Button, Center, Text, TextInput } from '@mantine/core'
+import {
+  Button,
+  Center,
+  Text,
+  TextInput,
+  useMantineColorScheme,
+} from '@mantine/core'
 import { updateDoc, doc } from 'firebase/firestore'
 import { ChangeEvent, useContext, useState } from 'react'
 import { db } from '../../firebase/clientApp'
@@ -6,6 +12,10 @@ import GameStates from './types/gameStates'
 import { GameContext } from './utils/gameContext'
 
 const SelectLetter = () => {
+  // Darkmode
+  const { colorScheme } = useMantineColorScheme()
+  const dark = colorScheme === 'dark'
+
   const gameContext = useContext(GameContext)
 
   const [selectedLetter, setSelectedLetter] = useState('')
@@ -70,7 +80,17 @@ const SelectLetter = () => {
                 })
               }}
             >
-              <Text color={selectedLetter ? '#66A80F' : '#ADB5BD'}>
+              <Text
+                color={
+                  selectedLetter
+                    ? dark
+                      ? '#D8F5A2'
+                      : '#82C91E'
+                    : dark
+                    ? '#868E9670'
+                    : '#ADB5BD'
+                }
+              >
                 Choose letter
               </Text>
             </Button>

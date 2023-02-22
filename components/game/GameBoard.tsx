@@ -6,6 +6,7 @@ import {
   Grid,
   Center,
   Text,
+  useMantineColorScheme,
 } from '@mantine/core'
 import { useContext, useEffect, useState } from 'react'
 import { DragDropContext, Droppable, DropResult } from 'react-beautiful-dnd'
@@ -28,7 +29,7 @@ import { updateStreak } from './firebase/updateStreak'
 import SelectLetter from './SelectLetter'
 import useSound from 'use-sound'
 
-const useStyles = createStyles(() => ({
+const useStyles = createStyles((theme) => ({
   grid: {
     border: '2px solid black',
   },
@@ -41,6 +42,10 @@ const useStyles = createStyles(() => ({
 
 const GameBoard = () => {
   const gameContext = useContext(GameContext)
+
+  // Dark mode
+  const { colorScheme } = useMantineColorScheme()
+  const dark = colorScheme === 'dark'
 
   // Adjust boardSize
   const matches = useMediaQuery('(min-width: 750px)')
@@ -206,7 +211,13 @@ const GameBoard = () => {
                                 ref={provided.innerRef}
                                 {...provided.droppableProps}
                                 style={{
-                                  backgroundColor: snapshot.isDraggingOver
+                                  // Darkmode - gray 8 / lime 8 50%
+                                  // Ligthmode - white / lime 3
+                                  backgroundColor: dark
+                                    ? snapshot.isDraggingOver
+                                      ? '#66A80F50'
+                                      : '#343A40'
+                                    : snapshot.isDraggingOver
                                     ? '#C0EB75'
                                     : 'white',
                                   aspectRatio: '1',
@@ -220,6 +231,7 @@ const GameBoard = () => {
                                   <DraggableLetterBox
                                     letter={prevLetter}
                                     index={dropID}
+                                    dark={dark}
                                   ></DraggableLetterBox>
                                 )}
                                 {provided.placeholder}
@@ -239,13 +251,15 @@ const GameBoard = () => {
                               border: colorValidWordBorder(
                                 index,
                                 boardSize,
-                                gameContext.validWords
+                                gameContext.validWords,
+                                dark
                               ),
                               backgroundColor: colorCellGreen(
                                 index,
                                 boardSize,
                                 gameContext.rowValidWords,
-                                gameContext.columnValidWords
+                                gameContext.columnValidWords,
+                                dark
                               ),
                             }}
                           >
@@ -293,6 +307,7 @@ const GameBoard = () => {
                               <DraggableLetterBox
                                 letter={gameContext.selectedLetter}
                                 index={-1}
+                                dark={dark}
                               ></DraggableLetterBox>
                             )}
                           {provided.placeholder}
@@ -322,7 +337,19 @@ const GameBoard = () => {
                         : { border: '1px solid #CED4DA' }
                     }
                   >
-                    <Text color={isLetterPlaced ? 'lime.8' : 'gray.5'}>
+                    <Text
+                      // Darkmode - lime 2 / gray 6 70%
+                      // Lightmode - lime 6 / gray 6
+                      color={
+                        dark
+                          ? isLetterPlaced
+                            ? '#D8F5A2'
+                            : '#868E9670'
+                          : isLetterPlaced
+                          ? '#82C91E'
+                          : '#868E96'
+                      }
+                    >
                       Submit
                     </Text>
                   </Button>

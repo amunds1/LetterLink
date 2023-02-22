@@ -1,4 +1,12 @@
-import { Avatar, Grid, Group, Stack, Text, Card } from '@mantine/core'
+import {
+  Avatar,
+  Grid,
+  Group,
+  Stack,
+  Text,
+  Card,
+  useMantineColorScheme,
+} from '@mantine/core'
 import { IconChevronRight } from '@tabler/icons'
 import { doc } from 'firebase/firestore'
 import Link from 'next/link'
@@ -20,6 +28,10 @@ interface IActiveGame {
   userUID: string
 }
 const ActiveGame = ({ game, yourTurn, userUID }: IActiveGame) => {
+  // Darkmode
+  const { colorScheme } = useMantineColorScheme()
+  const dark = colorScheme === 'dark'
+
   // Fetch opponent data to get name
   const [opponent, loading, error] = useDocumentDataOnce(
     doc(
@@ -39,8 +51,15 @@ const ActiveGame = ({ game, yourTurn, userUID }: IActiveGame) => {
         key={game.id}
         radius="md"
         style={{
-          // Lime 0 and orange 0
-          backgroundColor: yourTurn ? '#F4FCE3' : '#FFF4E6',
+          // Darkmode - Lime 8 and orange 8 33%
+          // Lightmode - Lime 0 and orange 0
+          backgroundColor: dark
+            ? yourTurn
+              ? '#66A80F33'
+              : '#E8590C33'
+            : yourTurn
+            ? '#F4FCE3'
+            : '#FFF4E6',
           padding: '0.5rem',
           border: yourTurn ? '1px solid #D8F5A2' : '1px solid #FFD8A8',
         }}
@@ -60,15 +79,15 @@ const ActiveGame = ({ game, yourTurn, userUID }: IActiveGame) => {
                     <Avatar src={ProfileIconsList['Unknown']} />
                   )}
 
-                  <Text color="black" weight="bold" size="md">
+                  <Text weight="bold" size="md">
                     {opponent?.name}
                   </Text>
                 </Group>
                 <Group spacing="md" mb="xs" ml="xs">
-                  <Text color="gray.7">
+                  <Text color={dark ? 'dark.2' : 'gray.7'}>
                     {game.boardSize}x{game.boardSize}
                   </Text>
-                  <Text color="gray.7">
+                  <Text color={dark ? 'dark.2' : 'gray.7'}>
                     Rounds left: {Math.ceil(game.roundsLeft / 2)}
                   </Text>
                 </Group>
@@ -83,7 +102,19 @@ const ActiveGame = ({ game, yourTurn, userUID }: IActiveGame) => {
                   display: 'flex',
                 }}
               >
-                <IconChevronRight color={yourTurn ? '#66A80F' : '#E8590C'} />
+                <IconChevronRight
+                  // Darkmode - lime 2 & organge 2
+                  // Lightmode - lime 8 & organge 8
+                  color={
+                    dark
+                      ? yourTurn
+                        ? '#D8F5A2'
+                        : '#FFD8A8'
+                      : yourTurn
+                      ? '#66A80F'
+                      : '#E8590C'
+                  }
+                />
               </div>
             </Grid.Col>
           </Grid>
