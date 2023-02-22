@@ -42,7 +42,6 @@ export default function App(props: AppProps) {
     if (user) {
       // console.log('Setting Google Analytics user id: ' + user.uid)
       // setUserId(getAnalytics(), user.uid)
-      // gtag.setUserID(user.uid)
     }
   }, [user])
 
