@@ -22,8 +22,9 @@ const SelectLetter = () => {
   const [error, setError] = useState<boolean>(false)
 
   const isValidChar = (char: string) => {
+    const validLetters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZÆØÅ'
     if (char.length === 1) {
-      return char.toLowerCase() != char.toUpperCase()
+      return validLetters.includes(char)
     }
     return false
   }
@@ -39,7 +40,9 @@ const SelectLetter = () => {
                 margin: '10px 10px 0px 10px',
               }}
               placeholder="Type a letter"
-              error={error ? 'Not valid! You have to type a letter' : false}
+              error={
+                error ? 'Not valid! You have to type a norwegian letter' : false
+              }
               maxLength={1}
               onChange={(e: ChangeEvent<HTMLInputElement>) => {
                 // Force input to uppercase
