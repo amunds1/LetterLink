@@ -38,6 +38,15 @@ const useStyles = createStyles((theme) => ({
     padding: '0px',
     fontSize: 'x-large',
   },
+  // Valid Word border
+  validWordBorder: {
+    border: '2px solid  #666666',
+    boxShadow: '0px 0px 15px #000000',
+  },
+  darkValidWordBorder: {
+    border: '2px solid #cccccc',
+    boxShadow: '0px 0px 10px #cccccc',
+  },
 }))
 
 const GameBoard = () => {
@@ -168,6 +177,15 @@ const GameBoard = () => {
   // Re-render board after response from /api/check
   useEffect(() => {}, [board])
 
+  const getClass = (c: string) => {
+    if (c === 'validWordBorder') {
+      return classes.validWordBorder
+    }
+    if (c === 'darkValidWordBorder') {
+      return classes.darkValidWordBorder
+    }
+  }
+
   return (
     // Center board
     <>
@@ -243,17 +261,19 @@ const GameBoard = () => {
                         {/* Cells containing letters */}
                         {cellValue.length !== 0 && (
                           <Box
+                            className={getClass(
+                              colorValidWordBorder(
+                                index,
+                                boardSize,
+                                gameContext.validWords,
+                                dark
+                              )
+                            )}
                             style={{
                               aspectRatio: '1',
                               width: '100%',
                               display: 'flex',
                               alignItems: 'center',
-                              border: colorValidWordBorder(
-                                index,
-                                boardSize,
-                                gameContext.validWords,
-                                dark
-                              ),
                               backgroundColor: colorCellGreen(
                                 index,
                                 boardSize,

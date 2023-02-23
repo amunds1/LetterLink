@@ -1,6 +1,5 @@
 import { IValidWords } from '../interface/IvalidWords'
 import { findRowPosition, findColumnPosition } from './findRoworColumnPosition'
-import isPartOfValidWord from './isPartOfValidWord'
 
 const colorValidWordBorder = (
   index: number,
@@ -23,7 +22,7 @@ const colorValidWordBorder = (
     ) {
       // Darkmode - red 4
       // Lightmode - red 6
-      return dark ? '2px solid #FF8787' : '2px solid #FA5252'
+      return dark ? 'darkValidWordBorder' : 'validWordBorder'
     }
     // Same (as above) for columns:
     if (
@@ -34,7 +33,7 @@ const colorValidWordBorder = (
     ) {
       // Darkmode - red 4
       // Lightmode - red 6
-      return dark ? '2px solid #FF8787' : '2px solid #FA5252'
+      return dark ? 'darkValidWordBorder' : 'validWordBorder'
     }
   }
   return ''
