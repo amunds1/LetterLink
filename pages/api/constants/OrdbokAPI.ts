@@ -25,5 +25,5 @@ export const BASE_PARAMS = {
   */
   include: 'ei',
   // Number of results to return
-  n: '2',
+  n: '1',
 }
