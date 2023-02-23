@@ -1,21 +1,18 @@
-import { useToggle, upperFirst } from '@mantine/hooks'
-import { useForm } from '@mantine/form'
 import {
-  TextInput,
-  PasswordInput,
-  Text,
-  Paper,
-  Group,
-  PaperProps,
-  Button,
-  Divider,
-  Checkbox,
-  Anchor,
-  Stack,
   Alert,
+  Button,
+  Checkbox,
+  Group,
+  Paper,
+  PaperProps,
+  PasswordInput,
+  Stack,
+  Text,
+  TextInput,
 } from '@mantine/core'
-import { FacebookButton, GithubButton } from './SocialButtons'
-import { getAuth, sendPasswordResetEmail } from 'firebase/auth'
+import { useForm } from '@mantine/form'
+import { upperFirst, useToggle } from '@mantine/hooks'
+import { getAuth } from 'firebase/auth'
 import {
   useCreateUserWithEmailAndPassword,
   useSignInWithEmailAndPassword,
@@ -23,7 +20,6 @@ import {
   useSignInWithGithub,
 } from 'react-firebase-hooks/auth'
 import firebase from '../../firebase/clientApp'
-import Link from 'next/link'
 
 export default function AuthenticationForm(props: PaperProps) {
   const [type, toggle] = useToggle(['login', 'register'])
