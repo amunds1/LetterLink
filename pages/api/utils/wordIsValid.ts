@@ -12,8 +12,20 @@ const wordIsValid = async (word: string) => {
   const response = await fetch(BASE_URL + params)
   const data = await response.json()
 
-  // Return true if word is valid, false otherwise
-  return data['cmatch'] == 1
+  // Return true if word is an exact match
+  if (data['cmatch'] == 1) {
+    return true
+  }
+
+  /* 
+    Return true if word is an inflected (bøyd) form of a valid word
+    "tar" and "tok" returns cmatch = 0, but inflect = ["ta"], which is a valid word
+  */
+  if (data['inflect'].length > 0) {
+    return true
+  }
+
+  return false
 }
 
 export default wordIsValid
