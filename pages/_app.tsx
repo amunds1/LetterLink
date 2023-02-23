@@ -6,7 +6,7 @@ import {
   LoadingOverlay,
   MantineProvider,
 } from '@mantine/core'
-// import { getAnalytics, setUserId } from 'firebase/analytics'
+import { getAnalytics, setUserId } from 'firebase/analytics'
 import { getAuth } from 'firebase/auth'
 import { AppProps } from 'next/app'
 import Head from 'next/head'
@@ -34,14 +34,19 @@ export default function App(props: AppProps) {
   /* 
     Manually set Google Analytics user ID
     https://firebase.google.com/docs/analytics/userid
+
+    From the docs:
+
+      After setting a user ID, all future events will be automatically tagged with this value, 
+      and you can access it by querying for the user_id value in BigQuery. 
+      Adding a user ID will not affect any events previously recorded by Google Analytics.
   */
   const auth = getAuth()
   const user = auth.currentUser
 
   useEffect(() => {
     if (user) {
-      // console.log('Setting Google Analytics user id: ' + user.uid)
-      // setUserId(getAnalytics(), user.uid)
+      setUserId(getAnalytics(), user.uid)
     }
   }, [user])
 
@@ -72,6 +77,8 @@ export default function App(props: AppProps) {
         strategy="afterInteractive"
         src={`https://www.googletagmanager.com/gtag/js?id=${gtag.GA_TRACKING_ID}`}
       />
+
+      {/* Set 'user_id' in gtag config */}
       <Script
         id="gtag-init"
         strategy="afterInteractive"
