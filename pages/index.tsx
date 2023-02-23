@@ -58,6 +58,8 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
       proposedGames = await fetchProposedGames(userData.proposedGames, uid)
     }
 
+    console.log('PRRRRR', proposedGames)
+
     return {
       props: {
         uid: uid,

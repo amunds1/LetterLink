@@ -10,29 +10,39 @@ import {
   Transition,
 } from '@mantine/core'
 import { useForm } from '@mantine/form'
-import { deleteUser, getAuth } from 'firebase/auth'
-import { deleteDoc, doc, updateDoc } from 'firebase/firestore'
+import { getAuth, deleteUser } from 'firebase/auth'
+import {
+  collection,
+  deleteDoc,
+  doc,
+  query,
+  updateDoc,
+  where,
+} from 'firebase/firestore'
 import { GetServerSidePropsContext } from 'next'
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
+import { useCollectionData } from 'react-firebase-hooks/firestore'
 import ColorSchemeToggle from '../components/ColorSchemeToggle'
+import {
+  fetchActiveGames,
+  fetchProposedGames,
+} from '../components/games/firebase/fetchGames'
 import { SuccessNotification } from '../components/NotificationBanner'
 import { fetchUserData } from '../components/profile/firebase/fetchUserData'
 import { db } from '../firebase/clientApp'
+import gamesConverter from '../firebase/converters/gamesConverter'
 import fetchUID from '../firebase/fetchUID'
 import signOutUser from '../firebase/signOutUser'
-import User from '../types/User'
+import Game from '../types/Game'
 
 export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
   try {
     const uid = await fetchUID(ctx)
 
-    const userData = JSON.parse(JSON.stringify(await fetchUserData(uid)))
-
     return {
       props: {
         uid,
-        userData,
       },
     }
   } catch (err) {
@@ -45,20 +55,70 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
   }
 }
 
-const Settings = ({ uid, userData }: { uid: string; userData: User }) => {
+interface ISettings {
+  uid: string
+}
+
+const Settings = (props: ISettings) => {
   const [alert, setAlert] = useState(false)
 
+  const { uid } = props
+
   const [deleteProfileModalOpen, setDeleteProfileModalOpen] = useState(false)
+
+  const [games, setGames] = useState<Game[]>([])
+
+  /* 
+    Listen for changes on documents where the DocumentReference value of playerOne matches
+    the authenticated user
+  */
+  const [gamesPlayerOneField, loadingPlayerOne, errorPlayerOe] =
+    useCollectionData(
+      query(
+        collection(db, 'games').withConverter(gamesConverter),
+        where('playerOne', '==', doc(db, 'users', uid))
+      ),
+      {
+        snapshotListenOptions: { includeMetadataChanges: true },
+      }
+    )
+
+  /* 
+    Listen for changes on documents where the DocumentReference value of playerTwo matches
+    the authenticated user
+  */
+  const [gamesPlayerTwoField, loadingPlayerTwo, errorPlayerTwo] =
+    useCollectionData(
+      query(
+        collection(db, 'games').withConverter(gamesConverter),
+        where('playerTwo', '==', doc(db, 'users', uid))
+      ),
+      {
+        snapshotListenOptions: { includeMetadataChanges: true },
+      }
+    )
+
+  /*
+    When either gamesPlayerOneField or gamesPlayerTwoField changes, combine them and
+    add them to the games array
+  */
+  useEffect(() => {
+    if (gamesPlayerOneField && gamesPlayerTwoField) {
+      setGames(gamesPlayerOneField.concat(gamesPlayerTwoField))
+    }
+  }, [gamesPlayerOneField, gamesPlayerTwoField])
 
   const router = useRouter()
 
   const form = useForm({
     initialValues: {
-      username: userData.name,
+      username: '',
     },
 
     validate: {},
   })
+
+  console.log(games)
 
   // Remove alert after 3 seconds
   useEffect(() => {
@@ -69,7 +129,7 @@ const Settings = ({ uid, userData }: { uid: string; userData: User }) => {
 
   const updateProfileInformation = async () => {
     // Update user document stored in Firebase
-    await updateDoc(doc(db, 'users', userData.id), {
+    await updateDoc(doc(db, 'users', uid), {
       name: form.values.username,
     })
 
@@ -78,12 +138,23 @@ const Settings = ({ uid, userData }: { uid: string; userData: User }) => {
   }
 
   const deleteProfile = async () => {
-    // Delete user document stored in Firebase
-    await deleteDoc(doc(db, 'users', userData.id))
+    console.log('Delete')
 
+    games.forEach(async (game) => {
+      console.log('Deleting game ID', game.id)
+      await deleteDoc(doc(db, `games/${game.id}`))
+      await deleteDoc(doc(db, `games/${game.playerOne}`))
+      await deleteDoc(doc(db, `games/${game.playerTwo}`))
+    })
+
+    /* // Delete user document stored in Firebase
+    await deleteDoc(doc(db, 'users', uid))
+
+    // Get auth instance
     const auth = getAuth()
     const user = auth.currentUser
 
+    // Delete user in Firebase Authentication
     if (user) {
       deleteUser(user)
         .then(() => {
@@ -94,7 +165,7 @@ const Settings = ({ uid, userData }: { uid: string; userData: User }) => {
         .catch((error) => {
           console.log('An error occured when deleting the user')
         })
-    }
+    } */
   }
 
   return (
