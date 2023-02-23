@@ -1,16 +1,16 @@
 import {
   Button,
-  Divider,
+  Card,
+  Container,
   Group,
+  Image,
   Modal,
   Stack,
   Text,
-  Card,
-  Container,
   Transition,
-  Image,
 } from '@mantine/core'
 import { useForm } from '@mantine/form'
+import { deleteUser, getAuth } from 'firebase/auth'
 import { deleteDoc, doc, updateDoc } from 'firebase/firestore'
 import { GetServerSidePropsContext } from 'next'
 import { useRouter } from 'next/router'
@@ -78,13 +78,23 @@ const Settings = ({ uid, userData }: { uid: string; userData: User }) => {
   }
 
   const deleteProfile = async () => {
-    console.log('Deleting profile')
-
     // Delete user document stored in Firebase
     await deleteDoc(doc(db, 'users', userData.id))
 
-    // Redirect to /signin
-    router.push('/signin')
+    const auth = getAuth()
+    const user = auth.currentUser
+
+    if (user) {
+      deleteUser(user)
+        .then(() => {
+          // User deleted, redirect to /signin
+          console.log('Deleted profile')
+          router.push('/signin')
+        })
+        .catch((error) => {
+          console.log('An error occured when deleting the user')
+        })
+    }
   }
 
   return (
