@@ -74,8 +74,6 @@ export default function AuthenticationForm(props: PaperProps) {
     createUserWithEmailAndPassword(form.values.email, form.values.password)
   }
 
-  console.log(errorLoadingEmail)
-
   return (
     <Paper radius="md" p="xl" withBorder {...props}>
       <Text size="xl" pb="md" weight={500}>
