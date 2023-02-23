@@ -46,14 +46,13 @@ export default function App(props: AppProps) {
 
   useEffect(() => {
     if (user) {
-      // console.log('Setting Google Analytics user id: ' + user.uid)
-      // setUserId(getAnalytics(), user.uid)
+      setUserId(getAnalytics(), user.uid)
     }
   }, [user])
 
   useEffect(() => {
     const handleRouteChange = (url: string) => {
-      // gtag.pageview(url, user?.uid)
+      gtag.pageview(url, user?.uid)
     }
     router.events.on('routeChangeComplete', handleRouteChange)
     router.events.on('hashChangeComplete', handleRouteChange)
@@ -65,78 +64,72 @@ export default function App(props: AppProps) {
 
   return (
     <>
-      {/* Wait untill user object is available, so uid can be set in gtag config in <Script /> tag */}
-      {user && user.uid && (
-        <>
-          <Head>
-            <title>LetterLink</title>
-            <meta
-              name="viewport"
-              content="maximum-scale=1, initial-scale=1, width=device-width"
-            />
-          </Head>
+      <Head>
+        <title>LetterLink</title>
+        <meta
+          name="viewport"
+          content="maximum-scale=1, initial-scale=1, width=device-width"
+        />
+      </Head>
 
-          {/* Global Site Tag (gtag.js) - Google Analytics */}
-          <Script
-            strategy="afterInteractive"
-            src={`https://www.googletagmanager.com/gtag/js?id=${gtag.GA_TRACKING_ID}`}
-          />
+      {/* Global Site Tag (gtag.js) - Google Analytics */}
+      <Script
+        strategy="afterInteractive"
+        src={`https://www.googletagmanager.com/gtag/js?id=${gtag.GA_TRACKING_ID}`}
+      />
 
-          {/* Set 'user_id' in gtag config */}
-          <Script
-            id="gtag-init"
-            strategy="afterInteractive"
-            dangerouslySetInnerHTML={{
-              __html: `
+      {/* Set 'user_id' in gtag config */}
+      <Script
+        id="gtag-init"
+        strategy="afterInteractive"
+        dangerouslySetInnerHTML={{
+          __html: `
             window.dataLayer = window.dataLayer || [];
             function gtag(){dataLayer.push(arguments);}
             gtag('js', new Date());
             gtag('config', '${gtag.GA_TRACKING_ID}', {
               page_path: window.location.pathname,
-              user_id: '${user?.uid}'
             });
           `,
-            }}
-          />
+        }}
+      />
 
-          <ColorSchemeProvider
-            colorScheme={colorScheme}
-            toggleColorScheme={toggleColorScheme}
-          >
-            <MantineProvider
-              withGlobalStyles
-              withNormalizeCSS
-              theme={{
-                /** Put your mantine theme override here */
-                colorScheme: colorScheme,
-              }}
+      <ColorSchemeProvider
+        colorScheme={colorScheme}
+        toggleColorScheme={toggleColorScheme}
+      >
+        <MantineProvider
+          withGlobalStyles
+          withNormalizeCSS
+          theme={{
+            /** Put your mantine theme override here */
+            colorScheme: colorScheme,
+          }}
+        >
+          <AuthProvider>
+            <AppShell
+              padding="md"
+              header={<PageNavBar />}
+              styles={(theme) => ({
+                main: {
+                  backgroundColor:
+                    theme.colorScheme === 'dark'
+                      ? theme.colors.dark[8]
+                      : theme.colors.gray[0],
+                },
+              })}
             >
-              <AuthProvider>
-                <AppShell
-                  padding="md"
-                  header={<PageNavBar />}
-                  styles={(theme) => ({
-                    main: {
-                      backgroundColor:
-                        theme.colorScheme === 'dark'
-                          ? theme.colors.dark[8]
-                          : theme.colors.gray[0],
-                    },
-                  })}
-                >
-                  {isPageLoading ? (
-                    <Center>
-                      <LoadingOverlay visible={true} overlayBlur={2} />
-                    </Center>
-                  ) : (
-                    <Component {...pageProps} />
-                  )}
-                </AppShell>
-              </AuthProvider>
-            </MantineProvider>
-          </ColorSchemeProvider>
-        </>
-      )}
+              {isPageLoading ? (
+                <Center>
+                  <LoadingOverlay visible={true} overlayBlur={2} />
+                </Center>
+              ) : (
+                <Component {...pageProps} />
+              )}
+            </AppShell>
+          </AuthProvider>
+        </MantineProvider>
+      </ColorSchemeProvider>
     </>
   )
 }
