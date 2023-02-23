@@ -127,7 +127,7 @@ const Settings = ({ uid, userData }: { uid: string; userData: User }) => {
         transitionDuration={600}
         transitionTimingFunction="ease"
       >
-        <Text>
+        {/* <Text>
           All information stored about you will be deleted and you will no
           longer parttake in the research project
         </Text>
@@ -148,7 +148,12 @@ const Settings = ({ uid, userData }: { uid: string; userData: User }) => {
           <Button color="red" variant="light" onClick={deleteProfile}>
             Yes
           </Button>
-        </Group>
+        </Group> */}
+        To delete profile and withdraw from the study, contact
+        <br />
+        <a href="mailto:andramu@stud.ntnu.no?subject=Ønske om å trekke seg fra studien">
+          andramu@stud.ntnu.no
+        </a>
       </Modal>
 
       {/* Update profile form */}
@@ -218,7 +223,7 @@ const Settings = ({ uid, userData }: { uid: string; userData: User }) => {
               type="submit"
               onClick={() => setDeleteProfileModalOpen(true)}
             >
-              Delete all my profile and data
+              Delete profile and withdraw from the study
             </Button>
           </Stack>
         </Card>
