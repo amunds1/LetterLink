@@ -21,7 +21,8 @@ const wordIsValid = async (word: string) => {
     Return true if word is an inflected (bøyd) form of a valid word
     "tar" and "tok" returns cmatch = 0, but inflect = ["ta"], which is a valid word
   */
-  if (data['inflect'].length > 0) {
+
+  if (data['inflect'] && data['inflect'].length > 0) {
     return true
   }
 
