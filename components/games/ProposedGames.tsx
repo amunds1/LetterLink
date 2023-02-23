@@ -23,7 +23,7 @@ const ProposedGames = (props: IProposedGames) => {
     <>
       {games.length > 0 && (
         <Stack>
-          <Text align="left" size="xl" weight="bold">
+          <Text align="center" size="xl" weight="bold">
             Game requests
           </Text>
 
