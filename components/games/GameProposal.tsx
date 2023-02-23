@@ -7,6 +7,7 @@ import {
   Grid,
   Group,
   Text,
+  useMantineColorScheme,
 } from '@mantine/core'
 import { IconBan, IconCircleCheck, IconCircleX } from '@tabler/icons'
 import { doc } from 'firebase/firestore'
@@ -28,6 +29,10 @@ interface IGameProposal {
 }
 
 const GameProposal = ({ game, userUID }: IGameProposal) => {
+  // Darkmode
+  const { colorScheme } = useMantineColorScheme()
+  const dark = colorScheme === 'dark'
+
   // Fetch opponent data to get name
   const [opponent, loading, error] = useDocumentDataOnce(
     doc(
@@ -72,10 +77,12 @@ const GameProposal = ({ game, userUID }: IGameProposal) => {
                 color="lime"
                 mt="md"
                 radius="md"
-                leftIcon={<IconCircleCheck color="#66A80F" />}
+                leftIcon={
+                  <IconCircleCheck color={dark ? '#D8F5A2' : '#82C91E'} />
+                }
                 style={{ border: '1px solid #D8F5A2' }}
               >
-                <Text color="lime.8">Accept</Text>
+                Accept
               </Button>
             </Grid.Col>
             <Grid.Col span="auto">
@@ -86,7 +93,7 @@ const GameProposal = ({ game, userUID }: IGameProposal) => {
                 color="red"
                 mt="md"
                 radius="md"
-                leftIcon={<IconBan color="#F03E3E" />}
+                leftIcon={<IconBan color={dark ? '#FFC9C9' : '#FA5252'} />}
                 style={{ border: '1px solid #FFC9C9' }}
                 onClick={async () => {
                   await rejectProposedGame({
@@ -99,7 +106,7 @@ const GameProposal = ({ game, userUID }: IGameProposal) => {
                   })
                 }}
               >
-                <Text color="red.7">Reject</Text>
+                Reject
               </Button>
             </Grid.Col>
           </Grid>
@@ -123,10 +130,10 @@ const GameProposal = ({ game, userUID }: IGameProposal) => {
           fullWidth
           mt="md"
           radius="md"
-          leftIcon={<IconCircleX color="#F03E3E" />}
+          leftIcon={<IconCircleX color={dark ? '#FFC9C9' : '#FA5252'} />}
           style={{ border: '1px solid #FFC9C9' }}
         >
-          <Text color="red.7">Withdraw proposal</Text>
+          Withdraw proposal
         </Button>
       )}
     </Card>

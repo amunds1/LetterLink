@@ -5,7 +5,8 @@ import isPartOfValidWord from './isPartOfValidWord'
 const colorValidWordBorder = (
   index: number,
   boardSize: number,
-  validWords: IValidWords[]
+  validWords: IValidWords[],
+  dark: boolean
 ) => {
   const rowPosition = findRowPosition({ index, boardSize })
   const colPosition = findColumnPosition({ index, boardSize })
@@ -20,7 +21,9 @@ const colorValidWordBorder = (
       rowPosition.differenceIndex >= validWords[i].wordPosition[0] &&
       rowPosition.differenceIndex <= validWords[i].wordPosition[1]
     ) {
-      return '2px solid #E03131'
+      // Darkmode - red 4
+      // Lightmode - red 6
+      return dark ? '2px solid #FF8787' : '2px solid #FA5252'
     }
     // Same (as above) for columns:
     if (
@@ -29,7 +32,9 @@ const colorValidWordBorder = (
       colPosition.differenceIndex >= validWords[i].wordPosition[0] &&
       colPosition.differenceIndex <= validWords[i].wordPosition[1]
     ) {
-      return '2px solid #E03131'
+      // Darkmode - red 4
+      // Lightmode - red 6
+      return dark ? '2px solid #FF8787' : '2px solid #FA5252'
     }
   }
   return ''

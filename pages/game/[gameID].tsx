@@ -28,7 +28,6 @@ import {
   GameContext,
   IGameContext,
 } from '../../components/game/utils/gameContext'
-import BackToGamesButton from '../../components/games/BackToGamesButton'
 import selectUserID from '../../components/games/utils/selectUserID'
 import { fetchUserData } from '../../components/profile/firebase/fetchUserData'
 import { db } from '../../firebase/clientApp'
@@ -287,11 +286,6 @@ const GameID = (props: IGameID) => {
 
   return (
     <Grid>
-      {/* Back to games button */}
-      {/* <Grid.Col>
-        <BackToGamesButton />
-      </Grid.Col> */}
-
       <GameContext.Provider value={GameContextValues}>
         {/* Display who turn it is */}
 
