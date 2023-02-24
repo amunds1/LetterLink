@@ -45,8 +45,8 @@ const NewGame = (props: INewGame) => {
     setButtonLoadingSpinner(true)
     addGameToCollection(uid, oponent as string, boardSize as string).then(
       () => {
-        setButtonLoadingSpinner(false)
         router.push('/')
+        setButtonLoadingSpinner(false)
       }
     )
   }
