@@ -37,11 +37,15 @@ const NewGame = (props: INewGame) => {
   const [oponent, setOponent] = useState<string | null>(null)
   const [boardSize, setBoardSize] = useState<string | undefined>(undefined)
 
+  const [buttonLoadingSpinner, setButtonLoadingSpinner] = useState(false)
+
   const router = useRouter()
 
   const onClick = async () => {
+    setButtonLoadingSpinner(true)
     addGameToCollection(uid, oponent as string, boardSize as string).then(
       () => {
+        setButtonLoadingSpinner(false)
         router.push('/')
       }
     )
@@ -76,6 +80,7 @@ const NewGame = (props: INewGame) => {
       {/* SELECT OPONENT */}
       <Select
         label="Select an oponent"
+        required
         placeholder=""
         itemComponent={SelectItem}
         data={oponentOptions}
@@ -107,6 +112,7 @@ const NewGame = (props: INewGame) => {
         color="cyan"
         variant="light"
         disabled={!oponent || !boardSize?.length}
+        loading={buttonLoadingSpinner}
         onClick={() => onClick()}
         style={
           oponent && boardSize?.length
