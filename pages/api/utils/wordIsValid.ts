@@ -22,7 +22,7 @@ const wordIsValid = async (word: string) => {
     "tar" and "tok" returns cmatch = 0, but inflect = ["ta"], which is a valid word
   */
 
-  if (data['inflect'] && data['inflect'].length > 0) {
+  if (data['a']['inflect'] && data['a']['inflect'].length > 0) {
     return true
   }
 
