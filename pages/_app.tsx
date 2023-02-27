@@ -28,11 +28,13 @@ export default function App(props: AppProps) {
 
   // At refresh - get the saved color scheme value
   useEffect(() => {
-    const savedColorScheme = JSON.parse(
-      localStorage.getItem('colorScheme') || ''
-    )
-    if (savedColorScheme) {
-      toggleColorScheme(savedColorScheme)
+    try {
+      const savedColorScheme = localStorage.getItem('colorScheme')
+      if (savedColorScheme) {
+        toggleColorScheme(JSON.parse(savedColorScheme))
+      }
+    } catch {
+      toggleColorScheme('light')
     }
   }, [])
 

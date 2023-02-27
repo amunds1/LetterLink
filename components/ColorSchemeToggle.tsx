@@ -49,7 +49,6 @@ function ColorSchemeToggle() {
 
   // Save the updated colorscheme value to local storage
   useEffect(() => {
-    console.log('colorscheme set to', colorScheme)
     localStorage.setItem('colorScheme', JSON.stringify(colorScheme))
   }, [colorScheme])
 
