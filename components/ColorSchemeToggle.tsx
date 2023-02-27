@@ -8,6 +8,7 @@ import {
 } from '@mantine/core'
 import { upperFirst } from '@mantine/hooks'
 import { IconMoon, IconSun } from '@tabler/icons'
+import { useEffect } from 'react'
 
 const useStyles = createStyles((theme) => ({
   control: {
@@ -45,6 +46,12 @@ function ColorSchemeToggle() {
   const { classes } = useStyles()
   const { colorScheme, toggleColorScheme } = useMantineColorScheme()
   const Icon = colorScheme === 'dark' ? IconSun : IconMoon
+
+  // Save the updated colorscheme value to local storage
+  useEffect(() => {
+    console.log('colorscheme set to', colorScheme)
+    localStorage.setItem('colorScheme', JSON.stringify(colorScheme))
+  }, [colorScheme])
 
   return (
     <Group position="center">

@@ -22,8 +22,19 @@ export default function App(props: AppProps) {
   const { Component, pageProps } = props
 
   const [colorScheme, setColorScheme] = useState<ColorScheme>('light')
+
   const toggleColorScheme = (value?: ColorScheme) =>
     setColorScheme(value || (colorScheme === 'dark' ? 'light' : 'dark'))
+
+  // At refresh - get the saved color scheme value
+  useEffect(() => {
+    const savedColorScheme = JSON.parse(
+      localStorage.getItem('colorScheme') || ''
+    )
+    if (savedColorScheme) {
+      toggleColorScheme(savedColorScheme)
+    }
+  }, [])
 
   const [opened, setOpened] = useState(false)
 
