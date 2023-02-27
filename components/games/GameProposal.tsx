@@ -50,6 +50,9 @@ const GameProposal = ({ game, userUID }: IGameProposal) => {
           {opponent?.name && <Avatar src={ProfileIconsList[opponent?.name]} />}
           {!opponent?.name && <Avatar src={ProfileIconsList['Unknown']} />}
           <Text weight="bold"> {opponent?.name}</Text>
+          <Text>
+            {game.boardSize}x{game.boardSize}
+          </Text>
         </Group>
         <Badge color="orange" variant="light">
           {formatDistance(new Date(game.proposedAt as Date), new Date())} ago
