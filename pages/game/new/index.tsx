@@ -79,7 +79,7 @@ const NewGame = (props: INewGame) => {
     <Stack>
       {/* SELECT OPONENT */}
       <Select
-        label="Select an oponent"
+        label="Select an opponent"
         required
         placeholder=""
         itemComponent={SelectItem}
