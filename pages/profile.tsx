@@ -1,12 +1,11 @@
-import { Image, Button, Card, Group, Stack, Text, Divider } from '@mantine/core'
+import { Card, Divider, Group, Image, Stack, Text } from '@mantine/core'
 import { GetServerSidePropsContext } from 'next'
-import Link from 'next/link'
 import ExperiencePointsBar from '../components/profile/ExperiencePointsBar'
 import { fetchUserData } from '../components/profile/firebase/fetchUserData'
 import Statistics from '../components/profile/Statistics'
+import ProfileIcons, { IProfileIcon } from '../constants/ProfileIcons'
 import fetchUID from '../firebase/fetchUID'
 import User from '../types/User'
-import ProfileIcons, { IProfileIcon } from '../constants/ProfileIcons'
 
 export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
   try {
@@ -22,8 +21,11 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
     let userData = await fetchUserData(uid)
     userData = JSON.parse(JSON.stringify(userData))
 
+    const gamesPlayed =
+      userData?.achievements!['play-10-games'].completionStatus
+
     // Calculate win rate
-    const winRate = userData?.wins! / userData?.games?.length!
+    const winRate = userData?.wins! / gamesPlayed!
 
     // --- Calculate <most wins against> and <most defeats against> ---
 
@@ -108,7 +110,7 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
       props: {
         userData,
         winRate,
-        gamesPlayed: userData?.games?.length,
+        gamesPlayed: gamesPlayed,
         userBeatenYouMost,
         userYouBeatenMost,
       },
@@ -152,9 +154,9 @@ const Profile = (props: IProfile) => {
               {userData.name}
             </Text>
           </Group>
-          <Link href="/settings">
+          {/* <Link href="/settings">
             <Image src="/icons/settings.svg" width={40} />
-          </Link>
+          </Link> */}
         </Group>
         <Divider my="sm" pb="lg" />
         <ExperiencePointsBar experiencePoints={userData.experiencePoints} />
