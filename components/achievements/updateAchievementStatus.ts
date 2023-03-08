@@ -33,6 +33,11 @@ const updateAchievementStatus = async (
         'achievements.play-10-games.completionStatus': increment(1),
         'achievements.play-10-games.unlocked': tempUnlocked,
       })
+    } else {
+      // Update completionStatus even if achievement was unlocked
+      await updateDoc(doc(db, 'users', userID), {
+        'achievements.play-10-games.completionStatus': increment(1),
+      })
     }
 
     /* 
@@ -43,54 +48,57 @@ const updateAchievementStatus = async (
       const achievement = achievements['win-3-games']
       let tempUnlocked = false
 
-      // Set unlocked to true if completionStatus is one less than range
-      // which means the achievement is completed
-      // Set openAchievementModal = true to let the User know it has been unlocked
-      if (achievement.completionStatus == achievement.range - 1) {
-        tempUnlocked = true
-        await updateDoc(doc(db, 'users', userID), {
-          'achievements.win-3-games.openAchievementModal': true,
-        })
-      }
-
       // If game was won, update completionStatus and unlocked of achievement in firestore
       if (gameData.won) {
-        await updateDoc(doc(db, 'users', userID), {
-          'achievements.win-3-games.completionStatus': increment(1),
-          'achievements.win-3-games.unlocked': tempUnlocked,
-        })
-      }
-    }
+        if (achievement.completionStatus == achievement.range - 1) {
+          tempUnlocked = true
 
-    /* 
+          // Set unlocked to true if completionStatus is one less than range
+          // which means the achievement is completed
+          // Set openAchievementModal = true to let the User know it has been unlocked
+          await updateDoc(doc(db, 'users', userID), {
+            'achievements.win-3-games.openAchievementModal': true,
+          })
+        }
+      }
+
+      await updateDoc(doc(db, 'users', userID), {
+        'achievements.win-3-games.completionStatus': increment(1),
+        'achievements.win-3-games.unlocked': tempUnlocked,
+      })
+    }
+  }
+
+  /* 
       Achievement: Play 3 different opponents
       Condition: Game is completed and opponent is not one of the previous opponents
     */
-    if (achievements['play-3-different-opponents'].unlocked == false) {
-      const achievement = achievements['play-3-different-opponents']
-      let tempUnlocked = false
+  if (achievements['play-3-different-opponents'].unlocked == false) {
+    const achievement = achievements['play-3-different-opponents']
+    let tempUnlocked = false
 
-      // Set unlocked to true if completionStatus is one less than range
-      // which means the achievement is completed
-      // Set openAchievementModal = true to let the User know it has been unlocked
+    const previousOpponents = achievement.previousOpponents
+
+    if (!previousOpponents?.includes(gameData.opponent)) {
       if (achievement.completionStatus == achievement.range - 1) {
         tempUnlocked = true
+
+        // Set unlocked to true if completionStatus is one less than range
+        // which means the achievement is completed
+        // Set openAchievementModal = true to let the User know it has been unlocked
         await updateDoc(doc(db, 'users', userID), {
           'achievements.play-3-different-opponents.openAchievementModal': true,
         })
       }
 
-      const previousOpponents = achievement.previousOpponents
-
-      if (!previousOpponents?.includes(gameData.opponent)) {
-        await updateDoc(doc(db, 'users', userID), {
-          'achievements.play-3-different-opponents.completionStatus':
-            increment(1),
-          'achievements.play-3-different-opponents.unlocked': tempUnlocked,
-          'achievements.play-3-different-opponents.previousOpponents':
-            arrayUnion(gameData.opponent),
-        })
-      }
+      await updateDoc(doc(db, 'users', userID), {
+        'achievements.play-3-different-opponents.completionStatus':
+          increment(1),
+        'achievements.play-3-different-opponents.unlocked': tempUnlocked,
+        'achievements.play-3-different-opponents.previousOpponents': arrayUnion(
+          gameData.opponent
+        ),
+      })
     }
   }
 }
