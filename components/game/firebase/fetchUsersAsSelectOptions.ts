@@ -29,7 +29,7 @@ export const fetchUsersAsSelectOptions = async (uid: string) => {
       value: user.data().id,
       label: user.data().name,
       image: ProfileIconsList[user.data().name],
-      //description: user.data().experiencePoints + ' experience points',
+      description: user.data().experiencePoints + ' experience points',
     })
   })
 
