@@ -22,6 +22,9 @@ const LeaderboardList = ({ players }: { players: Partial<User>[] }) => {
                 <Text>{player.name}</Text>
               </Group>
               <Text color="teal" weight="bold">
+                <Text size="xs" mr={10} span color="gray">
+                  Level {Math.floor(player.experiencePoints! / 50 + 1)}
+                </Text>
                 {player.experiencePoints} XP
               </Text>
             </div>
