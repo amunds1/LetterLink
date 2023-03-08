@@ -286,13 +286,18 @@ const GameID = (props: IGameID) => {
 
           {gameState === GameStates.END && winner === uid && (
             <Center
-              style={{ width: '100%', height: '100%', overflow: 'hidden' }}
+              style={{
+                width: '100%',
+                height: '100%',
+                overflow: 'hidden',
+                position: 'absolute',
+              }}
             >
               <ConfettiExplosion
                 force={0.6}
                 duration={8000}
                 particleCount={100}
-                height={1600}
+                height={3000}
                 width={1600}
               />
             </Center>
