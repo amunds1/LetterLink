@@ -1,9 +1,9 @@
 import { Container, Stack, Text } from '@mantine/core'
 import { GetServerSidePropsContext } from 'next/types'
-import Acheviement from '../achievements/Achievement'
-import { fetchUserData } from '../profile/firebase/fetchUserData'
-import fetchUID from '../../firebase/fetchUID'
-import User from '../../types/User'
+import Acheviement from '../components/achievements/Achievement'
+import { fetchUserData } from '../components/profile/firebase/fetchUserData'
+import fetchUID from '../firebase/fetchUID'
+import User from '../types/User'
 
 export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
   try {
