@@ -1,22 +1,18 @@
-import { Center, Container, Grid } from '@mantine/core'
-import { useScrollLock } from '@mantine/hooks'
+import { Grid } from '@mantine/core'
 import { doc, updateDoc } from 'firebase/firestore'
 import { GetServerSideProps, GetServerSidePropsContext } from 'next'
 import { useEffect, useState } from 'react'
 import { resetServerContext } from 'react-beautiful-dnd'
-import ConfettiExplosion from 'react-confetti-explosion'
 import { useDocumentData } from 'react-firebase-hooks/firestore'
-//import AchievementsModal from '../../components/game/AchievementsModal'
+import AchievementsModal from '../../components/game/AchievementsModal'
 import { fetchBoardData } from '../../components/game/firebase/fetchBoardData'
 import fetchGameData from '../../components/game/firebase/fetchGameData'
 import { updateStreak } from '../../components/game/firebase/updateStreak'
 import yourTurn from '../../components/game/firebase/yourTurn'
 import GameBoard from '../../components/game/GameBoard'
 import { IValidWords } from '../../components/game/interface/IvalidWords'
-//import LeveledUpModal from '../../components/game/LeveldUpModal'
+import LeveledUpModal from '../../components/game/LeveldUpModal'
 import Points from '../../components/game/Points'
-import SelectLetter from '../../components/game/SelectLetter'
-
 import {
   EndTurnStatusMessage,
   OpponentTurnStatusMessage,
@@ -138,7 +134,6 @@ const GameID = (props: IGameID) => {
   const [validWords, setValidWords] = useState<IValidWords[]>([])
   const [winner, setWinner] = useState<string>(gameData.winner as string)
 
-  /*     ----------- GAME DESIGN ELEMNTS -----------
   // Modal for level up
   const [openLeveldUpModal, setOpenLeveldUpModal] = useState<boolean>(false)
 
@@ -147,8 +142,6 @@ const GameID = (props: IGameID) => {
     useState<boolean>(false)
   const [openWin3GamesModal, setOpenWin3GamesModal] = useState<boolean>(false)
   const [openPlay3Opponents, setOpenPlay3Opponents] = useState<boolean>(false)
-
-  */
 
   // Re-render component after value of yourTurn changes
   useEffect(() => {}, [yourTurn])
@@ -186,7 +179,6 @@ const GameID = (props: IGameID) => {
     This allows LeveledUpModal to be shown when the user has leveld up
   */
 
-  /*  -------------- GAME DESIGN ELEMENTS --------------
   const [userDoc] = useDocumentData(
     doc(db, 'users', uid as string).withConverter(userConverter)
   )
@@ -239,7 +231,6 @@ const GameID = (props: IGameID) => {
       [`achievements.${achievement}.openAchievementModal`]: false,
     })
   }
-  */
 
   // Populate GameContext
   const GameContextValues: IGameContext = {
@@ -324,7 +315,6 @@ const GameID = (props: IGameID) => {
         </Grid.Col>
         {/* {gameState === GameStates.CHOOSE && <SelectLetterKeyboard />} */}
 
-        {/* 
         <LeveledUpModal
           openLeveldUpModal={openLeveldUpModal}
           closeLeveldUpModal={closeLeveldUpModal}
@@ -345,7 +335,6 @@ const GameID = (props: IGameID) => {
           openModal={openPlay10GamesModal}
           closeAchievementsModal={closeAchievementsModal}
         />
-        */}
       </GameContext.Provider>
     </Grid>
   )
