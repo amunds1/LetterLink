@@ -52,6 +52,9 @@ const Podium = ({ players }: { players: Partial<User>[] }) => {
         <Text align="center" weight="bold">
           {players[0].experiencePoints} XP
         </Text>
+        <Text align="center">
+          Level {Math.floor(players[0].experiencePoints! / 50 + 1)}
+        </Text>
       </Grid.Col>
       <Grid.Col span={4}>
         {/* Third place - name */}
@@ -63,9 +66,12 @@ const Podium = ({ players }: { players: Partial<User>[] }) => {
         </Stack>
       </Grid.Col>
       <Grid.Col span={4} className={classes.secondth}>
-        {/* Secondth place - name */}
+        {/* Secondth place - points */}
         <Text align="center" weight="bold">
           {players[1].experiencePoints} XP
+        </Text>
+        <Text align="center">
+          Level {Math.floor(players[1].experiencePoints! / 50 + 1)}
         </Text>
       </Grid.Col>
       <Grid.Col span={4} className={classes.first}></Grid.Col>
@@ -79,6 +85,10 @@ const Podium = ({ players }: { players: Partial<User>[] }) => {
         {/* Third place - points */}
         <Text align="center" weight="bold">
           {players[2].experiencePoints} XP
+        </Text>
+
+        <Text align="center">
+          Level {Math.floor(players[2].experiencePoints! / 50 + 1)}
         </Text>
       </Grid.Col>
       <Grid.Col span={4} className={classes.secondth}></Grid.Col>

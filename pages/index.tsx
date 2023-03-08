@@ -12,7 +12,7 @@ import { GetServerSidePropsContext } from 'next'
 import Link from 'next/link'
 import { useEffect, useState } from 'react'
 import { useCollectionData } from 'react-firebase-hooks/firestore'
-import DisplayName from '../components/DisplayName'
+import DisplayNameAndStreak from '../components/DisplayName'
 import GameStates from '../components/game/types/gameStates'
 import ActiveGames from '../components/games/ActiveGames'
 import FinishedGames from '../components/games/FinishedGames'
@@ -22,6 +22,7 @@ import {
 } from '../components/games/firebase/fetchGames'
 import ProposedGames from '../components/games/ProposedGames'
 import { fetchUserData } from '../components/profile/firebase/fetchUserData'
+import Streak from '../components/Streak'
 import { db } from '../firebase/clientApp'
 import gamesConverter from '../firebase/converters/gamesConverter'
 import fetchUID from '../firebase/fetchUID'
@@ -64,6 +65,7 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
         activeGames: activeGames,
         proposedGames: proposedGames,
         name: userData?.name,
+        streak: userData?.streak,
         //hasDefaultUsername: userData?.hasDefaultUsername,
       },
     }
@@ -84,6 +86,7 @@ interface IGames {
   activeGames: Game[]
   proposedGames: Game[]
   name: string
+  streak: number
 }
 
 const Games = (props: IGames) => {
@@ -92,7 +95,7 @@ const Games = (props: IGames) => {
   const dark = colorScheme === 'dark'
 
   const { classes } = useStyles()
-  const { uid, name, hasDefaultUsername } = props
+  const { uid, name, streak, hasDefaultUsername } = props
 
   //const [showModalSetUsername, setShowModalSetUsername] = useState(hasDefaultUsername)
 
@@ -152,8 +155,7 @@ const Games = (props: IGames) => {
       /> 
       */}
       <Stack className={classes.center} style={{ width: '100%' }}>
-        <DisplayName name={name} />
-        {/* <Streak /> */}
+        <DisplayNameAndStreak name={name} streak={streak} />
         <Link href="/game/new" style={{ textDecoration: 'none' }}>
           <Center>
             <Button
