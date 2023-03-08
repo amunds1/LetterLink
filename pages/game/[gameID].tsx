@@ -1,8 +1,9 @@
-import { Grid } from '@mantine/core'
+import { Center, Grid } from '@mantine/core'
 import { doc, updateDoc } from 'firebase/firestore'
 import { GetServerSideProps, GetServerSidePropsContext } from 'next'
 import { useEffect, useState } from 'react'
 import { resetServerContext } from 'react-beautiful-dnd'
+import ConfettiExplosion from 'react-confetti-explosion'
 import { useDocumentData } from 'react-firebase-hooks/firestore'
 import AchievementsModal from '../../components/game/AchievementsModal'
 import { fetchBoardData } from '../../components/game/firebase/fetchBoardData'
@@ -283,17 +284,19 @@ const GameID = (props: IGameID) => {
         <Grid.Col span={12}>
           {gameState === GameStates.END && <EndTurnStatusMessage />}
 
-          {/* {gameState === GameStates.END && winner === uid && (
-          <Center style={{ width: '100%', height: '100%', overflow: 'hidden' }}>
-            <ConfettiExplosion
-              force={0.6}
-              duration={8000}
-              particleCount={100}
-              height={1600}
-              width={1600}
-            />
-          </Center>
-        )} */}
+          {gameState === GameStates.END && winner === uid && (
+            <Center
+              style={{ width: '100%', height: '100%', overflow: 'hidden' }}
+            >
+              <ConfettiExplosion
+                force={0.6}
+                duration={8000}
+                particleCount={100}
+                height={1600}
+                width={1600}
+              />
+            </Center>
+          )}
 
           {!validWords.length && gameState !== GameStates.END && yourTurn && (
             <YourTurnStatusMessage gameState={gameState} />
