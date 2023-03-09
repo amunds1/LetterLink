@@ -6,8 +6,9 @@ import { IAchievement } from './types/IAchievement'
 
 const Acheviement = ({ data }: { data: IAchievement }) => {
   const AchievementsIconsList: IAchievementIcons = AchievementIcons
+
   return (
-    <Card style={{ backgroundColor: 'white', width: '100%' }} shadow="lg">
+    <Card style={{ width: '100%' }} shadow="lg">
       <div style={{ display: 'flex', gap: '3%', alignItems: 'center' }}>
         {data.unlocked && (
           <Image
