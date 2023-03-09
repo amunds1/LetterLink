@@ -42,7 +42,9 @@ const Acheviement = ({ data }: { data: IAchievement }) => {
             </Text>
             {/* Achievement completion status */}
             <Text>
-              {data.completionStatus} / {data.range}
+              {data.title == 'Play 10 games' && data.completionStatus >= 10
+                ? '10 / 10'
+                : `${data.completionStatus} / ${data.range}`}
             </Text>
           </Group>
           {/* Achievement completion status using progress bar */}
