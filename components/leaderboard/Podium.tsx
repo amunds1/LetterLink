@@ -3,10 +3,19 @@ import React from 'react'
 import ProfileIcons, { IProfileIcon } from '../../constants/ProfileIcons'
 import User from '../../types/User'
 
-const useStyles = createStyles(() => ({
-  first: { backgroundColor: 'gold' },
-  secondth: { backgroundColor: 'silver' },
-  third: { backgroundColor: '#CD7F32' },
+const useStyles = createStyles((theme) => ({
+  first: {
+    backgroundColor:
+      theme.colorScheme === 'dark' ? 'rgba(255,215,0,0.2)' : 'gold',
+  },
+  secondth: {
+    backgroundColor:
+      theme.colorScheme === 'dark' ? 'rgba(192,192,192,0.2)' : 'silver',
+  },
+  third: {
+    backgroundColor:
+      theme.colorScheme === 'dark' ? 'rgba(205,127,50,0.2)' : '#CD7F32',
+  },
   cell: {},
   grid: { width: '' },
   topCell: { borderRadius: '10px 10px 0 0' },
