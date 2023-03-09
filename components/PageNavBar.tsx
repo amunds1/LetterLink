@@ -1,4 +1,10 @@
-import { ActionIcon, Image, createStyles, Header } from '@mantine/core'
+import {
+  ActionIcon,
+  Image,
+  createStyles,
+  Header,
+  useMantineColorScheme,
+} from '@mantine/core'
 import {
   IconHome,
   IconMedal2,
@@ -32,6 +38,10 @@ const useStyles = createStyles((theme) => ({
 export function PageNavBar() {
   const { classes } = useStyles()
 
+  // Dark mode
+  const { colorScheme } = useMantineColorScheme()
+  const dark = colorScheme === 'dark'
+
   const router = useRouter()
 
   return (
@@ -60,7 +70,7 @@ export function PageNavBar() {
         >
           <ActionIcon size="lg">
             <Image
-              src="/ranking.svg"
+              src={dark ? 'ranking-darkmode.svg' : '/ranking.svg'}
               alt="Leaderboard icon"
               width={24}
               height={24}
