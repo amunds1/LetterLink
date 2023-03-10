@@ -58,14 +58,14 @@ const updateAchievementStatus = async (
           // Set openAchievementModal = true to let the User know it has been unlocked
           await updateDoc(doc(db, 'users', userID), {
             'achievements.win-3-games.openAchievementModal': true,
+            'achievements.win-3-games.unlocked': tempUnlocked,
           })
         }
-      }
 
-      await updateDoc(doc(db, 'users', userID), {
-        'achievements.win-3-games.completionStatus': increment(1),
-        'achievements.win-3-games.unlocked': tempUnlocked,
-      })
+        await updateDoc(doc(db, 'users', userID), {
+          'achievements.win-3-games.completionStatus': increment(1),
+        })
+      }
     }
   }
 
