@@ -9,7 +9,7 @@ interface IAchievementModal {
   closeAchievementsModal: (achievement: string) => Promise<void>
 }
 
-const win3gamesModal = (props: IAchievementModal) => {
+const Win3gamesModal = (props: IAchievementModal) => {
   const { acheievement, openModal, closeAchievementsModal } = props
   const AchievementsIconsList: IAchievementIcons = AchievementIcons
 
@@ -62,4 +62,4 @@ const win3gamesModal = (props: IAchievementModal) => {
   )
 }
 
-export default win3gamesModal
+export default Win3gamesModal
