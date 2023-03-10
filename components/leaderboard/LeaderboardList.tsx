@@ -1,11 +1,23 @@
-import { Card, Image, Text, Group, Stack } from '@mantine/core'
+import {
+  Card,
+  Image,
+  Text,
+  Group,
+  Stack,
+  useMantineColorScheme,
+} from '@mantine/core'
 import ProfileIcons, { IProfileIcon } from '../../constants/ProfileIcons'
 import { useMediaQuery } from '@mantine/hooks'
 import User from '../../types/User'
 
 const LeaderboardList = ({ players }: { players: Partial<User>[] }) => {
   const ProfileIconsList: IProfileIcon = ProfileIcons
-  const matches = useMediaQuery('(min-width: 850px)')
+  const matches = useMediaQuery('(min-width: 900px)')
+
+  // Dark mode
+  const { colorScheme } = useMantineColorScheme()
+  const dark = colorScheme === 'dark'
+
   return (
     <Stack spacing="xs" style={{ width: matches ? '30%' : '80%' }}>
       {players.map((player, index) => {
@@ -22,7 +34,7 @@ const LeaderboardList = ({ players }: { players: Partial<User>[] }) => {
                 <Text>{player.name}</Text>
               </Group>
               <Text color="teal" weight="bold">
-                <Text size="xs" mr={10} span color="gray">
+                <Text size="xs" mr={10} span color={dark ? 'gray.6' : 'gray'}>
                   Level {Math.floor(player.experiencePoints! / 50 + 1)}
                 </Text>
                 {player.experiencePoints} XP

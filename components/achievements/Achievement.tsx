@@ -6,8 +6,9 @@ import { IAchievement } from './types/IAchievement'
 
 const Acheviement = ({ data }: { data: IAchievement }) => {
   const AchievementsIconsList: IAchievementIcons = AchievementIcons
+
   return (
-    <Card style={{ backgroundColor: 'white', width: '100%' }} shadow="lg">
+    <Card style={{ width: '100%' }} shadow="lg">
       <div style={{ display: 'flex', gap: '3%', alignItems: 'center' }}>
         {data.unlocked && (
           <Image
@@ -41,7 +42,9 @@ const Acheviement = ({ data }: { data: IAchievement }) => {
             </Text>
             {/* Achievement completion status */}
             <Text>
-              {data.completionStatus} / {data.range}
+              {data.title == 'Play 10 games' && data.completionStatus >= 10
+                ? '10 / 10'
+                : `${data.completionStatus} / ${data.range}`}
             </Text>
           </Group>
           {/* Achievement completion status using progress bar */}

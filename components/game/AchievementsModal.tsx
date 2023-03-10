@@ -1,4 +1,4 @@
-import { Modal, Image, Stack, Text } from '@mantine/core'
+import { Modal, Image, Stack, Text, useMantineColorScheme } from '@mantine/core'
 import AchievementIcons, {
   IAchievementIcons,
 } from '../../constants/AchievementIcons'
@@ -9,9 +9,13 @@ interface IAchievementModal {
   closeAchievementsModal: (achievement: string) => Promise<void>
 }
 
-const win3gamesModal = (props: IAchievementModal) => {
+const Win3gamesModal = (props: IAchievementModal) => {
   const { acheievement, openModal, closeAchievementsModal } = props
   const AchievementsIconsList: IAchievementIcons = AchievementIcons
+
+  // Dark mode
+  const { colorScheme } = useMantineColorScheme()
+  const dark = colorScheme === 'dark'
 
   return (
     <Modal
@@ -23,7 +27,9 @@ const win3gamesModal = (props: IAchievementModal) => {
       overlayOpacity={0.3}
       styles={{
         modal: {
-          background: 'linear-gradient(75deg, #FFF9DB 0%, #FFEC99 100%)',
+          background: dark
+            ? 'linear-gradient(75deg, #bdb38a 0%, #998e60 100%)'
+            : 'linear-gradient(75deg, #FFF9DB 0%, #FFEC99 100%)',
         },
         close: {
           background: '#25262B',
@@ -33,11 +39,22 @@ const win3gamesModal = (props: IAchievementModal) => {
       }}
     >
       <Stack align="center">
-        <Text size={25} weight={800} color="orange.6" align="center">
+        <Text
+          size={25}
+          weight={800}
+          color={dark ? 'orange.3' : 'orange.6'}
+          align="center"
+        >
           ACHIEVEMENT UNLOCKED!
         </Text>
         <Image src={AchievementsIconsList[acheievement]} width={150} />
-        <Text color="lime.9" weight={600} size={20} align="center" italic>
+        <Text
+          color={dark ? 'lime.2' : 'lime.9'}
+          weight={600}
+          size={20}
+          align="center"
+          italic
+        >
           {acheievement.toUpperCase().replace(/-/g, ' ')}
         </Text>
       </Stack>
@@ -45,4 +62,4 @@ const win3gamesModal = (props: IAchievementModal) => {
   )
 }
 
-export default win3gamesModal
+export default Win3gamesModal

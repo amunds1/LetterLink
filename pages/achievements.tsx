@@ -45,10 +45,12 @@ const Achievements = (props: IAchievements) => {
         Achievements
       </Text>
       {achievements && (
-        <Stack align="" pt="lg">
-          {Object.keys(achievements).map((key) => (
-            <Acheviement key={key} data={achievements[key]} />
-          ))}
+        <Stack pt="lg">
+          {Object.keys(achievements)
+            .sort()
+            .map((key) => (
+              <Acheviement key={key} data={achievements[key]} />
+            ))}
         </Stack>
       )}
     </Container>
