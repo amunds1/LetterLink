@@ -68,7 +68,14 @@ const Statistics = ({
         )}
         {userYouBeatenMost.length > 0 && (
           <>
-            <Image width={ringSize} src={ProfileIconsList[userYouBeatenMost]} />
+            <Image
+              width={ringSize}
+              src={
+                ProfileIconsList.hasOwnProperty(userYouBeatenMost)
+                  ? ProfileIconsList[userYouBeatenMost]
+                  : ProfileIconsList['Unknown']
+              }
+            />
             <Text size="sm">
               Most wins against{' '}
               <Text span weight={700} size="md">
@@ -88,7 +95,14 @@ const Statistics = ({
         )}
         {userBeatenYouMost.length > 0 && (
           <>
-            <Image width={ringSize} src={ProfileIconsList[userBeatenYouMost]} />
+            <Image
+              width={ringSize}
+              src={
+                ProfileIconsList.hasOwnProperty(userBeatenYouMost)
+                  ? ProfileIconsList[userBeatenYouMost]
+                  : ProfileIconsList['Unknown']
+              }
+            />
             <Text size="sm">
               Most defeats against{' '}
               <Text span weight={700} size="md">

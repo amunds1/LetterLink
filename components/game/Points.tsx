@@ -35,7 +35,13 @@ const Points = () => {
         <Box className={classes.playerBox}>
           <Center>
             {gameContext?.userName && (
-              <Avatar src={ProfileIconsList[gameContext?.userName]} />
+              <Avatar
+                src={
+                  ProfileIconsList.hasOwnProperty(gameContext?.userName)
+                    ? ProfileIconsList[gameContext?.userName]
+                    : ProfileIconsList['Unknown']
+                }
+              />
             )}
             {!gameContext?.userName && (
               <Avatar src={ProfileIconsList['Unknown']} />
@@ -59,7 +65,13 @@ const Points = () => {
         <Box className={classes.playerBox}>
           <Center>
             {gameContext?.opponentName && (
-              <Avatar src={ProfileIconsList[gameContext?.opponentName]} />
+              <Avatar
+                src={
+                  ProfileIconsList.hasOwnProperty(gameContext?.opponentName)
+                    ? ProfileIconsList[gameContext?.opponentName]
+                    : ProfileIconsList['Unknown']
+                }
+              />
             )}
             {!gameContext?.opponentName && (
               <Avatar src={ProfileIconsList['Unknown']} />

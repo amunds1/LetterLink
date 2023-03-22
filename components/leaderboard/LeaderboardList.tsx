@@ -27,7 +27,11 @@ const LeaderboardList = ({ players }: { players: Partial<User>[] }) => {
               <Group>
                 <Text weight="bold">{index + 4}.</Text>
                 <Image
-                  src={ProfileIconsList[player.name!]}
+                  src={
+                    ProfileIconsList.hasOwnProperty(player.name!)
+                      ? ProfileIconsList[player.name!]
+                      : ProfileIconsList['Unknown']
+                  }
                   width={30}
                   alt="Profile avatar"
                 />

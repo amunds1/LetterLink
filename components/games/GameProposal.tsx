@@ -47,7 +47,15 @@ const GameProposal = ({ game, userUID }: IGameProposal) => {
     <Card shadow="sm" p="sm" radius="md" withBorder>
       <Group position="apart" mt="xs" ml="xs">
         <Group position="left">
-          {opponent?.name && <Avatar src={ProfileIconsList[opponent?.name]} />}
+          {opponent?.name && (
+            <Avatar
+              src={
+                ProfileIconsList.hasOwnProperty(opponent?.name)
+                  ? ProfileIconsList[opponent?.name]
+                  : ProfileIconsList['Unknown']
+              }
+            />
+          )}
           {!opponent?.name && <Avatar src={ProfileIconsList['Unknown']} />}
           <Text weight="bold"> {opponent?.name}</Text>
           <Text>

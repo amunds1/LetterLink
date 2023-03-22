@@ -15,7 +15,13 @@ const DisplayNameAndStreak = ({
         <Text size="xl" align="center">
           Welcome, {name}!
         </Text>
-        <Avatar src={ProfileIconsList[name]} />
+        <Avatar
+          src={
+            ProfileIconsList.hasOwnProperty(name)
+              ? ProfileIconsList[name]
+              : ProfileIconsList['Unknown']
+          }
+        />
       </Group>
       <Text pt={15} align="center" size="lg">
         Keep it going, you are on a{' '}

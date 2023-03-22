@@ -149,7 +149,14 @@ const Profile = (props: IProfile) => {
       <Card shadow="sm" p="lg" radius="md" withBorder>
         <Group position="apart">
           <Group>
-            <Image src={ProfileIconsList[userData.name]} width={60} />
+            <Image
+              src={
+                ProfileIconsList.hasOwnProperty(userData.name)
+                  ? ProfileIconsList[userData.name]
+                  : ProfileIconsList['Unknown']
+              }
+              width={60}
+            />
             <Text size={30} weight="bold">
               {userData.name}
             </Text>
