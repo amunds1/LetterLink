@@ -28,7 +28,9 @@ export const fetchUsersAsSelectOptions = async (uid: string) => {
     options.push({
       value: user.data().id,
       label: user.data().name,
-      image: ProfileIconsList[user.data().name],
+      image: ProfileIconsList.hasOwnProperty(user.data().name)
+        ? ProfileIconsList[user.data().name]
+        : ProfileIconsList['Unknown'],
       description: user.data().experiencePoints + ' experience points',
     })
   })

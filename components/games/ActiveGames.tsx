@@ -73,7 +73,13 @@ const ActiveGame = ({ game, yourTurn, userUID }: IActiveGame) => {
               <Stack spacing="xs">
                 <Group spacing="sm" mt="xs" ml="xs">
                   {opponent?.name && (
-                    <Avatar src={ProfileIconsList[opponent?.name]} />
+                    <Avatar
+                      src={
+                        ProfileIconsList.hasOwnProperty(opponent?.name)
+                          ? ProfileIconsList[opponent?.name]
+                          : ProfileIconsList['Unknown']
+                      }
+                    />
                   )}
                   {!opponent?.name && (
                     <Avatar src={ProfileIconsList['Unknown']} />
