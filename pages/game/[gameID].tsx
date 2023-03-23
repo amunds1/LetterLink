@@ -135,6 +135,10 @@ const GameID = (props: IGameID) => {
   const [validWords, setValidWords] = useState<IValidWords[]>([])
   const [winner, setWinner] = useState<string>(gameData.winner as string)
 
+  const [experiencePoints, setExperiencePoints] = useState<number>(
+    userData.experiencePoints
+  )
+
   // Modal for level up
   const [openLeveldUpModal, setOpenLeveldUpModal] = useState<boolean>(false)
 
@@ -208,6 +212,12 @@ const GameID = (props: IGameID) => {
     ) {
       setOpenPlay3Opponents(true)
     }
+    if (
+      userDoc?.experiencePoints &&
+      userDoc?.experiencePoints > GameContextValues.experiencePoints
+    ) {
+      setExperiencePoints(userDoc.experiencePoints)
+    }
   }, [userDoc])
 
   const closeLeveldUpModal = async () => {
@@ -264,7 +274,7 @@ const GameID = (props: IGameID) => {
     setValidWords: setValidWords,
     winner: winner,
     setWinner: setWinner,
-    experiencePoints: userData.experiencePoints,
+    experiencePoints: experiencePoints,
     opponentExperiencePoints: opponentData.experiencePoints,
   }
 
