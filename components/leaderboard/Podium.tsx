@@ -1,5 +1,6 @@
 import { createStyles, Grid, Text, Image, Stack } from '@mantine/core'
 import React from 'react'
+import { LevelTreshold } from '../../constants/Levels'
 import ProfileIcons, { IProfileIcon } from '../../constants/ProfileIcons'
 import User from '../../types/User'
 
@@ -62,7 +63,7 @@ const Podium = ({ players }: { players: Partial<User>[] }) => {
           {players[0].experiencePoints} XP
         </Text>
         <Text align="center">
-          Level {Math.floor(players[0].experiencePoints! / 50 + 1)}
+          Level {Math.floor(players[0].experiencePoints! / LevelTreshold + 1)}
         </Text>
       </Grid.Col>
       <Grid.Col span={4}>
@@ -80,7 +81,7 @@ const Podium = ({ players }: { players: Partial<User>[] }) => {
           {players[1].experiencePoints} XP
         </Text>
         <Text align="center">
-          Level {Math.floor(players[1].experiencePoints! / 50 + 1)}
+          Level {Math.floor(players[1].experiencePoints! / LevelTreshold + 1)}
         </Text>
       </Grid.Col>
       <Grid.Col span={4} className={classes.first}></Grid.Col>
@@ -97,7 +98,7 @@ const Podium = ({ players }: { players: Partial<User>[] }) => {
         </Text>
 
         <Text align="center">
-          Level {Math.floor(players[2].experiencePoints! / 50 + 1)}
+          Level {Math.floor(players[2].experiencePoints! / LevelTreshold + 1)}
         </Text>
       </Grid.Col>
       <Grid.Col span={4} className={classes.secondth}></Grid.Col>

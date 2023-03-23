@@ -2,6 +2,8 @@ export interface ILevels {
   [key: number]: string
 }
 
+export const LevelTreshold: number = 100
+
 const Levels = {
   1: 'Beginner',
   2: 'Word Warrior',
