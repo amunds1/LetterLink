@@ -9,6 +9,7 @@ import {
 import ProfileIcons, { IProfileIcon } from '../../constants/ProfileIcons'
 import { useMediaQuery } from '@mantine/hooks'
 import User from '../../types/User'
+import { LevelTreshold } from '../../constants/Levels'
 
 const LeaderboardList = ({ players }: { players: Partial<User>[] }) => {
   const ProfileIconsList: IProfileIcon = ProfileIcons
@@ -35,7 +36,8 @@ const LeaderboardList = ({ players }: { players: Partial<User>[] }) => {
               </Group>
               <Text color="teal" weight="bold">
                 <Text size="xs" mr={10} span color={dark ? 'gray.6' : 'gray'}>
-                  Level {Math.floor(player.experiencePoints! / 50 + 1)}
+                  Level{' '}
+                  {Math.floor(player.experiencePoints! / LevelTreshold + 1)}
                 </Text>
                 {player.experiencePoints} XP
               </Text>

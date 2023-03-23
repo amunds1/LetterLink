@@ -1,4 +1,5 @@
 import { doc, increment, updateDoc } from 'firebase/firestore'
+import { LevelTreshold } from '../../../constants/Levels'
 import { db } from '../../../firebase/clientApp'
 import fetchGameData from '../firebase/fetchGameData'
 import { IGameContext } from './gameContext'
@@ -26,13 +27,19 @@ const updateWinner = async (gameContext: IGameContext) => {
    */
   if (players[0][0] == gameContext.userUID) {
     // Checks if player 0 (you) has leveld up
-    if ((gameContext.experiencePoints % 50) + players[0][1] >= 50) {
+    if (
+      (gameContext.experiencePoints % LevelTreshold) + players[0][1] >=
+      LevelTreshold
+    ) {
       await updateDoc(doc(db, 'users', players[0][0]), {
         openLeveldUpModal: true,
       })
     }
     // Checks if player 1 (opponent) has leveld up
-    if ((gameContext.opponentExperiencePoints % 50) + players[1][1] >= 50) {
+    if (
+      (gameContext.opponentExperiencePoints % LevelTreshold) + players[1][1] >=
+      LevelTreshold
+    ) {
       await updateDoc(doc(db, 'users', players[1][0]), {
         openLeveldUpModal: true,
       })
@@ -43,13 +50,19 @@ const updateWinner = async (gameContext: IGameContext) => {
         - player0 = opponent
      */
     // Checks if player 1 (you) has leveld up
-    if ((gameContext.experiencePoints % 50) + players[1][1] >= 50) {
+    if (
+      (gameContext.experiencePoints % LevelTreshold) + players[1][1] >=
+      LevelTreshold
+    ) {
       await updateDoc(doc(db, 'users', players[1][0]), {
         openLeveldUpModal: true,
       })
     }
     // Checks if player 0 (opponent) has leveld up
-    if ((gameContext.opponentExperiencePoints % 50) + players[0][1] >= 50) {
+    if (
+      (gameContext.opponentExperiencePoints % LevelTreshold) + players[0][1] >=
+      LevelTreshold
+    ) {
       await updateDoc(doc(db, 'users', players[0][0]), {
         openLeveldUpModal: true,
       })

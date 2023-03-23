@@ -1,5 +1,5 @@
 import { Progress, Stack, Text, Image } from '@mantine/core'
-import Levels, { ILevels } from '../../constants/Levels'
+import Levels, { ILevels, LevelTreshold } from '../../constants/Levels'
 
 const ExperiencePointsBar = ({
   experiencePoints,
@@ -8,24 +8,26 @@ const ExperiencePointsBar = ({
 }) => {
   // Calculate level (+1 so that first level is level 1)
   /* 
-    Level 1 -> 0 to 49 XP
-    Level 2 -> 50 to 99 XP
-    Level 3 -> 100 to 149 XP
+    Level 1 -> 0 to 99 XP
+    Level 2 -> 100 to 199 XP
+    Level 3 -> 200 to 299 XP
     ...
   */
 
-  const level = Math.floor(experiencePoints / 50 + 1)
+  const level = Math.floor(experiencePoints / LevelTreshold + 1)
 
   // Find levelName for that level
   const levelList: ILevels = Levels
   const levelName: string = levelList[level]
 
   // Remaining XP to next level (will be a number between 1 and 50)
-  const remainingXP = level * 50 - experiencePoints
+  const remainingXP = level * LevelTreshold - experiencePoints
 
   // Percent to next level, used in progress bar
   let percentNextLevel =
-    remainingXP === 50 ? 0 : Math.round(100 - (remainingXP / 50) * 100)
+    remainingXP === LevelTreshold
+      ? 0
+      : Math.round(100 - (remainingXP / LevelTreshold) * 100)
 
   return (
     <div style={{ display: 'flex', gap: '15px', paddingBottom: '2%' }}>

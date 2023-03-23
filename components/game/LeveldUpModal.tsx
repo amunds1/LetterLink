@@ -1,5 +1,5 @@
 import { Modal, Image, Stack, Text, useMantineColorScheme } from '@mantine/core'
-import Levels, { ILevels } from '../../constants/Levels'
+import Levels, { ILevels, LevelTreshold } from '../../constants/Levels'
 interface ILevelModalProps {
   openLeveldUpModal: boolean
   closeLeveldUpModal(): Promise<void>
@@ -13,7 +13,7 @@ const LeveledUpModal = (props: ILevelModalProps) => {
   const { colorScheme } = useMantineColorScheme()
   const dark = colorScheme === 'dark'
 
-  const level = Math.floor(experiencePoints / 50 + 1)
+  const level = Math.floor(experiencePoints / LevelTreshold + 1)
   const levelList: ILevels = Levels
   const levelName: string = levelList[level]
 
