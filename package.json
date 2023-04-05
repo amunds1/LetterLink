@@ -15,7 +15,7 @@
     "@faker-js/faker": "^7.6.0",
     "@mantine/core": "^5.10.3",
     "@mantine/ds": "^5.10.3",
-    "@mantine/form": "^5.10.4",
+    "@mantine/form": "^6.0.6",
     "@mantine/hooks": "^5.10.3",
     "@mantine/next": "^5.10.4",
     "@mantine/prism": "^5.10.3",
